@@ -8,6 +8,7 @@ import {
   User, Mail, Phone, Building, ChevronDown, PartyPopper, Play, TrendingUp, Package, Handshake, HardHat, Cpu, BarChart2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { GlowingEffect } from '@/components/ui/glowing-effect';
 
 // ── Demo Modal ────────────────────────────────────────────────────────────────
 const COMPANY_SIZES = ['1–10', '11–50', '51–200', '201–500', '500+'];
@@ -445,244 +446,6 @@ export default function Home() {
   const [isFloatingPlayerOpen, setIsFloatingPlayerOpen] = useState(true);
   const openVideo = () => setIsVideoModalOpen(true);
 
-  const HERO_CARDS = [
-    {
-      id: 0, title: 'Finance & Accounting', tag: 'Module', icon: BarChart3,
-      color: 'from-blue-600 to-blue-800',
-      preview: (
-        <div className="p-3 space-y-2">
-          <div className="flex gap-2">
-            {[{ l: 'Revenue', v: '₹12.4L', c: 'text-green-400' }, { l: 'Expenses', v: '₹4.1L', c: 'text-red-400' }, { l: 'Profit', v: '₹8.3L', c: 'text-blue-400' }].map((s, i) => (
-              <div key={i} className="flex-1 bg-white/10 rounded-lg p-2">
-                <div className="text-[9px] text-white/50">{s.l}</div>
-                <div className={`text-xs font-bold ${s.c}`}>{s.v}</div>
-              </div>
-            ))}
-          </div>
-          <div className="bg-white/10 rounded-lg p-2">
-            <div className="text-[9px] text-white/50 mb-1">Monthly Revenue</div>
-            <div className="flex items-end gap-0.5 h-10">
-              {[30,50,40,70,55,80,65,90,75,85,60,95].map((h, i) => (
-                <div key={i} className={`flex-1 rounded-t-sm ${i === 11 ? 'bg-blue-400' : 'bg-blue-400/30'}`} style={{ height: `${h}%` }} />
-              ))}
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: 1, title: 'Inventory Management', tag: 'Module', icon: Package,
-      color: 'from-violet-600 to-purple-800',
-      preview: (
-        <div className="p-3 space-y-1.5">
-          {[{ name: 'Steel Rods 12mm', stock: 2400, max: 3000, warn: false },
-            { name: 'PVC Pipes 4"', stock: 340, max: 1000, warn: true },
-            { name: 'Copper Wire', stock: 1800, max: 2000, warn: false },
-            { name: 'Cement Bags', stock: 120, max: 800, warn: true }].map((item, i) => (
-            <div key={i} className="flex items-center gap-2">
-              <div className="text-[9px] text-white/70 w-20 truncate">{item.name}</div>
-              <div className="flex-1 bg-white/10 rounded-full h-1.5">
-                <div className={`h-full rounded-full ${item.warn ? 'bg-amber-400' : 'bg-violet-400'}`} style={{ width: `${(item.stock / item.max) * 100}%` }} />
-              </div>
-              <div className={`text-[9px] font-bold ${item.warn ? 'text-amber-400' : 'text-white/80'}`}>{item.stock}</div>
-            </div>
-          ))}
-          <div className="mt-2 bg-white/10 rounded-lg p-1.5 text-center">
-            <span className="text-[9px] text-violet-300 font-semibold">Accuracy: 99.8%</span>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: 2, title: 'CRM & Sales', tag: 'Module', icon: Handshake,
-      color: 'from-emerald-600 to-teal-800',
-      preview: (
-        <div className="p-3 space-y-1.5">
-          <div className="flex justify-between text-[9px] text-white/50 mb-1"><span>Pipeline</span><span>₹38.2L</span></div>
-          {[{ stage: 'Prospecting', count: 24, pct: 85 }, { stage: 'Proposal', count: 12, pct: 55 }, { stage: 'Negotiation', count: 7, pct: 35 }, { stage: 'Closed Won', count: 5, pct: 20 }].map((s, i) => (
-            <div key={i} className="flex items-center gap-2">
-              <div className="text-[9px] text-white/70 w-20 truncate">{s.stage}</div>
-              <div className="flex-1 bg-white/10 rounded-full h-1.5">
-                <div className="h-full rounded-full bg-emerald-400" style={{ width: `${s.pct}%` }} />
-              </div>
-              <div className="text-[9px] font-bold text-white/80">{s.count}</div>
-            </div>
-          ))}
-          <div className="bg-white/10 rounded-lg p-1.5 flex gap-2 mt-1">
-            <div className="text-[9px] text-white/50">Win Rate</div>
-            <div className="text-[9px] font-bold text-emerald-400 ml-auto">68%</div>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: 3, title: 'HR & Payroll', tag: 'Module', icon: Users,
-      color: 'from-orange-500 to-red-700',
-      preview: (
-        <div className="p-3 space-y-2">
-          <div className="flex gap-1.5">
-            {[{ l: 'Employees', v: '248' }, { l: 'On Leave', v: '12' }, { l: 'Payroll', v: '₹42L' }].map((s, i) => (
-              <div key={i} className="flex-1 bg-white/10 rounded-lg p-2 text-center">
-                <div className="text-xs font-bold text-white">{s.v}</div>
-                <div className="text-[9px] text-white/50">{s.l}</div>
-              </div>
-            ))}
-          </div>
-          <div className="space-y-1">
-            <div className="text-[9px] text-white/50">Department Headcount</div>
-            {[{ d: 'Engineering', n: 68 }, { d: 'Sales', n: 45 }, { d: 'Operations', n: 82 }].map((d, i) => (
-              <div key={i} className="flex items-center gap-1.5">
-                <div className="text-[9px] text-white/70 w-16 truncate">{d.d}</div>
-                <div className="flex-1 bg-white/10 rounded-full h-1.5">
-                  <div className="h-full rounded-full bg-orange-400" style={{ width: `${(d.n / 100) * 100}%` }} />
-                </div>
-                <div className="text-[9px] text-white/80">{d.n}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )
-    },
-    {
-      id: 4, title: 'Manufacturing', tag: 'Module', icon: Factory,
-      color: 'from-rose-600 to-pink-800',
-      preview: (
-        <div className="p-3 space-y-2">
-          <div className="bg-white/10 rounded-lg p-2">
-            <div className="flex justify-between text-[9px] text-white/50 mb-1"><span>Production Orders</span><span>Active</span></div>
-            {[{ name: 'MO-2401', qty: '500 units', pct: 72 }, { name: 'MO-2402', qty: '200 units', pct: 45 }, { name: 'MO-2403', qty: '1200 units', pct: 18 }].map((o, i) => (
-              <div key={i} className="mb-1">
-                <div className="flex justify-between text-[9px] text-white/70 mb-0.5"><span>{o.name}</span><span>{o.qty}</span></div>
-                <div className="bg-white/10 rounded-full h-1.5">
-                  <div className="h-full rounded-full bg-rose-400" style={{ width: `${o.pct}%` }} />
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="flex gap-1.5">
-            <div className="flex-1 bg-white/10 rounded-lg p-1.5 text-center"><div className="text-xs font-bold text-white">94%</div><div className="text-[9px] text-white/50">OEE</div></div>
-            <div className="flex-1 bg-white/10 rounded-lg p-1.5 text-center"><div className="text-xs font-bold text-emerald-400">On Time</div><div className="text-[9px] text-white/50">Delivery</div></div>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: 5, title: 'Project Management', tag: 'Module', icon: Briefcase,
-      color: 'from-cyan-600 to-sky-800',
-      preview: (
-        <div className="p-3 space-y-1.5">
-          <div className="text-[9px] text-white/50 mb-1">Active Projects</div>
-          {[{ name: 'ERP Rollout Phase 2', due: 'Jun 30', pct: 78, color: 'bg-cyan-400' },
-            { name: 'Warehouse Expansion', due: 'Jul 15', pct: 42, color: 'bg-sky-400' },
-            { name: 'GST Compliance', due: 'May 31', pct: 95, color: 'bg-emerald-400' }].map((p, i) => (
-            <div key={i} className="bg-white/10 rounded-lg p-2">
-              <div className="flex justify-between text-[9px] mb-1"><span className="text-white/80 font-medium truncate mr-2">{p.name}</span><span className="text-white/40 shrink-0">{p.due}</span></div>
-              <div className="bg-white/10 rounded-full h-1.5">
-                <div className={`h-full rounded-full ${p.color}`} style={{ width: `${p.pct}%` }} />
-              </div>
-              <div className="text-right text-[9px] text-white/50 mt-0.5">{p.pct}%</div>
-            </div>
-          ))}
-        </div>
-      )
-    },
-    {
-      id: 6, title: 'Business Intelligence', tag: 'Module', icon: BarChart2,
-      color: 'from-indigo-600 to-blue-900',
-      preview: (
-        <div className="p-3 space-y-2">
-          <div className="text-[9px] text-white/50">Revenue vs Target</div>
-          <div className="flex items-end gap-1 h-14">
-            {[{ a: 65, t: 80 }, { a: 78, t: 80 }, { a: 82, t: 80 }, { a: 91, t: 80 }, { a: 74, t: 80 }, { a: 95, t: 80 }].map((m, i) => (
-              <div key={i} className="flex-1 flex items-end gap-0.5">
-                <div className="flex-1 bg-indigo-400/80 rounded-t-sm" style={{ height: `${m.a}%` }} />
-                <div className="flex-1 bg-white/20 rounded-t-sm" style={{ height: `${m.t}%` }} />
-              </div>
-            ))}
-          </div>
-          <div className="flex gap-3">
-            <div className="flex items-center gap-1"><div className="w-2 h-2 rounded-sm bg-indigo-400" /><span className="text-[9px] text-white/60">Actual</span></div>
-            <div className="flex items-center gap-1"><div className="w-2 h-2 rounded-sm bg-white/20" /><span className="text-[9px] text-white/60">Target</span></div>
-          </div>
-          <div className="bg-white/10 rounded-lg p-1.5 flex justify-between">
-            <span className="text-[9px] text-white/50">Avg Achievement</span>
-            <span className="text-[9px] font-bold text-indigo-300">81%</span>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: 7, title: 'Retail Industry', tag: 'Industry', icon: ShoppingCart,
-      color: 'from-amber-500 to-orange-700',
-      preview: (
-        <div className="p-3 space-y-2">
-          <div className="grid grid-cols-2 gap-1.5">
-            {[{ l: 'Daily Sales', v: '₹2.8L' }, { l: 'Transactions', v: '1,240' }, { l: 'Avg Basket', v: '₹2,250' }, { l: 'Returns', v: '2.1%' }].map((s, i) => (
-              <div key={i} className="bg-white/10 rounded-lg p-2">
-                <div className="text-[9px] text-white/50">{s.l}</div>
-                <div className="text-xs font-bold text-white">{s.v}</div>
-              </div>
-            ))}
-          </div>
-          <div className="bg-white/10 rounded-lg p-1.5">
-            <div className="text-[9px] text-white/50 mb-1">Top Categories</div>
-            {['Electronics — 34%', 'Apparel — 28%', 'Grocery — 22%'].map((c, i) => (
-              <div key={i} className="text-[9px] text-amber-300 font-medium">{c}</div>
-            ))}
-          </div>
-        </div>
-      )
-    },
-    {
-      id: 8, title: 'Manufacturing Industry', tag: 'Industry', icon: HardHat,
-      color: 'from-teal-600 to-emerald-800',
-      preview: (
-        <div className="p-3 space-y-2">
-          <div className="bg-white/10 rounded-lg p-2">
-            <div className="text-[9px] text-white/50 mb-1">Plant Efficiency</div>
-            <div className="text-xl font-black text-teal-400">94.2%</div>
-            <div className="text-[9px] text-white/40">OEE Score</div>
-          </div>
-          <div className="grid grid-cols-2 gap-1.5">
-            {[{ l: 'Downtime', v: '2.1 hrs' }, { l: 'Scrap Rate', v: '0.8%' }, { l: 'Output', v: '4,200 u' }, { l: 'On-Time', v: '97.4%' }].map((s, i) => (
-              <div key={i} className="bg-white/10 rounded-lg p-1.5">
-                <div className="text-[9px] text-white/50">{s.l}</div>
-                <div className="text-[10px] font-bold text-teal-300">{s.v}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )
-    },
-    {
-      id: 9, title: 'Distribution & Logistics', tag: 'Industry', icon: Truck,
-      color: 'from-slate-600 to-gray-800',
-      preview: (
-        <div className="p-3 space-y-1.5">
-          <div className="text-[9px] text-white/50">Live Shipments</div>
-          {[{ id: 'SHP-4401', dest: 'Mumbai', status: 'In Transit', pct: 65 },
-            { id: 'SHP-4402', dest: 'Delhi NCR', status: 'Delivered', pct: 100 },
-            { id: 'SHP-4403', dest: 'Bangalore', status: 'Dispatched', pct: 20 }].map((s, i) => (
-            <div key={i} className="bg-white/10 rounded-lg p-2">
-              <div className="flex justify-between text-[9px] mb-1">
-                <span className="text-white/80 font-medium">{s.id} → {s.dest}</span>
-                <span className={`font-semibold ${s.pct === 100 ? 'text-emerald-400' : 'text-amber-400'}`}>{s.status}</span>
-              </div>
-              <div className="bg-white/10 rounded-full h-1">
-                <div className={`h-full rounded-full ${s.pct === 100 ? 'bg-emerald-400' : 'bg-amber-400'}`} style={{ width: `${s.pct}%` }} />
-              </div>
-            </div>
-          ))}
-        </div>
-      )
-    },
-  ];
-
-  const CARDS_VISIBLE = 3;
-  const MAX_INDEX = HERO_CARDS.length - CARDS_VISIBLE;
-  const [heroIndex, setHeroIndex] = useState(0);
-  const heroPrev = () => setHeroIndex(i => Math.max(0, i - 1));
-  const heroNext = () => setHeroIndex(i => Math.min(MAX_INDEX, i + 1));
 
   const OFFERINGS = [
     {
@@ -919,7 +682,7 @@ export default function Home() {
     },
   ];
   const [activeOffering, setActiveOffering] = useState('erp');
-  const [hoveredIndustry, setHoveredIndustry] = useState(0);
+  const [expandedIndustry, setExpandedIndustry] = useState(0);
 
   const INDUSTRY_CARDS = [
     {
@@ -929,6 +692,7 @@ export default function Home() {
       desc: 'Manage BOMs, batch processing, quality control, and cost-of-production in one connected system built for process manufacturers.',
       metric: 'Reduced production waste by 34%',
       gradient: 'linear-gradient(135deg, #0f2d6b 0%, #1a4a9e 40%, #0d3580 100%)',
+      image: '/images/industry-manufacturing.jpg',
       icon: Factory,
       accentColor: '#60A5FA',
       highlights: ['Batch & Process BOM', 'Quality Control', 'Costing & Variance', 'Multi-Unit Production'],
@@ -940,6 +704,7 @@ export default function Home() {
       desc: 'Automate purchase orders, track multi-location stock in real time, and manage customer credit limits — all from a single trading ERP.',
       metric: 'Order processing 3× faster',
       gradient: 'linear-gradient(135deg, #064e3b 0%, #065f46 40%, #047857 100%)',
+      image: '/images/industry-trading.jpg',
       icon: ShoppingCart,
       accentColor: '#34D399',
       highlights: ['Purchase Automation', 'Multi-Warehouse Stock', 'Credit Limit Control', 'Price Lists & Schemes'],
@@ -951,6 +716,7 @@ export default function Home() {
       desc: 'Manage subcontracting, job cards, material in/out, and billing for job work operations with full traceability and zero revenue leakage.',
       metric: 'Zero revenue leakage on job orders',
       gradient: 'linear-gradient(135deg, #4c1d95 0%, #6d28d9 40%, #7c3aed 100%)',
+      image: '/images/industry-jobwork.jpg',
       icon: Briefcase,
       accentColor: '#C4B5FD',
       highlights: ['Job Card Management', 'Material Traceability', 'Sub-Contractor Billing', 'Work-In-Progress Tracking'],
@@ -962,6 +728,7 @@ export default function Home() {
       desc: 'Connect your retail stores, distributor network, and e-commerce channels. Manage stock, schemes, and settlements from one platform.',
       metric: 'Inventory accuracy lifted to 99.8%',
       gradient: 'linear-gradient(135deg, #78350f 0%, #b45309 40%, #d97706 100%)',
+      image: '/images/industry-retail.jpg',
       icon: Package,
       accentColor: '#FCD34D',
       highlights: ['POS & Retail Billing', 'Distributor Management', 'Scheme & Discount Engine', 'E-Commerce Sync'],
@@ -973,6 +740,7 @@ export default function Home() {
       desc: 'Track project budgets, contractor bills, material consumption, and milestones in real time — built for construction companies and EPC firms.',
       metric: 'Project cost overruns cut by 28%',
       gradient: 'linear-gradient(135deg, #1c1917 0%, #292524 40%, #44403c 100%)',
+      image: '/images/industry-construction.jpg',
       icon: HardHat,
       accentColor: '#FCA5A5',
       highlights: ['Project Budgeting', 'Contractor Billing', 'Site Material Tracking', 'Milestone & Progress'],
@@ -1102,272 +870,272 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* 2. Hero Section — premium particle + glassmorphism */}
-      <section className="relative flex flex-col overflow-hidden" style={{ background: 'linear-gradient(160deg, #020918 0%, #060e28 35%, #080f24 65%, #050b1e 100%)' }}>
+      {/* 2. Hero Section — full-bleed photo backdrop, matches approved reference */}
+      <section className="relative flex flex-col overflow-hidden">
 
-        {/* ── Particle network — full canvas ── */}
-        <div className="absolute inset-0 opacity-70">
-          <NetworkMesh />
-        </div>
-
-        {/* ── Multiple radial glow blobs ── */}
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] h-[500px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse, rgba(11,92,255,0.22) 0%, transparent 65%)', filter: 'blur(40px)' }} />
-        <div className="absolute top-1/3 -left-24 w-[520px] h-[520px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(11,92,255,0.16) 0%, transparent 70%)', filter: 'blur(60px)' }} />
-        <div className="absolute top-1/3 -right-24 w-[480px] h-[480px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.14) 0%, transparent 70%)', filter: 'blur(60px)' }} />
-        <div className="absolute bottom-0 left-1/4 w-80 h-80 rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 70%)', filter: 'blur(50px)' }} />
-        <div className="absolute bottom-0 right-1/4 w-72 h-72 rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.12) 0%, transparent 70%)', filter: 'blur(50px)' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(11,92,255,0.06) 0%, transparent 60%)', filter: 'blur(30px)' }} />
-
-        {/* ── Vertical light beams ── */}
-        {[
-          { left: '12%', delay: '0s', dur: '8s', opacity: 0.12 },
-          { left: '30%', delay: '2s', dur: '11s', opacity: 0.08 },
-          { left: '52%', delay: '0.5s', dur: '9s', opacity: 0.10 },
-          { left: '72%', delay: '3s', dur: '12s', opacity: 0.08 },
-          { left: '88%', delay: '1.5s', dur: '10s', opacity: 0.11 },
-        ].map((b, i) => (
-          <div key={i} className="absolute top-0 bottom-0 pointer-events-none"
+        {/* ── Background photo ── */}
+        <div className="absolute inset-0">
+          <img
+            src="/images/hero-meeting.jpg"
+            alt=""
+            className="w-full h-full object-cover"
+          />
+          {/* Dark navy overlay — lighter at top, near-opaque toward the bottom */}
+          <div
+            className="absolute inset-0"
             style={{
-              left: b.left, width: 1,
-              background: 'linear-gradient(to bottom, transparent 0%, #60A5FA 25%, #818CF8 55%, #60A5FA 80%, transparent 100%)',
-              filter: 'blur(1.5px)',
-              opacity: b.opacity,
-              animation: `beamMove ${b.dur} ${b.delay} ease-in-out infinite alternate`,
+              background:
+                'linear-gradient(180deg, rgba(4,10,26,0.55) 0%, rgba(4,10,26,0.72) 30%, rgba(3,8,22,0.90) 62%, rgba(2,6,18,0.97) 100%)',
             }}
           />
-        ))}
-
-        {/* ── Floating glassmorphism decorative elements ── */}
-        <div className="absolute top-32 left-12 w-28 h-28 rounded-2xl pointer-events-none"
-          style={{
-            background: 'rgba(11,92,255,0.06)',
-            border: '1px solid rgba(96,165,250,0.12)',
-            backdropFilter: 'blur(12px)',
-            animation: 'heroFloat1 7s ease-in-out infinite',
-            boxShadow: '0 0 30px rgba(11,92,255,0.08)',
-          }} />
-        <div className="absolute top-48 right-16 w-20 h-20 rounded-2xl pointer-events-none"
-          style={{
-            background: 'rgba(99,102,241,0.07)',
-            border: '1px solid rgba(139,92,246,0.14)',
-            backdropFilter: 'blur(12px)',
-            animation: 'heroFloat2 6s 1s ease-in-out infinite',
-            boxShadow: '0 0 24px rgba(99,102,241,0.08)',
-          }} />
-        <div className="absolute bottom-48 left-20 w-16 h-16 rounded-xl rotate-12 pointer-events-none"
-          style={{
-            background: 'rgba(59,130,246,0.08)',
-            border: '1px solid rgba(96,165,250,0.10)',
-            backdropFilter: 'blur(8px)',
-            animation: 'heroFloatMain 8s 2s ease-in-out infinite',
-          }} />
-        <div className="absolute bottom-32 right-24 w-24 h-24 rounded-2xl -rotate-6 pointer-events-none"
-          style={{
-            background: 'rgba(139,92,246,0.06)',
-            border: '1px solid rgba(139,92,246,0.12)',
-            backdropFilter: 'blur(10px)',
-            animation: 'heroFloat1 9s 0.5s ease-in-out infinite',
-          }} />
+          {/* Particle network mesh, blended over the photo */}
+          <div className="absolute inset-0 opacity-60 mix-blend-screen">
+            <NetworkMesh />
+          </div>
+          {/* Decorative vertical line accents — 5 equally spaced, left to right */}
+          {[16.66, 33.33, 50, 66.66, 83.33].map((pct) => (
+            <div
+              key={pct}
+              className="absolute top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/15 to-transparent hidden md:block"
+              style={{ left: `${pct}%` }}
+            />
+          ))}
+          {/* Decorative outlined square boxes */}
+          <div className="absolute top-[14%] left-[4%] w-16 h-16 rounded-xl border border-white/15 hidden md:block" />
+          <div className="absolute bottom-[8%] right-[6%] w-20 h-20 rounded-xl border border-white/10 hidden md:block" />
+        </div>
 
         {/* ── Centered text block ── */}
         <motion.div
           initial="hidden"
           animate="visible"
           variants={staggerContainer}
-          className="relative z-10 flex flex-col items-center text-center pt-36 pb-12 px-4"
+          className="relative z-10 flex flex-col items-center text-center pt-28 md:pt-32 pb-10 px-4"
         >
-          <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-blue-200 text-sm font-semibold mb-6 border border-white/15 backdrop-blur-sm">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-300 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-300" />
-            </span>
-            KonnectERP 2.0 — Now Live
+          <motion.div variants={fadeInUp} className="inline-flex items-center px-4 py-1.5 rounded-full bg-white/10 text-white/80 text-xs font-semibold mb-6 border border-white/15 backdrop-blur-sm tracking-wide">
+            Cloud ERP for Indian Manufacturing &amp; Trading
           </motion.div>
 
-          <motion.h1 variants={fadeInUp} className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] mb-5 tracking-tight max-w-4xl">
-            One ERP Platform.<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-sky-200 to-indigo-300">
-              Endless Business Possibilities.
+          <motion.h1 variants={fadeInUp} className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.15] mb-5 tracking-tight max-w-3xl">
+            Run Every Department.<br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">
+              From One Dashboard.
             </span>
           </motion.h1>
 
-          <motion.p variants={fadeInUp} className="text-lg md:text-xl text-blue-200/80 mb-8 max-w-xl leading-relaxed">
-            Manage finance, inventory, sales, HR, manufacturing, and operations from a single intelligent cloud platform.
+          <motion.p variants={fadeInUp} className="text-base md:text-lg text-slate-200/85 mb-8 max-w-2xl leading-relaxed">
+            KonnectERP unifies your production, sales, procurement, HR, and accounts — with GST, E-Invoicing, and Indian compliance built in from day one. No integrations to cobble together. No data silos.
           </motion.p>
 
           <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-3 justify-center">
             <button
               onClick={openDemo}
-              className="h-12 px-7 text-base font-semibold bg-white text-[#F97316] hover:bg-orange-50 rounded-lg transition-colors shadow-lg"
+              className="h-11 px-6 text-sm font-semibold bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-md transition-colors shadow-lg shadow-blue-900/30"
             >
-              Request Demo
+              Request Free Demo
             </button>
             <button
               onClick={openVideo}
-              className="h-12 px-7 text-base font-semibold bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-lg transition-colors flex items-center gap-2 justify-center backdrop-blur-sm"
+              className="h-11 px-6 text-sm font-semibold bg-white/10 hover:bg-white/20 text-white border border-white/15 rounded-md transition-colors backdrop-blur-sm"
             >
-              <Play className="w-4 h-4 fill-white" />
-              Watch Overview
+              Explore Platform
             </button>
           </motion.div>
 
-          <motion.div variants={fadeInUp} className="mt-6 flex items-center gap-5 text-sm text-blue-300/70">
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-blue-400" /> No credit card required</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-blue-400" /> 14-day free trial</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-blue-400" /> Setup in minutes</span>
+          <motion.div variants={fadeInUp} className="mt-5 flex items-center gap-5 text-xs text-slate-300/70">
+            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-slate-300/60" /> No credit card required</span>
+            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-slate-300/60" /> 14-day free trial</span>
+            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-slate-300/60" /> Setup in minutes</span>
           </motion.div>
         </motion.div>
 
-        {/* ── Scrolling card slider ── */}
-        <div className="relative z-10 pb-14">
-          <div className="overflow-hidden px-6 md:px-12">
-            <motion.div
-              className="flex gap-4"
-              animate={{ x: `calc(-${heroIndex * (240 + 16)}px)` }}
-              transition={{ type: 'spring', stiffness: 300, damping: 35 }}
-            >
-              {HERO_CARDS.map((card) => {
-                const Icon = card.icon;
-                return (
-                  <motion.div
-                    key={card.id}
-                    whileHover={{ y: -4, scale: 1.02 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex-shrink-0 w-60 rounded-2xl overflow-hidden cursor-pointer"
-                    style={{
-                      background: 'rgba(8,16,40,0.60)',
-                      border: '1px solid rgba(96,165,250,0.18)',
-                      backdropFilter: 'blur(20px)',
-                      boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(96,165,250,0.04), inset 0 1px 0 rgba(255,255,255,0.05)',
-                    }}
-                  >
-                    <div className="px-4 pt-4 pb-3 flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="w-7 h-7 bg-white/20 rounded-lg flex items-center justify-center">
-                          <Icon className="w-3.5 h-3.5 text-white" />
-                        </div>
-                        <div>
-                          <div className="text-[10px] font-semibold text-white/50 uppercase tracking-wide">{card.tag}</div>
-                          <div className="text-xs font-bold text-white leading-tight">{card.title}</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mx-3 mb-3 bg-black/25 rounded-xl overflow-hidden">
-                      {card.preview}
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          </div>
-
-          {/* Navigation row */}
-          <div className="flex items-center justify-center gap-5 mt-6">
-            <button
-              onClick={heroPrev}
-              disabled={heroIndex === 0}
-              className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-white disabled:opacity-30 transition-colors backdrop-blur-sm"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <div className="flex gap-2">
-              {Array.from({ length: MAX_INDEX + 1 }).map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setHeroIndex(i)}
-                  className={`rounded-full transition-all duration-300 ${heroIndex === i ? 'w-6 h-2 bg-white' : 'w-2 h-2 bg-white/30 hover:bg-white/50'}`}
+        {/* ── Stat cards ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="relative z-10 container mx-auto px-4 pb-16"
+        >
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+            {[
+              { icon: Users, value: 5000, suffix: '+', label: 'Active Users', sub: 'ACROSS INDIA', accent: true },
+              { icon: Building2, value: 20, suffix: '+', label: 'Industries Served', sub: 'NATIONWIDE COVERAGE' },
+              { icon: Activity, value: 400, suffix: '+', label: 'Transactions Built-in', sub: 'ZERO-INTEGRATION NEEDED' },
+              { icon: BarChart3, value: 150, suffix: '+', label: 'Reports & Dashboards', sub: 'REAL-TIME ANALYTICS' },
+            ].map((s, i) => (
+              <div key={i} className="relative rounded-2xl border-[0.75px] border-white/10 p-0.5">
+                <GlowingEffect
+                  spread={40}
+                  glow={true}
+                  disabled={false}
+                  proximity={64}
+                  inactiveZone={0.01}
+                  borderWidth={2}
                 />
-              ))}
-            </div>
-            <button
-              onClick={heroNext}
-              disabled={heroIndex === MAX_INDEX}
-              className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-white disabled:opacity-30 transition-colors backdrop-blur-sm"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
+                <div
+                  className="relative rounded-[calc(1rem-2px)] p-5 h-full overflow-hidden"
+                  style={{ background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(8px)' }}
+                >
+                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center mb-4 ${s.accent ? 'bg-[#F97316]/20 text-[#F97316]' : 'bg-white/10 text-white/70'}`}>
+                    <s.icon className="w-4.5 h-4.5" />
+                  </div>
+                  <div className={`text-3xl font-extrabold mb-1 ${s.accent ? 'text-[#F97316]' : 'text-white'}`}>
+                    {s.value.toLocaleString()}{s.suffix}
+                  </div>
+                  <div className="text-sm font-semibold text-white mb-1">{s.label}</div>
+                  <div className="text-[10px] font-medium text-slate-400 tracking-wide">{s.sub}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* ── Trusted-by strip, blended into the same dark backdrop ── */}
+        <div className="relative z-10 border-t border-white/10 py-10 overflow-hidden">
+          {/* Blurred glowing circle accents */}
+          <div className="absolute -top-10 left-[6%] w-40 h-40 rounded-full bg-blue-500/20 blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 right-[10%] w-56 h-56 rounded-full bg-indigo-500/15 blur-3xl pointer-events-none" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full bg-orange-500/10 blur-3xl pointer-events-none" />
+          <div className="container mx-auto px-4 text-center mb-6 relative">
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Trusted by growing businesses across multiple industries</p>
+          </div>
+          <div className="container mx-auto px-4 flex flex-wrap items-center justify-center gap-x-10 gap-y-3 mb-8">
+            {['Rajesh Industries', 'TechCorp', 'MegaRetail', 'BuildRight', 'LogiWave', 'GlobalManufacturing'].map((name) => (
+              <div key={name} className="flex items-center gap-2 text-sm font-semibold text-slate-400/70">
+                <Building2 className="w-4 h-4" />
+                {name}
+              </div>
+            ))}
+          </div>
+          <div className="container mx-auto px-4 flex flex-wrap justify-center gap-4">
+            {['ISO 27001 Certified', 'SOC 2 Type II', 'GDPR Ready'].map(badge => (
+              <div key={badge} className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/15 text-xs font-medium text-slate-300">
+                <span className="w-1.5 h-1.5 rounded-full border border-slate-300/60" /> {badge}
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* 3. Trusted Companies Marquee */}
-      <section className="py-12 border-y border-border bg-card overflow-hidden">
-        <div className="container mx-auto px-4 mb-8 text-center">
-          <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Trusted by growing businesses across multiple industries</p>
-        </div>
-        <div className="relative flex overflow-x-hidden">
-          <div className="animate-marquee whitespace-nowrap flex items-center gap-16 py-4">
-            {/* Duplicate for infinite effect */}
-            {[...Array(2)].map((_, i) => (
-              <React.Fragment key={i}>
-                {['Rajesh Industries', 'TechCorp', 'MegaRetail', 'BuildRight', 'LogiWave', 'GlobalManufacturing', 'ApexDistributors'].map((name, j) => (
-                  <div key={`${i}-${j}`} className="flex items-center gap-2 text-2xl font-black text-muted-foreground/40 hover:text-muted-foreground transition-colors cursor-default">
-                    <Building2 className="w-8 h-8" />
-                    {name}
+      {/* 4. India Compliance Section */}
+      <section id="products" className="py-24 bg-[#0B1220] relative overflow-hidden">
+        <div className="absolute top-0 left-1/3 w-96 h-96 rounded-full bg-blue-600/10 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 right-1/4 w-72 h-72 rounded-full bg-orange-500/10 blur-3xl pointer-events-none" />
+
+        <div className="container mx-auto px-4 max-w-6xl relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center max-w-2xl mx-auto mb-14"
+          >
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">India Compliance, Built In</p>
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight">
+              GST, E-Invoice, Payroll.<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">All Automated.</span>
+            </h2>
+            <p className="text-lg text-slate-400">
+              Stop switching between portals. KonnectERP handles every Indian compliance requirement from within your normal workflows — no plugins, no third-party subscriptions, no re-keying.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="flex flex-col lg:flex-row gap-4"
+          >
+            {/* Left photo card — GST Returns & Filing */}
+            <div className="relative lg:flex-[1.1] min-h-[380px] lg:min-h-0 rounded-2xl border-[0.75px] border-white/10 p-0.5">
+              <GlowingEffect
+                spread={40}
+                glow={true}
+                disabled={false}
+                proximity={64}
+                inactiveZone={0.01}
+                borderWidth={2}
+              />
+              <div className="relative rounded-[calc(1rem-2px)] overflow-hidden bg-[#101a30] flex flex-col h-full">
+                <div className="relative flex-1 min-h-[180px]">
+                  <img
+                    src="/images/gst-compliance-person.jpg"
+                    alt="GST Returns & Filing"
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#101a30] to-transparent" />
+                  <button
+                    onClick={openDemo}
+                    className="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#F97316] flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+                  >
+                    <ArrowRight className="w-4 h-4 text-white" />
+                  </button>
+                  <div className="absolute -bottom-6 left-6 w-12 h-12 rounded-xl bg-white shadow-lg flex items-center justify-center">
+                    <BarChart3 className="w-5 h-5 text-[#0B1220]" />
+                  </div>
+                </div>
+                <div className="p-6 pt-9">
+                  <h3 className="text-base font-bold text-white mb-2">GST Returns & Filing</h3>
+                  <p className="text-sm text-slate-400 leading-relaxed">Auto-populated GSTR-1, GSTR-3B, and reconciliation reports. No manual data entry.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Right — feature cards */}
+            <div className="lg:flex-[2] flex flex-col gap-4">
+              <div className="grid sm:grid-cols-2 gap-4">
+                {[
+                  { icon: FileText, title: 'E-Invoicing (IRP)', desc: 'Direct integration with the Invoice Registration Portal. IRN and QR code generation in seconds.' },
+                  { icon: Truck, title: 'E-Way Bill Generation', desc: 'Auto-generate and cancel E-Way Bills from within dispatch workflows. No portal switching.' },
+                ].map((f) => (
+                  <div key={f.title} className="relative rounded-2xl border-[0.75px] border-white/10 p-0.5">
+                    <GlowingEffect
+                      spread={40}
+                      glow={true}
+                      disabled={false}
+                      proximity={64}
+                      inactiveZone={0.01}
+                      borderWidth={2}
+                    />
+                    <div className="relative rounded-[calc(1rem-2px)] bg-[#101a30] p-6 h-full">
+                      <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mb-4">
+                        <f.icon className="w-5 h-5 text-white" />
+                      </div>
+                      <h3 className="text-base font-bold text-white mb-2">{f.title}</h3>
+                      <p className="text-sm text-slate-400 leading-relaxed">{f.desc}</p>
+                    </div>
                   </div>
                 ))}
-              </React.Fragment>
-            ))}
-          </div>
-          {/* Gradients for smooth fade out at edges */}
-          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-card to-transparent z-10"></div>
-          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-card to-transparent z-10"></div>
-        </div>
-        
-        <div className="container mx-auto px-4 mt-8 flex flex-wrap justify-center gap-6">
-          {['ISO 27001 Certified', 'SOC 2 Type II', 'GDPR Ready'].map(badge => (
-            <div key={badge} className="flex items-center gap-2 px-3 py-1 rounded bg-muted text-xs font-medium text-muted-foreground border border-border">
-              <Shield className="w-3 h-3" /> {badge}
+              </div>
+              <div className="grid sm:grid-cols-3 gap-4 flex-1">
+                {[
+                  { icon: CreditCard, title: 'TDS & TCS Compliance', desc: 'Automatic TDS deduction, challan generation, and 26Q/27Q filing reports.' },
+                  { icon: Briefcase, title: 'PF, ESI & Payroll', desc: 'India-compliant salary processing with PF, ESI, PT deductions and Form 16 generation.' },
+                  { icon: Building2, title: 'Multi-Company & Branch', desc: 'Manage multiple entities, branches, and warehouses with consolidated reporting.' },
+                ].map((f) => (
+                  <div key={f.title} className="relative rounded-2xl border-[0.75px] border-white/10 p-0.5">
+                    <GlowingEffect
+                      spread={40}
+                      glow={true}
+                      disabled={false}
+                      proximity={64}
+                      inactiveZone={0.01}
+                      borderWidth={2}
+                    />
+                    <div className="relative rounded-[calc(1rem-2px)] bg-[#101a30] p-6 h-full">
+                      <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mb-4">
+                        <f.icon className="w-5 h-5 text-white" />
+                      </div>
+                      <h3 className="text-base font-bold text-white mb-2">{f.title}</h3>
+                      <p className="text-sm text-slate-400 leading-relaxed">{f.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 4. Product Modules Section */}
-      <section id="products" className="py-24 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6 tracking-tight">Everything Your Business Needs. <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] to-[#0B1F4A]">Connected.</span></h2>
-            <p className="text-lg text-muted-foreground">Stop jumping between disconnected tools. KonnectERP brings every department into one unified, intelligent system.</p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: PieChart, title: "Finance & Accounting", desc: "Automate your books, manage cash flow, and get real-time financial insights." },
-              { icon: Box, title: "Inventory Management", desc: "Track stock levels, warehouse locations, and reorder points in real time." },
-              { icon: Users, title: "CRM & Sales", desc: "Manage leads, pipelines, and customer relationships end-to-end." },
-              { icon: ShoppingCart, title: "Purchase Management", desc: "Streamline procurement, vendor management, and purchase orders." },
-              { icon: Briefcase, title: "HR & Payroll", desc: "Manage employee records, payroll, attendance, and leave requests." },
-              { icon: Factory, title: "Manufacturing", desc: "Plan production, manage BOMs, and track shop floor in real time." },
-              { icon: LayoutDashboard, title: "Project Management", desc: "Track milestones, tasks, resources, and project budgets." },
-              { icon: BarChart3, title: "Business Intelligence", desc: "Powerful dashboards, custom reports, and data-driven decisions." }
-            ].map((module, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                whileHover={{ y: -5 }}
-                className="group p-6 rounded-2xl bg-card border border-border shadow-sm hover:shadow-xl hover:border-primary/30 transition-all duration-300 flex flex-col"
-              >
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
-                  <module.icon className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-bold text-foreground mb-3">{module.title}</h3>
-                <p className="text-muted-foreground mb-6 line-clamp-3 flex-1">{module.desc}</p>
-                <a href="#" className="inline-flex items-center text-sm font-bold text-primary group-hover:underline mt-auto">
-                  Learn More <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </a>
-              </motion.div>
-            ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -1544,9 +1312,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5b. Industry Hover-Expand Accordion */}
-      <section className="py-24 bg-[#fafafa]">
-        <div className="container mx-auto px-4 max-w-7xl">
+      {/* 5b. Industry Solutions — feature + grid layout */}
+      <section className="py-24 bg-[#0B1220] relative overflow-hidden">
+        {/* Decorative blurred glows */}
+        <div className="absolute top-0 left-1/4 w-72 h-72 rounded-full bg-blue-600/10 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full bg-orange-500/10 blur-3xl pointer-events-none" />
+
+        <div className="container mx-auto px-4 max-w-7xl relative z-10">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -1555,141 +1327,137 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EEF3FF] text-[#0B5CFF] text-sm font-semibold mb-4 border border-[#0B5CFF]/15">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white/80 text-xs font-bold uppercase tracking-widest mb-5 border border-white/15">
               <Building2 className="w-3.5 h-3.5" /> Industry Solutions
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight mb-4">
-              Businesses achieve more with KonnectERP
+            <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">
+              Businesses achieve more<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">
+                with KonnectERP
+              </span>
             </h2>
-            <p className="text-lg text-gray-500 max-w-lg mx-auto">
+            <p className="text-lg text-slate-400 max-w-lg mx-auto">
               Purpose-built workflows for the industries that power India's economy.
             </p>
           </motion.div>
 
-          {/* Accordion row */}
+          {/* Feature row: expandable accordion of industry cards */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.15 }}
-            className="flex gap-3 h-[380px] rounded-2xl overflow-hidden"
+            className="flex flex-col lg:flex-row gap-4 lg:h-[420px]"
           >
             {INDUSTRY_CARDS.map((card, idx) => {
               const Icon = card.icon;
-              const isActive = hoveredIndustry === idx;
+              const isOpen = expandedIndustry === idx;
               return (
-                <div
+                <motion.div
                   key={card.id}
-                  onMouseEnter={() => setHoveredIndustry(idx)}
-                  className="relative rounded-2xl overflow-hidden cursor-pointer"
-                  style={{
-                    flex: isActive ? '3.8' : '0.55',
-                    transition: 'flex 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                    background: card.gradient,
-                    minWidth: 0,
-                  }}
+                  onClick={() => setExpandedIndustry(idx)}
+                  onMouseEnter={() => setExpandedIndustry(idx)}
+                  animate={{ flex: isOpen ? 2.6 : 1 }}
+                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  className="relative min-h-[220px] lg:min-h-0 rounded-2xl overflow-hidden flex flex-col justify-between p-6 md:p-8 cursor-pointer"
+                  style={{ background: card.gradient }}
                 >
-                  {/* Subtle noise/texture overlay */}
-                  <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
+                  {card.image && (
+                    <img
+                      src={card.image}
+                      alt={card.tag}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-black/35" />
+                  <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
 
-                  {/* Bottom-edge gradient for readability */}
-                  <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/60 to-transparent" />
-
-                  {/* ── EXPANDED content ── */}
-                  <div
-                    className="absolute inset-0 flex flex-col justify-between p-7"
-                    style={{
-                      opacity: isActive ? 1 : 0,
-                      transition: 'opacity 0.35s ease',
-                      pointerEvents: isActive ? 'auto' : 'none',
-                    }}
-                  >
-                    {/* Top — icon + tag */}
-                    <div className="flex items-center gap-2">
-                      <div className="w-9 h-9 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center border border-white/20">
-                        <Icon className="w-4.5 h-4.5 text-white" style={{ width: 18, height: 18 }} />
-                      </div>
-                      <span
-                        className="text-xs font-bold px-2.5 py-1 rounded-full border"
-                        style={{ color: card.accentColor, borderColor: `${card.accentColor}40`, backgroundColor: `${card.accentColor}18` }}
-                      >
-                        {card.tag}
-                      </span>
+                  <div className="relative z-10 flex items-center gap-2">
+                    <div className="w-9 h-9 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center border border-white/20 shrink-0">
+                      <Icon className="w-4.5 h-4.5 text-white" style={{ width: 18, height: 18 }} />
                     </div>
-
-                    {/* Bottom — title + desc + metric + CTA */}
-                    <div>
-                      <h3 className="text-2xl font-bold text-white leading-snug mb-3 max-w-xs">
-                        {card.title}
-                      </h3>
-                      <p className="text-sm text-white/75 leading-relaxed mb-4 max-w-sm">
-                        {card.desc}
-                      </p>
-
-                      {/* Highlight pills */}
-                      <div className="flex flex-wrap gap-1.5 mb-5">
-                        {card.highlights.map((h, i) => (
-                          <span key={i} className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-white/10 text-white/80 border border-white/15 backdrop-blur-sm">
-                            {h}
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* Metric badge + arrow */}
-                      <div className="flex items-center justify-between">
-                        <div
-                          className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold"
-                          style={{ backgroundColor: `${card.accentColor}22`, color: card.accentColor, border: `1px solid ${card.accentColor}40` }}
-                        >
-                          <TrendingUp className="w-3.5 h-3.5" />
-                          {card.metric}
-                        </div>
-                        <button
-                          onClick={openDemo}
-                          className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
-                        >
-                          <ArrowRight className="w-4 h-4 text-gray-800" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* ── COLLAPSED content — vertical label ── */}
-                  <div
-                    className="absolute inset-0 flex items-end justify-center pb-6"
-                    style={{
-                      opacity: isActive ? 0 : 1,
-                      transition: 'opacity 0.25s ease',
-                      pointerEvents: isActive ? 'none' : 'auto',
-                    }}
-                  >
-                    <div
-                      className="flex items-center gap-2 text-white/90"
-                      style={{ writingMode: 'vertical-rl', textOrientation: 'mixed', transform: 'rotate(180deg)' }}
+                    <motion.span
+                      animate={{ opacity: isOpen ? 1 : 0, width: isOpen ? 'auto' : 0 }}
+                      transition={{ duration: 0.4 }}
+                      className="text-xs font-bold px-2.5 py-1 rounded-full border whitespace-nowrap overflow-hidden"
+                      style={{ color: card.accentColor, borderColor: `${card.accentColor}40`, backgroundColor: `${card.accentColor}18` }}
                     >
-                      <Icon className="w-4 h-4 shrink-0" style={{ width: 14, height: 14 }} />
-                      <span className="text-[11px] font-bold tracking-wide whitespace-nowrap">{card.tag}</span>
-                    </div>
+                      {card.tag}
+                    </motion.span>
                   </div>
-                </div>
+
+                  <div className="relative z-10 overflow-hidden">
+                    <AnimatePresence mode="wait">
+                      {isOpen ? (
+                        <motion.div
+                          key="open"
+                          initial={{ opacity: 0, y: 12 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 8 }}
+                          transition={{ duration: 0.35, delay: 0.1 }}
+                        >
+                          <h3 className="text-xl md:text-2xl font-bold text-white leading-snug mb-3 max-w-sm">
+                            {card.title}
+                          </h3>
+                          <p className="text-sm text-white/75 leading-relaxed mb-5 max-w-sm">
+                            {card.desc}
+                          </p>
+                          <div className="flex flex-wrap gap-1.5 mb-6">
+                            {card.highlights.slice(0, 3).map((h, i) => (
+                              <span key={i} className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-white/10 text-white/80 border border-white/15 backdrop-blur-sm">
+                                {h}
+                              </span>
+                            ))}
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <div
+                              className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold"
+                              style={{ backgroundColor: `${card.accentColor}22`, color: card.accentColor, border: `1px solid ${card.accentColor}40` }}
+                            >
+                              <TrendingUp className="w-3.5 h-3.5" />
+                              {card.metric}
+                            </div>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); openDemo(); }}
+                              className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform shrink-0"
+                            >
+                              <ArrowRight className="w-4 h-4 text-gray-800" />
+                            </button>
+                          </div>
+                        </motion.div>
+                      ) : (
+                        <motion.span
+                          key="closed"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="block text-xs font-bold text-white/90 tracking-wide [writing-mode:vertical-rl] rotate-180 lg:[writing-mode:vertical-rl]"
+                        >
+                          {card.tag}
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </motion.div>
               );
             })}
           </motion.div>
 
-          {/* Dot indicators */}
-          <div className="flex justify-center gap-2 mt-6">
-            {INDUSTRY_CARDS.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setHoveredIndustry(i)}
-                className="rounded-full transition-all duration-300"
-                style={{
-                  width: hoveredIndustry === i ? 24 : 8,
-                  height: 8,
-                  backgroundColor: hoveredIndustry === i ? '#0B5CFF' : '#CBD5E1',
-                }}
-              />
-            ))}
+          {/* CTA buttons */}
+          <div className="flex flex-col sm:flex-row gap-3 justify-center mt-10">
+            <button
+              onClick={openDemo}
+              className="h-11 px-6 text-sm font-semibold bg-[#F97316] hover:bg-[#EA580C] text-white rounded-md transition-colors shadow-lg shadow-orange-900/20"
+            >
+              Explore More
+            </button>
+            <button
+              onClick={openDemo}
+              className="h-11 px-6 text-sm font-semibold bg-white/10 hover:bg-white/20 text-white border border-white/15 rounded-md transition-colors backdrop-blur-sm"
+            >
+              Talk to an Expert
+            </button>
           </div>
         </div>
       </section>
