@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion';
 import { 
-  ArrowRight, BarChart3, Box, Users, ShoppingCart, Activity, Shield, CheckCircle2, Factory, 
+  ArrowRight, ArrowUpRight, BarChart3, Box, Users, ShoppingCart, Activity, Shield, CheckCircle2, Factory, 
   Stethoscope, GraduationCap, Building2, Truck, BookOpen, Layers, Menu, X, Check, Monitor, 
   LayoutDashboard, ChevronRight, ChevronLeft, Moon, Sun, ArrowUp, Briefcase, FileText, Lock, Globe,
   MessageSquare, Settings, CreditCard, PieChart, Database, Network, LineChart, Server, Zap, RefreshCw, Smartphone,
@@ -683,6 +683,12 @@ export default function Home() {
   ];
   const [activeOffering, setActiveOffering] = useState('erp');
   const [expandedIndustry, setExpandedIndustry] = useState(0);
+  const [ctaForm, setCtaForm] = useState({ name: '', company: '', mobile: '', industry: '', teamSize: '', consent: false });
+  const [ctaSubmitted, setCtaSubmitted] = useState(false);
+  const handleCtaSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setCtaSubmitted(true);
+  };
 
   const INDUSTRY_CARDS = [
     {
@@ -785,13 +791,8 @@ export default function Home() {
         className="fixed top-0 w-full z-50 border-b border-transparent transition-colors duration-300"
       >
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <Layers className="text-white w-5 h-5" />
-            </div>
-            <span className="text-2xl font-bold text-foreground tracking-tight">
-              KonnectERP<span className="text-primary">.</span>
-            </span>
+          <div className="flex items-center cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <img src="/images/konnect-logo.png" alt="KonnectERP" className="h-10 w-auto" />
           </div>
           
           <nav className="hidden lg:flex items-center gap-8">
@@ -850,7 +851,7 @@ export default function Home() {
             className="fixed inset-0 z-[60] bg-background flex flex-col"
           >
             <div className="h-20 border-b border-border flex items-center justify-between px-4">
-              <span className="text-2xl font-bold text-foreground">KonnectERP.</span>
+              <img src="/images/konnect-logo.png" alt="KonnectERP" className="h-9 w-auto" />
               <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-foreground">
                 <X className="w-6 h-6" />
               </button>
@@ -1462,163 +1463,208 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. Benefits / Why KonnectERP Section */}
-      <section id="benefits" className="py-24 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-20">
-            <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6 tracking-tight">Why Businesses Choose KonnectERP</h2>
-            <p className="text-lg text-muted-foreground">The platform that scales with you, providing unprecedented control over your entire operation.</p>
-          </div>
+      {/* 6. Why Businesses Choose KonnectERP — Deep Industry Knowledge */}
+      <section id="benefits" className="py-24 bg-[#0A1628] relative overflow-hidden">
+        {/* Subtle background glows */}
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full bg-blue-600/6 blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full bg-orange-500/6 blur-[120px] pointer-events-none" />
 
-          <div className="space-y-24">
-            {/* Block 1 */}
-            <div className="flex flex-col lg:flex-row items-center gap-16">
-              <motion.div 
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className="lg:w-1/2"
-              >
-                <div className="relative h-80 bg-gradient-to-tr from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 rounded-2xl border border-border flex items-center justify-center p-8 overflow-hidden">
-                    <div className="absolute inset-0 grid grid-cols-6 grid-rows-6 gap-2 p-4 opacity-20">
-                        {Array.from({length: 36}).map((_, i) => <div key={i} className="bg-primary/50 rounded-sm"></div>)}
-                    </div>
-                    <div className="relative z-10 w-full max-w-sm bg-card border border-border shadow-xl rounded-xl p-6">
-                        <div className="h-4 w-1/3 bg-muted rounded mb-4"></div>
-                        <div className="flex gap-4 items-end h-32 mt-8">
-                            <motion.div initial={{height:0}} whileInView={{height:"40%"}} transition={{duration:1}} className="flex-1 bg-primary/40 rounded-t"></motion.div>
-                            <motion.div initial={{height:0}} whileInView={{height:"60%"}} transition={{duration:1, delay:0.2}} className="flex-1 bg-primary/60 rounded-t"></motion.div>
-                            <motion.div initial={{height:0}} whileInView={{height:"100%"}} transition={{duration:1, delay:0.4}} className="flex-1 bg-primary rounded-t"></motion.div>
-                        </div>
-                    </div>
-                    <motion.div 
-                        animate={{ y: [0, -10, 0] }}
-                        transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-                        className="absolute top-8 right-8 bg-card border border-border shadow-lg rounded-lg p-3 flex items-center gap-2 z-20"
-                    >
-                        <Activity className="w-4 h-4 text-green-500" />
-                        <span className="text-xs font-bold">Real-Time Data</span>
-                    </motion.div>
-                </div>
-              </motion.div>
-              <div className="lg:w-1/2">
-                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-6">
-                  <Activity className="w-6 h-6" />
-                </div>
-                <h3 className="text-3xl font-bold text-foreground mb-4">Real-Time Visibility</h3>
-                <p className="text-lg text-muted-foreground mb-6">See your entire business at a glance. Make decisions based on up-to-the-minute data across finance, sales, and operations without waiting for end-of-month reports.</p>
-                <ul className="space-y-3">
-                  {['Live dashboards for every role', 'Customizable KPI tracking', 'Instant drill-down reporting'].map((item, i) => (
-                    <li key={i} className="flex items-center gap-3 text-foreground">
-                      <CheckCircle2 className="w-5 h-5 text-primary" /> {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+        <div className="container mx-auto px-4 max-w-7xl relative z-10">
 
-            {/* Block 2 */}
-            <div className="flex flex-col lg:flex-row-reverse items-center gap-16">
-              <motion.div 
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className="lg:w-1/2"
-              >
-                <div className="relative h-80 bg-gradient-to-tr from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-2xl border border-border flex items-center justify-center overflow-hidden">
-                    <div className="flex flex-col gap-4 w-full max-w-sm z-10 px-8">
-                        <motion.div initial={{x: -50, opacity:0}} whileInView={{x:0, opacity:1}} transition={{duration:0.5}} className="bg-card p-4 rounded-xl border border-border shadow-sm flex items-center gap-4">
-                            <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center"><ShoppingCart className="w-4 h-4 text-blue-600 dark:text-blue-400" /></div>
-                            <div className="h-2 w-24 bg-muted rounded"></div>
-                        </motion.div>
-                        <div className="flex justify-center -my-2 z-20">
-                            <ArrowRight className="w-5 h-5 text-primary rotate-90" />
-                        </div>
-                        <motion.div initial={{x: -50, opacity:0}} whileInView={{x:0, opacity:1}} transition={{duration:0.5, delay:0.2}} className="bg-card p-4 rounded-xl border border-border shadow-sm flex items-center gap-4">
-                            <div className="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/50 flex items-center justify-center"><Box className="w-4 h-4 text-green-600 dark:text-green-400" /></div>
-                            <div className="h-2 w-32 bg-muted rounded"></div>
-                        </motion.div>
-                        <div className="flex justify-center -my-2 z-20">
-                            <ArrowRight className="w-5 h-5 text-primary rotate-90" />
-                        </div>
-                         <motion.div initial={{x: -50, opacity:0}} whileInView={{x:0, opacity:1}} transition={{duration:0.5, delay:0.4}} className="bg-card p-4 rounded-xl border border-border shadow-sm flex items-center gap-4">
-                            <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center"><CreditCard className="w-4 h-4 text-purple-600 dark:text-purple-400" /></div>
-                            <div className="h-2 w-20 bg-muted rounded"></div>
-                        </motion.div>
-                    </div>
-                </div>
-              </motion.div>
-              <div className="lg:w-1/2">
-                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-6">
-                  <RefreshCw className="w-6 h-6" />
-                </div>
-                <h3 className="text-3xl font-bold text-foreground mb-4">Automated Workflows</h3>
-                <p className="text-lg text-muted-foreground mb-6">Eliminate manual data entry and human error. When a sale closes, inventory is deducted, and finance is notified—automatically.</p>
-                <ul className="space-y-3">
-                  {['Cross-department automation', 'Custom approval hierarchies', 'Trigger-based alerts'].map((item, i) => (
-                    <li key={i} className="flex items-center gap-3 text-foreground">
-                      <CheckCircle2 className="w-5 h-5 text-primary" /> {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+          {/* Section header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-20"
+          >
+            <p className="text-xs font-bold tracking-[0.2em] uppercase text-slate-400 mb-5">Built for your sector</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-5">
+              Deep Industry Knowledge.<br />
+              <span className="text-[#F97316]">Not Generic Templates.</span>
+            </h2>
+            <p className="text-slate-400 max-w-sm mx-auto text-base leading-relaxed">
+              KonnectERP ships with pre-configured workflows for 20+<br />
+              Indian industry verticals. Less setup. Faster go-live.
+            </p>
+          </motion.div>
 
-            {/* Block 3 */}
-            <div className="flex flex-col lg:flex-row items-center gap-16">
-              <motion.div 
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className="lg:w-1/2"
-              >
-                 <div className="relative h-80 bg-gradient-to-tr from-green-50 to-teal-50 dark:from-green-900/20 dark:to-teal-900/20 rounded-2xl border border-border flex items-center justify-center overflow-hidden">
-                    <div className="relative flex items-center justify-center w-full h-full">
-                        <motion.div 
-                           animate={{ y: [0, -10, 0] }}
-                           transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                           className="absolute w-64 h-48 bg-card border border-border shadow-2xl rounded-xl z-20 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 p-4"
-                        >
-                            <div className="flex justify-between items-center mb-4">
-                                <div className="h-3 w-1/3 bg-muted rounded"></div>
-                                <Monitor className="w-4 h-4 text-muted-foreground" />
-                            </div>
-                            <div className="space-y-2">
-                                <div className="h-2 w-full bg-muted rounded"></div>
-                                <div className="h-2 w-5/6 bg-muted rounded"></div>
-                                <div className="h-2 w-4/6 bg-muted rounded"></div>
-                            </div>
-                        </motion.div>
-                        <motion.div 
-                           animate={{ y: [0, 10, 0] }}
-                           transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 1 }}
-                           className="absolute w-24 h-40 bg-card border border-border shadow-xl rounded-xl z-30 right-10 bottom-10 p-2"
-                        >
-                            <div className="flex justify-center mb-2">
-                                <Smartphone className="w-3 h-3 text-muted-foreground" />
-                            </div>
-                            <div className="h-10 w-full bg-primary/20 rounded mb-2"></div>
-                            <div className="h-2 w-full bg-muted rounded mb-1"></div>
-                            <div className="h-2 w-2/3 bg-muted rounded"></div>
-                        </motion.div>
-                    </div>
+          {/* Rows */}
+          <div className="space-y-10">
+
+            {/* ── Row 1: Photo LEFT, Content RIGHT ── */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="flex flex-col lg:flex-row gap-6 items-stretch"
+            >
+              {/* Photo */}
+              <div className="lg:w-[44%] relative rounded-2xl overflow-hidden min-h-[300px]">
+                <img
+                  src="/images/industry-manufacturing.jpg"
+                  alt="Discrete & Process Manufacturing"
+                  className="w-full h-full object-cover"
+                  style={{ minHeight: 300 }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-[#0A1628]/75 backdrop-blur-md border border-white/10 rounded-full px-3 py-1.5">
+                  <Activity className="w-3.5 h-3.5 text-green-400" />
+                  <span className="text-xs font-semibold text-white">Real-Time Data</span>
                 </div>
-              </motion.div>
-              <div className="lg:w-1/2">
-                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-6">
-                  <Globe className="w-6 h-6" />
-                </div>
-                <h3 className="text-3xl font-bold text-foreground mb-4">Cloud Access Anywhere</h3>
-                <p className="text-lg text-muted-foreground mb-6">Work from any device, anywhere in the world. Secure, fast, and fully responsive across desktops, tablets, and smartphones.</p>
-                <ul className="space-y-3">
-                  {['Native mobile apps available', 'Zero on-premise hardware required', 'Global low-latency CDN'].map((item, i) => (
-                    <li key={i} className="flex items-center gap-3 text-foreground">
-                      <CheckCircle2 className="w-5 h-5 text-primary" /> {item}
-                    </li>
-                  ))}
-                </ul>
               </div>
-            </div>
+
+              {/* Content card */}
+              <div className="lg:w-[56%] relative bg-[#0d1b2e] rounded-2xl border border-white/[0.06] p-8 overflow-hidden flex flex-col justify-between">
+                {/* Ghost number */}
+                <span className="absolute top-2 right-6 text-[110px] font-black leading-none text-white/[0.05] select-none pointer-events-none">01</span>
+
+                <div>
+                  {/* Icon */}
+                  <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-600 to-blue-500 flex items-center justify-center mb-5 shadow-lg shadow-blue-900/40">
+                    <TrendingUp className="w-5 h-5 text-white" />
+                  </div>
+                  <p className="text-[10px] font-bold tracking-[0.18em] uppercase text-slate-400 mb-2">Manufacturing</p>
+                  <h3 className="text-2xl font-bold text-white mb-3 leading-snug">Discrete &amp; Process Manufacturing</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed mb-6">
+                    From automotive components to food processing — KonnectERP handles multi-level BOMs, work orders, quality control, and shop-floor tracking. Built for India's factory floors.
+                  </p>
+                  <div className="grid grid-cols-2 gap-x-6 gap-y-2.5 mb-8">
+                    {['Automotive Components', 'Electrical &amp; Electronics', 'Sheet Metal Fabrication', 'Food Processing', 'Injection Molding', 'EV Manufacturers'].map((item) => (
+                      <div key={item} className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0" />
+                        <span className="text-sm text-slate-300" dangerouslySetInnerHTML={{ __html: item }} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex justify-end">
+                  <button
+                    onClick={openDemo}
+                    className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:scale-110 transition-transform shadow-xl shrink-0"
+                  >
+                    <ArrowUpRight className="w-4 h-4 text-gray-900" />
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* ── Row 2: Content LEFT, Photo RIGHT ── */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="flex flex-col lg:flex-row-reverse gap-6 items-stretch"
+            >
+              {/* Photo */}
+              <div className="lg:w-[44%] relative rounded-2xl overflow-hidden min-h-[280px]">
+                <img
+                  src="/images/industry-trading.jpg"
+                  alt="Trading & Distribution"
+                  className="w-full h-full object-cover"
+                  style={{ minHeight: 280 }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-[#0A1628]/75 backdrop-blur-md border border-white/10 rounded-full px-3 py-1.5">
+                  <Activity className="w-3.5 h-3.5 text-green-400" />
+                  <span className="text-xs font-semibold text-white">Real-Time Data</span>
+                </div>
+              </div>
+
+              {/* Content card */}
+              <div className="lg:w-[56%] relative bg-[#0d1b2e] rounded-2xl border border-white/[0.06] p-8 overflow-hidden flex flex-col justify-between">
+                {/* Ghost number */}
+                <span className="absolute top-2 right-6 text-[110px] font-black leading-none text-white/[0.05] select-none pointer-events-none">02</span>
+
+                <div>
+                  <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-600 to-blue-500 flex items-center justify-center mb-5 shadow-lg shadow-blue-900/40">
+                    <TrendingUp className="w-5 h-5 text-white" />
+                  </div>
+                  <p className="text-[10px] font-bold tracking-[0.18em] uppercase text-slate-400 mb-2">Trading</p>
+                  <h3 className="text-2xl font-bold text-white mb-3 leading-snug">Trading &amp; Distribution</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed mb-6">
+                    Multi-warehouse inventory, purchase orders, sales orders, and GST-compliant invoicing for super stockists, distributors, and importers/exporters.
+                  </p>
+                  <div className="grid grid-cols-2 gap-x-6 gap-y-2.5 mb-8">
+                    {['Consumer Electronics', 'Super Stockists', 'Wholesale Distribution', 'Domestic &amp; Exports'].map((item) => (
+                      <div key={item} className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0" />
+                        <span className="text-sm text-slate-300" dangerouslySetInnerHTML={{ __html: item }} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex justify-end">
+                  <button
+                    onClick={openDemo}
+                    className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:scale-110 transition-transform shadow-xl shrink-0"
+                  >
+                    <ArrowUpRight className="w-4 h-4 text-gray-900" />
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* ── Row 3: Photo LEFT, Content RIGHT ── */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="flex flex-col lg:flex-row gap-6 items-stretch"
+            >
+              {/* Photo */}
+              <div className="lg:w-[44%] relative rounded-2xl overflow-hidden min-h-[300px]">
+                <img
+                  src="/images/industry-jobwork.jpg"
+                  alt="Contract & Job Work"
+                  className="w-full h-full object-cover"
+                  style={{ minHeight: 300 }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-[#0A1628]/75 backdrop-blur-md border border-white/10 rounded-full px-3 py-1.5">
+                  <Activity className="w-3.5 h-3.5 text-green-400" />
+                  <span className="text-xs font-semibold text-white">Real-Time Data</span>
+                </div>
+              </div>
+
+              {/* Content card */}
+              <div className="lg:w-[56%] relative bg-[#0d1b2e] rounded-2xl border border-white/[0.06] p-8 overflow-hidden flex flex-col justify-between">
+                {/* Ghost number */}
+                <span className="absolute top-2 right-6 text-[110px] font-black leading-none text-white/[0.05] select-none pointer-events-none">03</span>
+
+                <div>
+                  <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-600 to-blue-500 flex items-center justify-center mb-5 shadow-lg shadow-blue-900/40">
+                    <TrendingUp className="w-5 h-5 text-white" />
+                  </div>
+                  <p className="text-[10px] font-bold tracking-[0.18em] uppercase text-slate-400 mb-2">Job Work</p>
+                  <h3 className="text-2xl font-bold text-white mb-3 leading-snug">Contract &amp; Job Work</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed mb-6">
+                    Track material in/out, sub-contracting, process costing, and challan management. From surface finishing to full contract manufacturing.
+                  </p>
+                  <div className="grid grid-cols-2 gap-x-6 gap-y-2.5 mb-8">
+                    {['Surface Finishing', 'Powder Coating', 'Tools &amp; Dies', 'Project-Based Manufacturing'].map((item) => (
+                      <div key={item} className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0" />
+                        <span className="text-sm text-slate-300" dangerouslySetInnerHTML={{ __html: item }} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex justify-end">
+                  <button
+                    onClick={openDemo}
+                    className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:scale-110 transition-transform shadow-xl shrink-0"
+                  >
+                    <ArrowUpRight className="w-4 h-4 text-gray-900" />
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+
           </div>
         </div>
       </section>
@@ -2004,65 +2050,89 @@ export default function Home() {
       </section>
 
       {/* 8. Customer Success Stories */}
-      <section className="py-24 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6 tracking-tight">Real Results From Real Businesses</h2>
-          </div>
+      <section className="py-24 bg-[#080E1D] relative overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-blue-700/5 blur-[120px] pointer-events-none" />
 
-          <div className="grid md:grid-cols-3 gap-8">
+        <div className="container mx-auto px-4 max-w-6xl relative z-10">
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-14"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
+              Real Result From Real{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-violet-400">
+                Business.
+              </span>
+            </h2>
+            <p className="text-slate-400 max-w-lg mx-auto text-base leading-relaxed">
+              Stop jumping between disconnected tools. KonnectERP brings every department into one unified, intelligent system.
+            </p>
+          </motion.div>
+
+          {/* Case-study cards */}
+          <div className="grid md:grid-cols-3 gap-5">
             {[
               {
-                company: "Bharti Manufacturing",
-                ind: "Manufacturing",
-                challenge: "Disconnected systems leading to stockouts.",
-                solution: "Full ERP integration across 3 facilities.",
-                result: "Reduced operational costs by 28%",
-                badge: "-28% Costs"
+                company: 'Bharti Manufacturing',
+                ind: 'Manufacturing',
+                indColor: 'text-blue-400 bg-blue-400/10 border-blue-400/20',
+                challenge: 'Disconnected systems leading to stockouts.',
+                solution: 'Full ERP integration across 3 facilities.',
+                result: '"Reduced operational costs by 28%"',
+                badge: '-28% Costs',
+                badgeColor: 'text-blue-400',
               },
               {
-                company: "Nexus Retail Chain",
-                ind: "Retail & E-commerce",
-                challenge: "High inventory shrinkage and slow reconciliation.",
-                solution: "Real-time POS and warehouse tracking.",
-                result: "Inventory accuracy improved to 99.8%",
-                badge: "99.8% Accuracy"
+                company: 'Nexus Retail Chain',
+                ind: 'Retail & E-commerce',
+                indColor: 'text-teal-400 bg-teal-400/10 border-teal-400/20',
+                challenge: 'High inventory shrinkage and slow reconciliation.',
+                solution: 'Real-time POS and warehouse tracking.',
+                result: '"Inventory accuracy improved to 99.8%"',
+                badge: '99.8% Accuracy',
+                badgeColor: 'text-teal-400',
               },
               {
-                company: "SwiftDistrib",
-                ind: "Wholesale",
-                challenge: "Manual, paper-based purchase orders.",
-                solution: "Automated procurement and vendor portal.",
-                result: "Order processing time cut by 60%",
-                badge: "60% Faster"
-              }
+                company: 'SwiftDistrib',
+                ind: 'Wholesale',
+                indColor: 'text-violet-400 bg-violet-400/10 border-violet-400/20',
+                challenge: 'Manual, paper-based purchase orders.',
+                solution: 'Automated procurement and vendor portal.',
+                result: '"Order processing time cut by 60%"',
+                badge: '60% Faster',
+                badgeColor: 'text-violet-400',
+              },
             ].map((story, i) => (
-              <motion.div 
+              <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="p-8 rounded-2xl bg-card border border-border shadow-sm flex flex-col"
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                className="flex flex-col rounded-2xl bg-[#0d1626] border border-white/[0.07] p-7 hover:border-white/[0.14] transition-colors"
               >
-                <div className="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full mb-6 self-start">
+                <div className={`inline-block self-start px-2.5 py-1 rounded-md border text-[10px] font-bold tracking-widest uppercase mb-5 ${story.indColor}`}>
                   {story.ind}
                 </div>
-                <h3 className="text-2xl font-bold text-foreground mb-4">{story.company}</h3>
-                <div className="space-y-4 mb-8 flex-1">
+                <h3 className="text-xl font-bold text-white mb-5">{story.company}</h3>
+                <div className="space-y-4 flex-1 mb-6">
                   <div>
-                    <span className="text-sm font-bold text-muted-foreground block mb-1">Challenge</span>
-                    <p className="text-foreground">{story.challenge}</p>
+                    <span className="text-[10px] font-bold tracking-widest uppercase text-slate-500 block mb-1">Challenge</span>
+                    <p className="text-slate-300 text-sm leading-relaxed">{story.challenge}</p>
                   </div>
                   <div>
-                    <span className="text-sm font-bold text-muted-foreground block mb-1">Solution</span>
-                    <p className="text-foreground">{story.solution}</p>
+                    <span className="text-[10px] font-bold tracking-widest uppercase text-slate-500 block mb-1">Solution</span>
+                    <p className="text-slate-300 text-sm leading-relaxed">{story.solution}</p>
                   </div>
                 </div>
-                <div className="pt-6 border-t border-border mt-auto">
-                    <span className="text-sm font-bold text-muted-foreground block mb-2">Result</span>
-                    <div className="text-lg font-bold text-foreground mb-2">"{story.result}"</div>
-                    <div className="text-primary font-black text-xl">{story.badge}</div>
+                <div className="pt-5 border-t border-white/[0.07] mt-auto">
+                  <span className="text-[10px] font-bold tracking-widest uppercase text-slate-500 block mb-2">Result</span>
+                  <p className="text-white font-semibold text-sm mb-2">{story.result}</p>
+                  <span className={`text-lg font-black ${story.badgeColor}`}>{story.badge}</span>
                 </div>
               </motion.div>
             ))}
@@ -2070,25 +2140,214 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 9. Statistics Section */}
-      <section className="py-20 bg-foreground">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-white/20 text-center">
-            {[
-              { value: 500, suffix: '+', label: 'Businesses Managed' },
-              { value: 50, suffix: 'k+', label: 'Daily Transactions' },
-              { value: 99.9, suffix: '%', label: 'System Uptime' },
-              { value: 15, suffix: '+', label: 'Industry Verticals' }
-            ].map((stat, i) => (
-              <div key={i} className="px-4">
-                <div className="text-4xl md:text-6xl font-black text-white mb-2 tracking-tighter">
-                  <AnimatedCounter value={stat.value} suffix={stat.suffix} />
-                </div>
-                <div className="text-gray-400 font-medium text-sm uppercase tracking-wider">{stat.label}</div>
+      {/* 9. Built Different / Globe section + Stats */}
+      <section className="bg-[#060C1A] relative overflow-hidden">
+
+        {/* ── Globe + Built Different ── */}
+        <div className="relative overflow-hidden" style={{ minHeight: 460 }}>
+
+          {/* ── Full-width wireframe globe SVG ── */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none" style={{ zIndex: 0 }}>
+            <svg
+              viewBox="0 0 1400 520"
+              className="w-full h-full"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              preserveAspectRatio="xMidYMid slice"
+            >
+              <defs>
+                <radialGradient id="globeGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#1165EF" stopOpacity="0.12"/>
+                  <stop offset="100%" stopColor="#1165EF" stopOpacity="0"/>
+                </radialGradient>
+              </defs>
+
+              {/* Ambient centre glow */}
+              <ellipse cx="700" cy="260" rx="260" ry="260" fill="url(#globeGlow)"/>
+
+              {/* Outer sphere boundary */}
+              <ellipse cx="700" cy="260" rx="245" ry="245" stroke="#1165EF" strokeOpacity="0.35" strokeWidth="0.8"/>
+
+              {/* Latitude parallels — proportional ellipses */}
+              {([-200,-152,-100,-48, 0, 48, 100, 152, 200] as number[]).map((yOff, i) => {
+                const r = 245;
+                if (Math.abs(yOff) >= r) return null;
+                const rx = Math.sqrt(r * r - yOff * yOff);
+                return (
+                  <ellipse
+                    key={`lat-${i}`}
+                    cx="700"
+                    cy={260 + yOff}
+                    rx={rx}
+                    ry={rx * 0.26}
+                    stroke="#1165EF"
+                    strokeOpacity="0.22"
+                    strokeWidth="0.65"
+                  />
+                );
+              })}
+
+              {/* Longitude meridians — narrow ellipses rotated around globe centre */}
+              {([0,18,36,54,72,90,108,126,144,162] as number[]).map((angle) => (
+                <ellipse
+                  key={`lon-${angle}`}
+                  cx="700"
+                  cy="260"
+                  rx="28"
+                  ry="245"
+                  stroke="#1165EF"
+                  strokeOpacity="0.22"
+                  strokeWidth="0.65"
+                  transform={`rotate(${angle} 700 260)`}
+                />
+              ))}
+            </svg>
+          </div>
+
+          {/* ── Content overlaid on globe ── */}
+          <div className="relative z-10 px-8 md:px-16 py-16 max-w-[1400px] mx-auto">
+
+            {/* Top headline — centred */}
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.55 }}
+              className="text-center mb-12"
+            >
+              <p className="text-[10px] font-bold tracking-[0.22em] uppercase text-slate-400 mb-4">
+                Why 5,000 Businesses Choose Konnect
+              </p>
+              <h2 className="text-4xl md:text-[52px] font-bold text-white leading-tight">
+                Built Different.<br />
+                <span className="text-[#F97316]">Proven in the Field.</span>
+              </h2>
+            </motion.div>
+
+            {/* Three-column row: feature-left | feature-right | callouts */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-6">
+
+              {/* Col 1 — features left */}
+              <div className="flex flex-col gap-8">
+                {[
+                  {
+                    icon: Server,
+                    title: 'Cloud-Native, Low TCO',
+                    desc: 'No servers to buy, no IT staff to manage. Start for a fraction of what legacy ERP costs.',
+                  },
+                  {
+                    icon: Layers,
+                    title: 'Modular by Design',
+                    desc: "Start with finance and inventory. Add CRM, HRMS, and BI when you're ready. No forced bundles.",
+                  },
+                ].map((feat, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 14 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1, duration: 0.45 }}
+                    className="flex gap-3"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/25 flex items-center justify-center shrink-0 mt-0.5">
+                      <feat.icon className="w-4 h-4 text-blue-400" />
+                    </div>
+                    <div>
+                      <p className="text-white font-semibold text-sm mb-1">{feat.title}</p>
+                      <p className="text-slate-400 text-xs leading-relaxed">{feat.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
-            ))}
+
+              {/* Col 2 — features right */}
+              <div className="flex flex-col gap-8">
+                {[
+                  {
+                    icon: Shield,
+                    title: 'Amazon-Hosted Security',
+                    desc: 'Triple-layered data security on AWS. Your business data stays private and always backed up.',
+                  },
+                  {
+                    icon: Zap,
+                    title: 'Quickest Onboarding',
+                    desc: 'Go live in weeks, not months. Pre-configured industry templates mean 80% setup is already done.',
+                  },
+                ].map((feat, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 14 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.1 + i * 0.1, duration: 0.45 }}
+                    className="flex gap-3"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/25 flex items-center justify-center shrink-0 mt-0.5">
+                      <feat.icon className="w-4 h-4 text-blue-400" />
+                    </div>
+                    <div>
+                      <p className="text-white font-semibold text-sm mb-1">{feat.title}</p>
+                      <p className="text-slate-400 text-xs leading-relaxed">{feat.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Col 3 — office & security callouts */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.15 }}
+                className="flex flex-col gap-6 lg:pl-8"
+              >
+                <div>
+                  <p className="text-[9px] font-bold tracking-[0.2em] uppercase text-slate-400 mb-1.5">
+                    Coimbatore · Pune · Chennai
+                  </p>
+                  <h3 className="text-2xl md:text-3xl font-black text-white leading-tight">
+                    5 Offices Across India
+                  </h3>
+                </div>
+                <div className="w-12 h-px bg-white/10" />
+                <div>
+                  <p className="text-[9px] font-bold tracking-[0.2em] uppercase text-slate-400 mb-1.5">
+                    Amazon AWS Hosted
+                  </p>
+                  <h3 className="text-2xl md:text-3xl font-black text-white leading-tight">
+                    Triple-layer security
+                  </h3>
+                </div>
+              </motion.div>
+
+            </div>
           </div>
         </div>
+
+        {/* ── Stats bar ── */}
+        <div className="border-t border-white/[0.07]">
+          <div className="container mx-auto px-4 max-w-6xl">
+            <div className="grid grid-cols-2 md:grid-cols-4">
+              {[
+                { value: 500, suffix: '+', label: 'Businesses Managed' },
+                { value: 50, suffix: 'k+', label: 'Daily Transactions' },
+                { value: 99.9, suffix: '%', label: 'System Uptime' },
+                { value: 15, suffix: '+', label: 'Industry Verticals' },
+              ].map((stat, i) => (
+                <div
+                  key={i}
+                  className={`py-14 px-6 text-center ${i < 3 ? 'md:border-r border-white/[0.07]' : ''} ${i === 0 || i === 2 ? 'border-r border-white/[0.07] md:border-r-0' : ''}`}
+                >
+                  <div className="text-5xl md:text-6xl font-black text-white mb-2 tracking-tighter">
+                    <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+                  </div>
+                  <div className="text-slate-400 font-semibold text-xs uppercase tracking-widest">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
       </section>
 
       {/* 10. Integrations Section */}
@@ -2327,108 +2586,310 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 12. CTA Section */}
-      <section className="py-28 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0B1F4A 0%, #1a3a7a 50%, #F97316 100%)' }}>
-        {/* Decorative glows */}
-        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[700px] h-72 rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse, rgba(249,115,22,0.18) 0%, transparent 70%)', filter: 'blur(40px)' }} />
-        <div className="absolute bottom-0 right-0 w-80 h-80 rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(11,31,74,0.6) 0%, transparent 70%)', filter: 'blur(40px)' }} />
-        <div className="container mx-auto px-4 max-w-4xl text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-orange-200 text-sm font-semibold mb-6 border border-white/15 backdrop-blur-sm">
-            <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse" />
-            Join 500+ businesses already scaling with KonnectERP
+      {/* 12. CTA / Demo Request Section */}
+      <section className="py-20 bg-[#080E1D] relative overflow-hidden">
+        <div className="absolute top-0 right-1/3 w-[500px] h-[500px] rounded-full bg-blue-700/5 blur-[140px] pointer-events-none" />
+
+        <div className="container mx-auto px-4 max-w-7xl relative z-10">
+          <div className="flex flex-col lg:flex-row gap-16 items-start">
+
+            {/* ── Left column ── */}
+            <div className="lg:w-[52%]">
+              <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-400 mb-4">
+                Why 5,000 Businesses Choose Konnect
+              </p>
+              <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-5">
+                Ready to See KonnectERP<br />
+                <span className="text-[#F97316]">Live?</span>
+              </h2>
+              <p className="text-slate-400 text-base leading-relaxed mb-10 max-w-md">
+                Book a personalised 30-minute demo with our industry specialists. We'll show you exactly how KonnectERP works for your sector — not a generic product tour.
+              </p>
+
+              {/* Step 1 */}
+              <div className="flex gap-4 mb-8">
+                <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-bold shrink-0 mt-0.5">1</div>
+                <div className="flex-1">
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-2">
+                    {[
+                      'Free 30-minute demo',
+                      'Live in weeks, not months',
+                      'No credit card required',
+                      '100% Confidential',
+                    ].map((item, i) => (
+                      <div key={i} className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                        <span className="text-slate-300 text-sm">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 2 */}
+              <div className="flex gap-4 mb-8">
+                <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-bold shrink-0 mt-0.5">2</div>
+                <div>
+                  <p className="text-white font-bold text-sm mb-2">Reach Us Directly</p>
+                  <div className="flex flex-wrap gap-x-8 gap-y-1">
+                    <div className="flex items-center gap-2 text-slate-400 text-sm">
+                      <Mail className="w-3.5 h-3.5 text-blue-400" />
+                      sales@konnectbi.com
+                    </div>
+                    <div className="flex items-center gap-2 text-slate-400 text-sm">
+                      <Phone className="w-3.5 h-3.5 text-blue-400" />
+                      +91 98431 11651
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 3 */}
+              <div className="flex gap-4">
+                <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-bold shrink-0 mt-0.5">3</div>
+                <div>
+                  <p className="text-white font-bold text-sm mb-1">Install, support, optimize</p>
+                  <p className="text-slate-400 text-sm">White-glove setup with ongoing optimization and support</p>
+                </div>
+              </div>
+            </div>
+
+            {/* ── Right column — inline form card ── */}
+            <div className="lg:w-[48%] w-full">
+              <div className="rounded-2xl border border-white/[0.08] bg-[#0d1626] p-8">
+                {ctaSubmitted ? (
+                  <div className="text-center py-10">
+                    <div className="w-16 h-16 rounded-full bg-blue-600/20 flex items-center justify-center mx-auto mb-4">
+                      <CheckCircle2 className="w-8 h-8 text-blue-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-white mb-2">You're all set!</h3>
+                    <p className="text-slate-400">We'll reach out within 24 hours to confirm your demo slot.</p>
+                  </div>
+                ) : (
+                  <form onSubmit={handleCtaSubmit} className="space-y-5">
+                    <h3 className="text-2xl font-bold text-white mb-6">Request Your Free Demo</h3>
+
+                    {/* Name + Company */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-[10px] font-bold tracking-widest uppercase text-slate-400 mb-1.5">
+                          Your Name <span className="text-orange-400">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Rajesh Kumar"
+                          value={ctaForm.name}
+                          onChange={e => setCtaForm(f => ({ ...f, name: e.target.value }))}
+                          required
+                          className="w-full h-11 px-3 rounded-lg bg-[#162035] border border-white/10 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:border-blue-500/60 transition-colors"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold tracking-widest uppercase text-slate-400 mb-1.5">
+                          Company Name <span className="text-orange-400">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Acme Manufacturing Pvt. Ltd."
+                          value={ctaForm.company}
+                          onChange={e => setCtaForm(f => ({ ...f, company: e.target.value }))}
+                          required
+                          className="w-full h-11 px-3 rounded-lg bg-[#162035] border border-white/10 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:border-blue-500/60 transition-colors"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Mobile */}
+                    <div>
+                      <label className="block text-[10px] font-bold tracking-widest uppercase text-slate-400 mb-1.5">
+                        Mobile Number <span className="text-orange-400">*</span>
+                      </label>
+                      <div className="flex">
+                        <div className="flex items-center px-3 rounded-l-lg bg-[#162035] border border-r-0 border-white/10 text-slate-300 text-sm font-medium shrink-0">
+                          +91
+                        </div>
+                        <input
+                          type="tel"
+                          placeholder="98765 43210"
+                          value={ctaForm.mobile}
+                          onChange={e => setCtaForm(f => ({ ...f, mobile: e.target.value }))}
+                          required
+                          className="flex-1 h-11 px-3 rounded-r-lg bg-[#162035] border border-white/10 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:border-blue-500/60 transition-colors"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Industry */}
+                    <div>
+                      <label className="block text-[10px] font-bold tracking-widest uppercase text-slate-400 mb-1.5">
+                        Your Industry <span className="text-orange-400">*</span>
+                      </label>
+                      <select
+                        value={ctaForm.industry}
+                        onChange={e => setCtaForm(f => ({ ...f, industry: e.target.value }))}
+                        required
+                        className="w-full h-11 px-3 rounded-lg bg-[#162035] border border-white/10 text-sm focus:outline-none focus:border-blue-500/60 transition-colors appearance-none"
+                        style={{ color: ctaForm.industry ? '#fff' : '#64748b' }}
+                      >
+                        <option value="" disabled>Select your industry</option>
+                        {['Manufacturing', 'Trading & Distribution', 'Retail', 'Construction', 'Job Work', 'Healthcare', 'Education', 'Logistics', 'Other'].map(opt => (
+                          <option key={opt} value={opt} style={{ background: '#162035', color: '#fff' }}>{opt}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Team size */}
+                    <div>
+                      <label className="block text-[10px] font-bold tracking-widest uppercase text-slate-400 mb-1.5">
+                        Team Size
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Number of employees"
+                        value={ctaForm.teamSize}
+                        onChange={e => setCtaForm(f => ({ ...f, teamSize: e.target.value }))}
+                        className="w-full h-11 px-3 rounded-lg bg-[#162035] border border-white/10 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:border-blue-500/60 transition-colors"
+                      />
+                    </div>
+
+                    {/* Submit */}
+                    <button
+                      type="submit"
+                      className="w-full h-12 rounded-lg bg-[#F97316] hover:bg-[#EA580C] text-white font-bold text-base transition-colors shadow-lg shadow-orange-900/30"
+                    >
+                      Book My Free Demo
+                    </button>
+
+                    {/* Consent */}
+                    <div className="flex gap-2.5 items-start pt-1">
+                      <input
+                        type="checkbox"
+                        id="cta-consent"
+                        checked={ctaForm.consent}
+                        onChange={e => setCtaForm(f => ({ ...f, consent: e.target.checked }))}
+                        className="mt-0.5 w-3.5 h-3.5 accent-blue-500 shrink-0"
+                      />
+                      <label htmlFor="cta-consent" className="text-slate-500 text-[11px] leading-relaxed cursor-pointer">
+                        By opting in, you agree to our{' '}
+                        <a href="#" className="text-blue-400 hover:underline">Privacy Policy</a>
+                        {' '}and Terms of Use. By providing my phone number, I agree to receive text messages from the business.
+                      </label>
+                    </div>
+                  </form>
+                )}
+              </div>
+            </div>
+
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight leading-tight">
-            Ready to Transform<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-300 via-amber-200 to-white">Your Business Operations?</span>
-          </h2>
-          <p className="text-xl text-white/70 mb-10 max-w-2xl mx-auto">Join hundreds of businesses that have scaled faster and smarter with KonnectERP.</p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <button onClick={openDemo}
-              className="h-14 px-10 text-lg font-semibold text-[#0B1F4A] bg-white hover:bg-orange-50 rounded-xl shadow-2xl transition-all hover:scale-105 hover:shadow-orange-500/25">
-              Book Free Demo
-            </button>
-            <button onClick={openDemo}
-              className="h-14 px-10 text-lg font-semibold text-white border-2 border-white/30 hover:border-white/60 rounded-xl backdrop-blur-sm transition-all hover:bg-white/10">
-              Talk to an Expert
-            </button>
-          </div>
-          <p className="mt-8 text-sm text-white/40">No credit card required · Free 14-day trial · Setup in minutes</p>
         </div>
       </section>
 
       {/* 13. Footer */}
-      <footer className="bg-foreground text-muted pt-20 pb-10">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-16">
-            <div className="col-span-2 lg:col-span-2">
-              <div className="flex items-center gap-2 mb-6">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <Layers className="text-white w-5 h-5" />
-                </div>
-                <span className="text-2xl font-bold text-white tracking-tight">KonnectERP<span className="text-primary">.</span></span>
+      <footer className="bg-[#0B1220] relative overflow-hidden">
+
+        {/* Large faint watermark */}
+        <div
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 select-none pointer-events-none whitespace-nowrap"
+          style={{
+            fontSize: 'clamp(80px, 14vw, 180px)',
+            fontWeight: 900,
+            color: 'rgba(255,255,255,0.04)',
+            letterSpacing: '-0.02em',
+            lineHeight: 1,
+            bottom: '-0.1em',
+          }}
+        >
+          Konnect ERP
+        </div>
+
+        {/* Main content */}
+        <div className="relative z-10 container mx-auto px-8 pt-14 pb-0 max-w-7xl">
+          <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-10 mb-14">
+
+            {/* Brand column */}
+            <div>
+              {/* Logo */}
+              <div className="mb-5">
+                <img src="/images/konnect-logo.png" alt="KonnectERP" className="h-12 w-auto" />
               </div>
-              <p className="text-gray-400 mb-6 max-w-xs">
+
+              <p className="text-slate-400 text-sm leading-relaxed max-w-[220px] mb-6">
                 The intelligent cloud ERP platform that helps ambitious companies scale their operations efficiently.
               </p>
-              <div className="flex gap-4">
-                {/* Social placeholders */}
-                {[1,2,3,4].map(i => (
-                  <div key={i} className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors cursor-pointer text-white">
-                    <Globe className="w-5 h-5" />
-                  </div>
-                ))}
+
+              {/* Social icons */}
+              <div className="flex gap-3">
+                {/* Facebook */}
+                <a href="#" aria-label="Facebook" className="w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.14] flex items-center justify-center transition-colors">
+                  <svg viewBox="0 0 24 24" className="w-4 h-4 fill-slate-300"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                </a>
+                {/* LinkedIn */}
+                <a href="#" aria-label="LinkedIn" className="w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.14] flex items-center justify-center transition-colors">
+                  <svg viewBox="0 0 24 24" className="w-4 h-4 fill-slate-300"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+                </a>
+                {/* Instagram */}
+                <a href="#" aria-label="Instagram" className="w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.14] flex items-center justify-center transition-colors">
+                  <svg viewBox="0 0 24 24" className="w-4 h-4 stroke-slate-300 fill-none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                </a>
+                {/* YouTube */}
+                <a href="#" aria-label="YouTube" className="w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.14] flex items-center justify-center transition-colors">
+                  <svg viewBox="0 0 24 24" className="w-4 h-4 fill-slate-300"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#0B1220"/></svg>
+                </a>
+                {/* X / Twitter */}
+                <a href="#" aria-label="X" className="w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.14] flex items-center justify-center transition-colors">
+                  <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-slate-300"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
               </div>
             </div>
-            
+
+            {/* Products */}
             <div>
-              <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-sm">Products</h4>
-              <ul className="space-y-3 text-gray-400">
-                <li><a href="#" className="hover:text-primary transition-colors">Finance</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Inventory</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Sales & CRM</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">HR & Payroll</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-sm">Solutions</h4>
-              <ul className="space-y-3 text-gray-400">
-                <li><a href="#" className="hover:text-primary transition-colors">Small Business</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Mid-Market</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Enterprise</a></li>
+              <h4 className="text-white font-bold text-xs tracking-[0.16em] uppercase mb-5">Products</h4>
+              <ul className="space-y-3">
+                {['Finance', 'Inventory', 'Sales & CRM', 'HR & Payroll'].map(item => (
+                  <li key={item}><a href="#" className="text-slate-400 text-sm hover:text-white transition-colors">{item}</a></li>
+                ))}
               </ul>
             </div>
 
+            {/* Solutions */}
             <div>
-              <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-sm">Industries</h4>
-              <ul className="space-y-3 text-gray-400">
-                <li><a href="#" className="hover:text-primary transition-colors">Manufacturing</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Retail</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Distribution</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Healthcare</a></li>
+              <h4 className="text-white font-bold text-xs tracking-[0.16em] uppercase mb-5">Solutions</h4>
+              <ul className="space-y-3">
+                {['Small Business', 'Mid-Market', 'Enterprise'].map(item => (
+                  <li key={item}><a href="#" className="text-slate-400 text-sm hover:text-white transition-colors">{item}</a></li>
+                ))}
               </ul>
             </div>
-            
+
+            {/* Industries */}
             <div>
-              <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-sm">Company</h4>
-              <ul className="space-y-3 text-gray-400">
-                <li><a href="#" className="hover:text-primary transition-colors">About Us</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Careers</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Contact</a></li>
-                <li className="pt-2 flex items-center gap-2"><MessageSquare className="w-4 h-4 text-primary" /> info@konnecterp.com</li>
-                <li className="flex items-center gap-2"><Globe className="w-4 h-4 text-primary" /> +91 98765 43210</li>
+              <h4 className="text-white font-bold text-xs tracking-[0.16em] uppercase mb-5">Industries</h4>
+              <ul className="space-y-3">
+                {['Manufacturing', 'Retail', 'Distribution', 'Healthcare'].map(item => (
+                  <li key={item}><a href="#" className="text-slate-400 text-sm hover:text-white transition-colors">{item}</a></li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Company */}
+            <div>
+              <h4 className="text-white font-bold text-xs tracking-[0.16em] uppercase mb-5">Company</h4>
+              <ul className="space-y-3">
+                {['About Us', 'Careers', 'Contact'].map(item => (
+                  <li key={item}><a href="#" className="text-slate-400 text-sm hover:text-white transition-colors">{item}</a></li>
+                ))}
               </ul>
             </div>
           </div>
-          
-          <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
-            <div>&copy; {new Date().getFullYear()} KonnectERP. All rights reserved.</div>
+
+          {/* Bottom bar */}
+          <div className="border-t border-white/[0.07] py-5 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <p className="text-slate-500 text-xs">© 2026 KonnectERP. All rights reserved.</p>
             <div className="flex gap-6">
-              <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-              <a href="#" className="hover:text-white transition-colors">Security</a>
+              {['Privacy Policy', 'Terms of Service', 'Security'].map(link => (
+                <a key={link} href="#" className="text-slate-500 text-xs hover:text-white transition-colors">{link}</a>
+              ))}
             </div>
           </div>
         </div>
