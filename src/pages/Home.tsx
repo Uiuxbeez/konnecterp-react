@@ -825,10 +825,10 @@ export default function Home() {
           </nav>
 
           <div className="hidden lg:flex items-center gap-4">
-            <button onClick={toggleDarkMode} className="p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-muted transition-colors">
+            <button onClick={toggleDarkMode} className="p-2 text-white rounded-full bg-white/10 hover:bg-white/20 border border-white/15 backdrop-blur-sm transition-colors">
               {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
-            <Button variant="ghost" className="text-foreground">Log In</Button>
+            <button className="h-9 px-4 text-sm font-semibold bg-white/10 hover:bg-white/20 text-white border border-white/15 rounded-md transition-colors backdrop-blur-sm">Log In</button>
             <Button onClick={openDemo} className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/25">
               Request Demo
             </Button>
