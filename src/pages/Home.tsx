@@ -967,16 +967,14 @@ export default function Home() {
               { icon: BarChart3, value: 150, suffix: '+', label: 'Reports & Dashboards', sub: 'REAL-TIME ANALYTICS' },
             ].map((s, i) => (
               <div key={i} className={`relative rounded-2xl p-0.5 ${isDarkMode ? 'border-[0.75px] border-white/10' : 'border border-slate-200/80 shadow-md shadow-slate-200/60'}`}>
-                {isDarkMode && (
-                  <GlowingEffect
-                    spread={40}
-                    glow={true}
-                    disabled={false}
-                    proximity={64}
-                    inactiveZone={0.01}
-                    borderWidth={2}
-                  />
-                )}
+                <GlowingEffect
+                  spread={40}
+                  glow={true}
+                  disabled={false}
+                  proximity={64}
+                  inactiveZone={0.01}
+                  borderWidth={2}
+                />
                 <div
                   className="relative rounded-[calc(1rem-2px)] p-5 h-full overflow-hidden"
                   style={isDarkMode
@@ -1060,7 +1058,7 @@ export default function Home() {
           >
             {/* Left photo card — GST Returns & Filing */}
             <div className={`relative lg:flex-[1.1] min-h-[380px] lg:min-h-0 rounded-2xl p-0.5 ${isDarkMode ? 'border-[0.75px] border-white/10' : 'border border-slate-200 shadow-lg'}`}>
-              {isDarkMode && <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />}
+              <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
               <div className={`relative rounded-[calc(1rem-2px)] overflow-hidden flex flex-col h-full ${isDarkMode ? 'bg-[#101a30]' : 'bg-slate-50'}`}>
                 <div className="relative flex-1 min-h-[180px]">
                   <img
@@ -1094,7 +1092,7 @@ export default function Home() {
                   { icon: Truck, title: 'E-Way Bill Generation', desc: 'Auto-generate and cancel E-Way Bills from within dispatch workflows. No portal switching.' },
                 ].map((f) => (
                   <div key={f.title} className={`relative rounded-2xl p-0.5 ${isDarkMode ? 'border-[0.75px] border-white/10' : 'border border-slate-200 shadow-sm'}`}>
-                    {isDarkMode && <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />}
+                    <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
                     <div className={`relative rounded-[calc(1rem-2px)] p-6 h-full ${isDarkMode ? 'bg-[#101a30]' : 'bg-white'}`}>
                       <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mb-4">
                         <f.icon className="w-5 h-5 text-white" />
@@ -1112,7 +1110,7 @@ export default function Home() {
                   { icon: Building2, title: 'Multi-Company & Branch', desc: 'Manage multiple entities, branches, and warehouses with consolidated reporting.' },
                 ].map((f) => (
                   <div key={f.title} className={`relative rounded-2xl p-0.5 ${isDarkMode ? 'border-[0.75px] border-white/10' : 'border border-slate-200 shadow-sm'}`}>
-                    {isDarkMode && <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />}
+                    <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
                     <div className={`relative rounded-[calc(1rem-2px)] p-6 h-full ${isDarkMode ? 'bg-[#101a30]' : 'bg-white'}`}>
                       <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mb-4">
                         <f.icon className="w-5 h-5 text-white" />
