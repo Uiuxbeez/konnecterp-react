@@ -1560,12 +1560,12 @@ export default function Home() {
               className="flex flex-col lg:flex-row-reverse gap-6 items-stretch"
             >
               {/* Photo */}
-              <div className="lg:w-[44%] relative rounded-2xl overflow-hidden min-h-[280px]">
+              <div className="lg:w-[44%] relative rounded-2xl overflow-hidden max-h-[320px]">
                 <img
                   src="/images/industry-trading.jpg"
                   alt="Trading & Distribution"
                   className="w-full h-full object-cover"
-                  style={{ minHeight: 280 }}
+                  style={{ maxHeight: 320 }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                 <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-[#06163C]/75 backdrop-blur-md border border-white/10 rounded-full px-3 py-1.5">
@@ -1575,7 +1575,7 @@ export default function Home() {
               </div>
 
               {/* Content card */}
-              <div className="lg:w-[56%] relative overflow-hidden flex flex-col justify-between">
+              <div className="lg:w-[56%] relative overflow-hidden px-10 flex flex-col justify-between">
                 {/* Ghost number */}
                 <span className="absolute top-2 right-6 text-[110px] font-black leading-none text-white/[0.05] select-none pointer-events-none">02</span>
 
@@ -1617,12 +1617,12 @@ export default function Home() {
               className="flex flex-col lg:flex-row gap-6 items-stretch"
             >
               {/* Photo */}
-              <div className="lg:w-[44%] relative rounded-2xl overflow-hidden min-h-[300px]">
+              <div className="lg:w-[44%] relative rounded-2xl overflow-hidden max-h-[320px]">
                 <img
                   src="/images/industry-jobwork.jpg"
                   alt="Contract & Job Work"
                   className="w-full h-full object-cover"
-                  style={{ minHeight: 300 }}
+                  style={{ maxHeight: 320 }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                 <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-[#06163C]/75 backdrop-blur-md border border-white/10 rounded-full px-3 py-1.5">
@@ -1632,7 +1632,7 @@ export default function Home() {
               </div>
 
               {/* Content card */}
-              <div className="lg:w-[56%] relative bg-[#0d1b2e] rounded-2xl border border-white/[0.06] p-8 overflow-hidden flex flex-col justify-between">
+              <div className="lg:w-[56%] relative p-10 overflow-hidden flex flex-col justify-between">
                 {/* Ghost number */}
                 <span className="absolute top-2 right-6 text-[110px] font-black leading-none text-white/[0.05] select-none pointer-events-none">03</span>
 
@@ -2151,7 +2151,7 @@ export default function Home() {
             <img
                   src="/images/global.svg"
                   alt="Globally Connected"
-                  className="w-full h-full object-cover object-position-top"
+                  className="w-full h-full object-cover object-top"
                   // style={{ minHeight: 590 }}
                 />
           </div>
