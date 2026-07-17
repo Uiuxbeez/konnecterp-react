@@ -2122,14 +2122,113 @@ export default function Home() {
         {/* ── Globe + Built Different ── */}
         <div className="relative overflow-hidden" style={{ minHeight: 460 }}>
 
-          {/* ── Full-width wireframe globe SVG ── */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none" style={{ zIndex: 0 }}>
-            <img
-                  src="/images/global.svg"
-                  alt="Globally Connected"
-                  className="w-full h-full object-cover object-top"
-                  // style={{ minHeight: 590 }}
-                />
+          {/* ── Animated globe SVG with spotlight + connecting beams ── */}
+          <div className="absolute inset-0 pointer-events-none select-none overflow-hidden" style={{ zIndex: 0 }}>
+
+            {/* Slowly rotating globe */}
+            <motion.div
+              className="absolute inset-0 flex items-center justify-center"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 90, repeat: Infinity, ease: 'linear' }}
+            >
+              <img
+                src="/images/global.svg"
+                alt=""
+                className={`w-full h-full object-cover object-top ${isDarkMode ? 'opacity-70' : 'opacity-20'}`}
+              />
+            </motion.div>
+
+            {/* Spotlight / radar sweep */}
+            <motion.div
+              className="absolute inset-0"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+              style={{
+                background:
+                  'conic-gradient(from 0deg at 50% 45%, transparent 0deg, rgba(249,115,22,0.13) 22deg, rgba(17,101,239,0.10) 44deg, transparent 66deg)',
+              }}
+            />
+
+            {/* City connection dots + beams — drawn as inline SVG so they scale perfectly */}
+            <svg
+              className="absolute inset-0 w-full h-full"
+              viewBox="0 0 1280 460"
+              preserveAspectRatio="xMidYMid slice"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {/* Connection lines (animated stroke-dashoffset) */}
+              {[
+                { x1: 320, y1: 195, x2: 640, y2: 155 },
+                { x1: 640, y1: 155, x2: 870, y2: 175 },
+                { x1: 870, y1: 175, x2: 1050, y2: 210 },
+                { x1: 320, y1: 195, x2: 530, y2: 260 },
+                { x1: 530, y1: 260, x2: 760, y2: 290 },
+                { x1: 760, y1: 290, x2: 1050, y2: 210 },
+                { x1: 640, y1: 155, x2: 760, y2: 290 },
+              ].map((ln, i) => {
+                const len = Math.hypot(ln.x2 - ln.x1, ln.y2 - ln.y1);
+                return (
+                  <motion.line
+                    key={i}
+                    x1={ln.x1} y1={ln.y1} x2={ln.x2} y2={ln.y2}
+                    stroke={isDarkMode ? 'rgba(99,179,237,0.35)' : 'rgba(17,101,239,0.20)'}
+                    strokeWidth="1"
+                    strokeDasharray={`${len}`}
+                    initial={{ strokeDashoffset: len }}
+                    animate={{ strokeDashoffset: [len, 0, -len] }}
+                    transition={{
+                      duration: 3.5,
+                      delay: i * 0.45,
+                      repeat: Infinity,
+                      repeatDelay: 1.2,
+                      ease: 'easeInOut',
+                    }}
+                  />
+                );
+              })}
+
+              {/* City dots */}
+              {[
+                { cx: 320,  cy: 195, label: 'Mumbai' },
+                { cx: 530,  cy: 260, label: 'Bangalore' },
+                { cx: 640,  cy: 155, label: 'Delhi' },
+                { cx: 760,  cy: 290, label: 'Chennai' },
+                { cx: 870,  cy: 175, label: 'Singapore' },
+                { cx: 1050, cy: 210, label: 'Dubai' },
+              ].map((dot, i) => (
+                <g key={dot.label}>
+                  {/* Outer pulse ring */}
+                  <motion.circle
+                    cx={dot.cx} cy={dot.cy} r={10}
+                    fill="none"
+                    stroke={isDarkMode ? 'rgba(249,115,22,0.5)' : 'rgba(249,115,22,0.4)'}
+                    strokeWidth="1"
+                    initial={{ scale: 0.6, opacity: 0.8 }}
+                    animate={{ scale: 2.2, opacity: 0 }}
+                    transition={{ duration: 2, delay: i * 0.35, repeat: Infinity, ease: 'easeOut' }}
+                    style={{ transformOrigin: `${dot.cx}px ${dot.cy}px` }}
+                  />
+                  {/* Inner dot */}
+                  <circle
+                    cx={dot.cx} cy={dot.cy} r={3.5}
+                    fill={isDarkMode ? '#F97316' : '#1165EF'}
+                  />
+                  {/* Label */}
+                  <text
+                    x={dot.cx} y={dot.cy - 10}
+                    textAnchor="middle"
+                    fontSize="9"
+                    fontWeight="600"
+                    fill={isDarkMode ? 'rgba(255,255,255,0.55)' : 'rgba(11,31,74,0.55)'}
+                    letterSpacing="0.04em"
+                  >
+                    {dot.label}
+                  </text>
+                </g>
+              ))}
+            </svg>
+
           </div>
 
           {/* ── Content overlaid on globe ── */}
