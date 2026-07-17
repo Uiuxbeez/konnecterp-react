@@ -783,12 +783,12 @@ export default function Home() {
     <div className={`min-h-screen bg-background font-sans overflow-x-hidden ${isDarkMode ? 'dark' : ''}`}>
       {/* 1. Sticky Header / Navbar */}
       <motion.header 
-        style={{ 
+        style={isDarkMode ? { 
           backgroundColor: headerBg,
           backdropFilter: headerBackdropFilter,
           borderBottomColor: headerBorderColor
-        }}
-        className="fixed top-0 w-full z-50 border-b border-transparent transition-colors duration-300"
+        } : undefined}
+        className={`fixed top-0 w-full z-50 border-b transition-colors duration-300 ${isDarkMode ? 'border-transparent' : 'bg-white/95 backdrop-blur-md border-slate-200/80 shadow-sm'}`}
       >
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
           <div className="flex items-center cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
@@ -797,7 +797,7 @@ export default function Home() {
           
           <nav className="hidden lg:flex items-center gap-8">
             <div className="relative group cursor-pointer py-8">
-              <span className="text-sm font-medium text-white flex items-center gap-1">
+              <span className={`text-sm font-medium flex items-center gap-1 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
                 Products <ChevronRight className="w-3 h-3 group-hover:rotate-90 transition-transform" />
               </span>
               <div className="absolute top-full left-1/2 -translate-x-1/2 w-[600px] bg-card border border-border rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 p-6 grid grid-cols-2 gap-6">
@@ -819,16 +819,16 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <a href="#solutions" className="text-sm font-medium text-white ">Solutions</a>
-            <a href="#industries" className="text-sm font-medium text-white ">Industries</a>
-            <a href="#benefits" className="text-sm font-medium text-white ">Benefits</a>
+            <a href="#solutions" className={`text-sm font-medium ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>Solutions</a>
+            <a href="#industries" className={`text-sm font-medium ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>Industries</a>
+            <a href="#benefits" className={`text-sm font-medium ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>Benefits</a>
           </nav>
 
           <div className="hidden lg:flex items-center gap-4">
-            <button onClick={toggleDarkMode} className="p-2 text-white rounded-full bg-white/10 hover:bg-white/20 border border-white/15 backdrop-blur-sm transition-colors">
+            <button onClick={toggleDarkMode} className={`p-2 rounded-full border backdrop-blur-sm transition-colors ${isDarkMode ? 'text-white bg-white/10 hover:bg-white/20 border-white/15' : 'text-[#0B1F4A] bg-slate-100 hover:bg-slate-200 border-slate-200'}`}>
               {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
-            <button className="h-9 px-4 text-sm font-semibold bg-white/10 hover:bg-white/20 text-white border border-white/15 rounded-md transition-colors backdrop-blur-sm">Log In</button>
+            <button className={`h-9 px-4 text-sm font-semibold rounded-md border transition-colors backdrop-blur-sm ${isDarkMode ? 'bg-white/10 hover:bg-white/20 text-white border-white/15' : 'bg-transparent hover:bg-slate-50 text-[#0B1F4A] border-[#0B1F4A]/25'}`}>Log In</button>
             <Button onClick={openDemo} className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/25">
               Request Demo
             </Button>
@@ -881,29 +881,30 @@ export default function Home() {
             alt=""
             className="w-full h-full object-cover"
           />
-          {/* Dark navy overlay — lighter at top, near-opaque toward the bottom */}
+          {/* Overlay — dark in dark mode, soft white in light mode */}
           <div
             className="absolute inset-0"
             style={{
-              background:
-                'linear-gradient(180deg, rgba(4,10,26,0.14) 0%, rgba(4,10,26,0.72) 30%, rgba(3,8,22,0.90) 62%, rgba(2,6,18,0.97) 100%)',
+              background: isDarkMode
+                ? 'linear-gradient(180deg, rgba(4,10,26,0.14) 0%, rgba(4,10,26,0.72) 30%, rgba(3,8,22,0.90) 62%, rgba(2,6,18,0.97) 100%)'
+                : 'linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.78) 30%, rgba(255,255,255,0.93) 65%, rgba(255,255,255,1.00) 100%)',
             }}
           />
-          {/* Particle network mesh, blended over the photo */}
-          <div className="absolute inset-0 opacity-60 mix-blend-screen">
+          {/* Particle network mesh */}
+          <div className={`absolute inset-0 mix-blend-screen ${isDarkMode ? 'opacity-60' : 'opacity-20'}`}>
             <NetworkMesh />
           </div>
           {/* Decorative vertical line accents — 5 equally spaced, left to right */}
           {[16.66, 33.33, 50, 66.66, 83.33].map((pct) => (
             <div
               key={pct}
-              className="absolute top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/15 to-transparent hidden md:block"
+              className={`absolute top-0 bottom-0 w-px bg-gradient-to-b from-transparent to-transparent hidden md:block ${isDarkMode ? 'via-white/15' : 'via-slate-400/20'}`}
               style={{ left: `${pct}%` }}
             />
           ))}
           {/* Decorative outlined square boxes */}
-          <div className="absolute top-[14%] left-[4%] w-16 h-16 rounded-xl border border-white/15 hidden md:block" />
-          <div className="absolute bottom-[8%] right-[6%] w-20 h-20 rounded-xl border border-white/10 hidden md:block" />
+          <div className={`absolute top-[14%] left-[4%] w-16 h-16 rounded-xl hidden md:block ${isDarkMode ? 'border border-white/15' : 'border border-slate-400/20'}`} />
+          <div className={`absolute bottom-[8%] right-[6%] w-20 h-20 rounded-xl hidden md:block ${isDarkMode ? 'border border-white/10' : 'border border-slate-400/15'}`} />
         </div>
 
         {/* ── Centered text block ── */}
@@ -913,40 +914,40 @@ export default function Home() {
           variants={staggerContainer}
           className="relative z-10 flex flex-col items-center text-center pt-28 md:pt-32 pb-10 px-4"
         >
-          <motion.div variants={fadeInUp} className="inline-flex items-center px-4 py-1.5 rounded-full bg-white/10 text-white/80 text-xs font-semibold mb-6 border border-white/15 backdrop-blur-sm tracking-wide">
+          <motion.div variants={fadeInUp} className={`inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold mb-6 backdrop-blur-sm tracking-wide border ${isDarkMode ? 'bg-white/10 text-white/80 border-white/15' : 'bg-orange-50 text-orange-700 border-orange-200'}`}>
             Cloud ERP for Indian Manufacturing &amp; Trading
           </motion.div>
 
-          <motion.h1 variants={fadeInUp} className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.15] mb-5 tracking-tight max-w-3xl">
+          <motion.h1 variants={fadeInUp} className={`text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.15] mb-5 tracking-tight max-w-3xl ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
             Run Every Department.<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">
               From One Dashboard.
             </span>
           </motion.h1>
 
-          <motion.p variants={fadeInUp} className="text-base md:text-lg text-slate-200/85 mb-8 max-w-2xl leading-relaxed">
+          <motion.p variants={fadeInUp} className={`text-base md:text-lg mb-8 max-w-2xl leading-relaxed ${isDarkMode ? 'text-slate-200/85' : 'text-[#0B1F4A]/65'}`}>
             KonnectERP unifies your production, sales, procurement, HR, and accounts — with GST, E-Invoicing, and Indian compliance built in from day one. No integrations to cobble together. No data silos.
           </motion.p>
 
           <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-3 justify-center">
             <button
               onClick={openDemo}
-              className="h-11 px-6 text-sm font-semibold bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-md transition-colors shadow-lg shadow-blue-900/30"
+              className="h-11 px-6 text-sm font-semibold bg-[#F97316] hover:bg-[#ea6c0a] text-white rounded-md transition-colors shadow-lg shadow-orange-500/30"
             >
               Request Free Demo
             </button>
             <button
               onClick={openVideo}
-              className="h-11 px-6 text-sm font-semibold bg-white/10 hover:bg-white/20 text-white border border-white/15 rounded-md transition-colors backdrop-blur-sm"
+              className={`h-11 px-6 text-sm font-semibold rounded-md border transition-colors backdrop-blur-sm ${isDarkMode ? 'bg-white/10 hover:bg-white/20 text-white border-white/15' : 'bg-white/70 hover:bg-white text-[#0B1F4A] border-slate-300'}`}
             >
               Explore Platform
             </button>
           </motion.div>
 
-          <motion.div variants={fadeInUp} className="mt-5 flex items-center gap-5 text-xs text-slate-300/70">
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-slate-300/60" /> No credit card required</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-slate-300/60" /> 14-day free trial</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-slate-300/60" /> Setup in minutes</span>
+          <motion.div variants={fadeInUp} className={`mt-5 flex items-center gap-5 text-xs ${isDarkMode ? 'text-slate-300/70' : 'text-slate-500'}`}>
+            <span className="flex items-center gap-1.5"><CheckCircle2 className={`w-3.5 h-3.5 ${isDarkMode ? 'text-slate-300/60' : 'text-orange-400'}`} /> No credit card required</span>
+            <span className="flex items-center gap-1.5"><CheckCircle2 className={`w-3.5 h-3.5 ${isDarkMode ? 'text-slate-300/60' : 'text-orange-400'}`} /> 14-day free trial</span>
+            <span className="flex items-center gap-1.5"><CheckCircle2 className={`w-3.5 h-3.5 ${isDarkMode ? 'text-slate-300/60' : 'text-orange-400'}`} /> Setup in minutes</span>
           </motion.div>
         </motion.div>
 
@@ -965,26 +966,31 @@ export default function Home() {
               { icon: Activity, value: 400, suffix: '+', label: 'Transactions Built-in', sub: 'ZERO-INTEGRATION NEEDED' },
               { icon: BarChart3, value: 150, suffix: '+', label: 'Reports & Dashboards', sub: 'REAL-TIME ANALYTICS' },
             ].map((s, i) => (
-              <div key={i} className="relative rounded-2xl border-[0.75px] border-white/10 p-0.5">
-                <GlowingEffect
-                  spread={40}
-                  glow={true}
-                  disabled={false}
-                  proximity={64}
-                  inactiveZone={0.01}
-                  borderWidth={2}
-                />
+              <div key={i} className={`relative rounded-2xl p-0.5 ${isDarkMode ? 'border-[0.75px] border-white/10' : 'border border-slate-200/80 shadow-md shadow-slate-200/60'}`}>
+                {isDarkMode && (
+                  <GlowingEffect
+                    spread={40}
+                    glow={true}
+                    disabled={false}
+                    proximity={64}
+                    inactiveZone={0.01}
+                    borderWidth={2}
+                  />
+                )}
                 <div
                   className="relative rounded-[calc(1rem-2px)] p-5 h-full overflow-hidden"
-                  style={{ background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(8px)' }}
+                  style={isDarkMode
+                    ? { background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(8px)' }
+                    : { background: s.accent ? '#FFF7ED' : '#FFFFFF' }
+                  }
                 >
-                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center mb-4 ${s.accent ? 'bg-[#F97316]/20 text-[#F97316]' : 'bg-white/10 text-white/70'}`}>
+                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center mb-4 ${s.accent ? 'bg-[#F97316]/20 text-[#F97316]' : isDarkMode ? 'bg-white/10 text-white/70' : 'bg-slate-100 text-slate-500'}`}>
                     <s.icon className="w-4.5 h-4.5" />
                   </div>
-                  <div className={`text-3xl font-extrabold mb-1 ${s.accent ? 'text-[#F97316]' : 'text-white'}`}>
+                  <div className={`text-3xl font-extrabold mb-1 ${s.accent ? 'text-[#F97316]' : isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
                     {s.value.toLocaleString()}{s.suffix}
                   </div>
-                  <div className="text-sm font-semibold text-white mb-1">{s.label}</div>
+                  <div className={`text-sm font-semibold mb-1 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>{s.label}</div>
                   <div className="text-[10px] font-medium text-slate-400 tracking-wide">{s.sub}</div>
                 </div>
               </div>
@@ -992,18 +998,21 @@ export default function Home() {
           </div>
         </motion.div>
 
-        {/* ── Trusted-by strip, blended into the same dark backdrop ── */}
-        <div className="relative z-10 border-t border-white/10 py-10 overflow-hidden">
-          {/* Blurred glowing circle accents */}
-          <div className="absolute -top-10 left-[6%] w-40 h-40 rounded-full bg-blue-500/20 blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 right-[10%] w-56 h-56 rounded-full bg-indigo-500/15 blur-3xl pointer-events-none" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full bg-orange-500/10 blur-3xl pointer-events-none" />
+        {/* ── Trusted-by strip ── */}
+        <div className={`relative z-10 py-10 overflow-hidden border-t ${isDarkMode ? 'border-white/10' : 'border-slate-200/60'}`}>
+          {isDarkMode && (
+            <>
+              <div className="absolute -top-10 left-[6%] w-40 h-40 rounded-full bg-blue-500/20 blur-3xl pointer-events-none" />
+              <div className="absolute bottom-0 right-[10%] w-56 h-56 rounded-full bg-indigo-500/15 blur-3xl pointer-events-none" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full bg-orange-500/10 blur-3xl pointer-events-none" />
+            </>
+          )}
           <div className="container mx-auto px-4 text-center mb-6 relative">
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Trusted by growing businesses across multiple industries</p>
+            <p className={`text-xs font-bold uppercase tracking-widest ${isDarkMode ? 'text-slate-400' : 'text-slate-400'}`}>Trusted by growing businesses across multiple industries</p>
           </div>
           <div className="container mx-auto px-4 flex flex-wrap items-center justify-center gap-x-10 gap-y-3 mb-8">
             {['Rajesh Industries', 'TechCorp', 'MegaRetail', 'BuildRight', 'LogiWave', 'GlobalManufacturing'].map((name) => (
-              <div key={name} className="flex items-center gap-2 text-sm font-semibold text-slate-400/70">
+              <div key={name} className={`flex items-center gap-2 text-sm font-semibold ${isDarkMode ? 'text-slate-400/70' : 'text-slate-500'}`}>
                 <Building2 className="w-4 h-4" />
                 {name}
               </div>
@@ -1011,8 +1020,8 @@ export default function Home() {
           </div>
           <div className="container mx-auto px-4 flex flex-wrap justify-center gap-4">
             {['ISO 27001 Certified', 'SOC 2 Type II', 'GDPR Ready'].map(badge => (
-              <div key={badge} className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/15 text-xs font-medium text-slate-300">
-                <span className="w-1.5 h-1.5 rounded-full border border-slate-300/60" /> {badge}
+              <div key={badge} className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-medium ${isDarkMode ? 'border-white/15 text-slate-300' : 'border-slate-200 text-slate-500 bg-white'}`}>
+                <span className={`w-1.5 h-1.5 rounded-full border ${isDarkMode ? 'border-slate-300/60' : 'border-slate-400'}`} /> {badge}
               </div>
             ))}
           </div>
