@@ -2134,14 +2134,12 @@ export default function Home() {
               />
             </div>
 
-            {/* Spotlight / radar sweep */}
-            <motion.div
+            {/* Spotlight — static radial glow at center */}
+            <div
               className="absolute inset-0"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
               style={{
                 background:
-                  'conic-gradient(from 0deg at 50% 45%, transparent 0deg, rgba(249,115,22,0.13) 22deg, rgba(17,101,239,0.10) 44deg, transparent 66deg)',
+                  'radial-gradient(ellipse 55% 45% at 50% 45%, rgba(249,115,22,0.10) 0%, rgba(17,101,239,0.07) 45%, transparent 70%)',
               }}
             />
 
