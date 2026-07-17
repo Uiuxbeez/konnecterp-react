@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { TextEffect } from '@/components/ui/text-effect';
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion';
 import { 
   ArrowRight, ArrowUpRight, BarChart3, Box, Users, ShoppingCart, Activity, Shield, CheckCircle2, Factory, 
@@ -426,6 +427,18 @@ function VideoModal({ open, onClose }: { open: boolean; onClose: () => void }) {
         </motion.div>
       )}
     </AnimatePresence>
+  );
+}
+
+function InViewTextEffect({ children, className }: { children: string; className?: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true, margin: '-60px' });
+  return (
+    <span ref={ref}>
+      <TextEffect as='span' per='word' preset='blur' trigger={isInView} className={className}>
+        {children}
+      </TextEffect>
+    </span>
   );
 }
 
@@ -919,9 +932,9 @@ export default function Home() {
           </motion.div>
 
           <motion.h1 variants={fadeInUp} className={`text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.15] mb-5 tracking-tight max-w-3xl ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
-            Run Every Department.<br />
+            <InViewTextEffect>Run Every Department.</InViewTextEffect><br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">
-              From One Dashboard.
+              <InViewTextEffect>From One Dashboard.</InViewTextEffect>
             </span>
           </motion.h1>
 
@@ -1041,8 +1054,8 @@ export default function Home() {
           >
             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">India Compliance, Built In</p>
             <h2 className={`text-3xl md:text-5xl font-bold mb-6 tracking-tight ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
-              GST, E-Invoice, Payroll.<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">All Automated.</span>
+              <InViewTextEffect>GST, E-Invoice, Payroll.</InViewTextEffect><br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]"><InViewTextEffect>All Automated.</InViewTextEffect></span>
             </h2>
             <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
               Stop switching between portals. KonnectERP handles every Indian compliance requirement from within your normal workflows — no plugins, no third-party subscriptions, no re-keying.
@@ -1316,9 +1329,9 @@ export default function Home() {
               <Building2 className="w-3.5 h-3.5" /> Industry Solutions
             </div>
             <h2 className={`text-4xl md:text-5xl font-bold tracking-tight mb-4 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
-              Businesses achieve more<br />
+              <InViewTextEffect>Businesses achieve more</InViewTextEffect><br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">
-                with KonnectERP
+                <InViewTextEffect>with KonnectERP</InViewTextEffect>
               </span>
             </h2>
             <p className={`text-lg max-w-lg mx-auto ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
@@ -1463,8 +1476,8 @@ export default function Home() {
           >
             <p className="text-xs font-bold tracking-[0.2em] uppercase text-slate-400 mb-5">Built for your sector</p>
             <h2 className={`text-4xl md:text-5xl font-bold leading-tight mb-5 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
-              Deep Industry Knowledge.<br />
-              <span className="text-[#F97316]">Not Generic Templates.</span>
+              <InViewTextEffect>Deep Industry Knowledge.</InViewTextEffect><br />
+              <span className="text-[#F97316]"><InViewTextEffect>Not Generic Templates.</InViewTextEffect></span>
             </h2>
             <p className={`max-w-lg mx-auto text-base leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
               KonnectERP ships with pre-configured workflows for 20+<br />
@@ -1911,8 +1924,8 @@ export default function Home() {
                 <Zap className="w-3 h-3" /> Powered by KonnectERP
               </div>
               <h2 className="text-4xl md:text-5xl font-bold text-white leading-[1.15] mb-5 tracking-tight">
-                Rock solid.<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">Always on.</span>
+                <InViewTextEffect>Rock solid.</InViewTextEffect><br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300"><InViewTextEffect>Always on.</InViewTextEffect></span>
               </h2>
               <p className="text-lg text-gray-400 leading-relaxed mb-8 max-w-md">
                 KonnectERP runs your entire business without downtime, lag, or data loss — giving you the confidence to focus on growth, not firefighting.
@@ -2040,9 +2053,9 @@ export default function Home() {
             className="text-center mb-14"
           >
             <h2 className={`text-4xl md:text-5xl font-bold leading-tight mb-4 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
-              Real Result From Real{' '}
+              <InViewTextEffect>Real Result From Real</InViewTextEffect>{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-violet-400">
-                Business.
+                <InViewTextEffect>Business.</InViewTextEffect>
               </span>
             </h2>
             <p className={`max-w-lg mx-auto text-base leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
@@ -2240,8 +2253,8 @@ export default function Home() {
                 Why 5,000 Businesses Choose Konnect
               </p>
               <h2 className={`text-4xl md:text-[52px] font-bold leading-tight ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
-                Built Different.<br />
-                <span className="text-[#F97316]">Proven in the Field.</span>
+                <InViewTextEffect>Built Different.</InViewTextEffect><br />
+                <span className="text-[#F97316]"><InViewTextEffect>Proven in the Field.</InViewTextEffect></span>
               </h2>
             </motion.div>
 
@@ -2576,8 +2589,8 @@ export default function Home() {
                 Why 5,000 Businesses Choose Konnect
               </p>
               <h2 className={`text-4xl md:text-5xl font-bold leading-tight mb-5 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
-                Ready to See KonnectERP<br />
-                <span className="text-[#F97316]">Live?</span>
+                <InViewTextEffect>Ready to See KonnectERP</InViewTextEffect><br />
+                <span className="text-[#F97316]"><InViewTextEffect>Live?</InViewTextEffect></span>
               </h2>
               <p className={`text-base leading-relaxed mb-10 max-w-md ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
                 Book a personalised 30-minute demo with our industry specialists. We'll show you exactly how KonnectERP works for your sector — not a generic product tour.
