@@ -430,12 +430,31 @@ function VideoModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   );
 }
 
+const smoothTitleVariants = {
+  container: {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.12, delayChildren: 0 },
+    },
+  },
+  item: {
+    hidden: { opacity: 0, filter: 'blur(10px)', y: 8 },
+    visible: {
+      opacity: 1,
+      filter: 'blur(0px)',
+      y: 0,
+      transition: { duration: 0.65, ease: [0.25, 0.1, 0.25, 1] },
+    },
+  },
+};
+
 function InViewTextEffect({ children, className }: { children: string; className?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-60px' });
   return (
     <span ref={ref}>
-      <TextEffect as='span' per='word' preset='blur' trigger={isInView} className={className}>
+      <TextEffect as='span' per='word' variants={smoothTitleVariants} trigger={isInView} className={className}>
         {children}
       </TextEffect>
     </span>
