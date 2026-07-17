@@ -1029,7 +1029,7 @@ export default function Home() {
       </section>
 
       {/* 4. India Compliance Section */}
-      <section id="products" className="py-24 bg-[#0B1220] relative overflow-hidden">
+      <section id="products" className={`py-24 relative overflow-hidden ${isDarkMode ? 'bg-[#0B1220]' : 'bg-white'}`}>
         <div className="absolute top-0 left-1/3 w-96 h-96 rounded-full bg-blue-600/10 blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 right-1/4 w-72 h-72 rounded-full bg-orange-500/10 blur-3xl pointer-events-none" />
 
@@ -1042,11 +1042,11 @@ export default function Home() {
             className="text-center max-w-2xl mx-auto mb-14"
           >
             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">India Compliance, Built In</p>
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight">
+            <h2 className={`text-3xl md:text-5xl font-bold mb-6 tracking-tight ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
               GST, E-Invoice, Payroll.<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">All Automated.</span>
             </h2>
-            <p className="text-lg text-slate-400">
+            <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
               Stop switching between portals. KonnectERP handles every Indian compliance requirement from within your normal workflows — no plugins, no third-party subscriptions, no re-keying.
             </p>
           </motion.div>
@@ -1059,23 +1059,16 @@ export default function Home() {
             className="flex flex-col lg:flex-row gap-4"
           >
             {/* Left photo card — GST Returns & Filing */}
-            <div className="relative lg:flex-[1.1] min-h-[380px] lg:min-h-0 rounded-2xl border-[0.75px] border-white/10 p-0.5">
-              <GlowingEffect
-                spread={40}
-                glow={true}
-                disabled={false}
-                proximity={64}
-                inactiveZone={0.01}
-                borderWidth={2}
-              />
-              <div className="relative rounded-[calc(1rem-2px)] overflow-hidden bg-[#101a30] flex flex-col h-full">
+            <div className={`relative lg:flex-[1.1] min-h-[380px] lg:min-h-0 rounded-2xl p-0.5 ${isDarkMode ? 'border-[0.75px] border-white/10' : 'border border-slate-200 shadow-lg'}`}>
+              {isDarkMode && <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />}
+              <div className={`relative rounded-[calc(1rem-2px)] overflow-hidden flex flex-col h-full ${isDarkMode ? 'bg-[#101a30]' : 'bg-slate-50'}`}>
                 <div className="relative flex-1 min-h-[180px]">
                   <img
                     src="/images/gst-compliance-person.jpg"
                     alt="GST Returns & Filing"
                     className="absolute inset-0 w-full h-full object-cover"
                   />
-                  <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#101a30] to-transparent" />
+                  <div className={`absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t to-transparent ${isDarkMode ? 'from-[#101a30]' : 'from-slate-50'}`} />
                   <button
                     onClick={openDemo}
                     className="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#F97316] flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
@@ -1083,12 +1076,12 @@ export default function Home() {
                     <ArrowRight className="w-4 h-4 text-white" />
                   </button>
                   <div className="absolute -bottom-6 left-6 w-12 h-12 rounded-xl bg-white shadow-lg flex items-center justify-center">
-                    <BarChart3 className="w-5 h-5 text-[#0B1220]" />
+                    <BarChart3 className="w-5 h-5 text-[#0B1F4A]" />
                   </div>
                 </div>
                 <div className="p-6 pt-9">
-                  <h3 className="text-base font-bold text-white mb-2">GST Returns & Filing</h3>
-                  <p className="text-sm text-slate-400 leading-relaxed">Auto-populated GSTR-1, GSTR-3B, and reconciliation reports. No manual data entry.</p>
+                  <h3 className={`text-base font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>GST Returns & Filing</h3>
+                  <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>Auto-populated GSTR-1, GSTR-3B, and reconciliation reports. No manual data entry.</p>
                 </div>
               </div>
             </div>
@@ -1100,21 +1093,14 @@ export default function Home() {
                   { icon: FileText, title: 'E-Invoicing (IRP)', desc: 'Direct integration with the Invoice Registration Portal. IRN and QR code generation in seconds.' },
                   { icon: Truck, title: 'E-Way Bill Generation', desc: 'Auto-generate and cancel E-Way Bills from within dispatch workflows. No portal switching.' },
                 ].map((f) => (
-                  <div key={f.title} className="relative rounded-2xl border-[0.75px] border-white/10 p-0.5">
-                    <GlowingEffect
-                      spread={40}
-                      glow={true}
-                      disabled={false}
-                      proximity={64}
-                      inactiveZone={0.01}
-                      borderWidth={2}
-                    />
-                    <div className="relative rounded-[calc(1rem-2px)] bg-[#101a30] p-6 h-full">
+                  <div key={f.title} className={`relative rounded-2xl p-0.5 ${isDarkMode ? 'border-[0.75px] border-white/10' : 'border border-slate-200 shadow-sm'}`}>
+                    {isDarkMode && <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />}
+                    <div className={`relative rounded-[calc(1rem-2px)] p-6 h-full ${isDarkMode ? 'bg-[#101a30]' : 'bg-white'}`}>
                       <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mb-4">
                         <f.icon className="w-5 h-5 text-white" />
                       </div>
-                      <h3 className="text-base font-bold text-white mb-2">{f.title}</h3>
-                      <p className="text-sm text-slate-400 leading-relaxed">{f.desc}</p>
+                      <h3 className={`text-base font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>{f.title}</h3>
+                      <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>{f.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -1125,21 +1111,14 @@ export default function Home() {
                   { icon: Briefcase, title: 'PF, ESI & Payroll', desc: 'India-compliant salary processing with PF, ESI, PT deductions and Form 16 generation.' },
                   { icon: Building2, title: 'Multi-Company & Branch', desc: 'Manage multiple entities, branches, and warehouses with consolidated reporting.' },
                 ].map((f) => (
-                  <div key={f.title} className="relative rounded-2xl border-[0.75px] border-white/10 p-0.5">
-                    <GlowingEffect
-                      spread={40}
-                      glow={true}
-                      disabled={false}
-                      proximity={64}
-                      inactiveZone={0.01}
-                      borderWidth={2}
-                    />
-                    <div className="relative rounded-[calc(1rem-2px)] bg-[#101a30] p-6 h-full">
+                  <div key={f.title} className={`relative rounded-2xl p-0.5 ${isDarkMode ? 'border-[0.75px] border-white/10' : 'border border-slate-200 shadow-sm'}`}>
+                    {isDarkMode && <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />}
+                    <div className={`relative rounded-[calc(1rem-2px)] p-6 h-full ${isDarkMode ? 'bg-[#101a30]' : 'bg-white'}`}>
                       <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mb-4">
                         <f.icon className="w-5 h-5 text-white" />
                       </div>
-                      <h3 className="text-base font-bold text-white mb-2">{f.title}</h3>
-                      <p className="text-sm text-slate-400 leading-relaxed">{f.desc}</p>
+                      <h3 className={`text-base font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>{f.title}</h3>
+                      <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>{f.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -1323,13 +1302,11 @@ export default function Home() {
       </section>
 
       {/* 5b. Industry Solutions — feature + grid layout */}
-      <section className="py-24 bg-[#0B1220] relative overflow-hidden">
-        {/* Decorative blurred glows */}
+      <section className={`py-24 relative overflow-hidden ${isDarkMode ? 'bg-[#0B1220]' : 'bg-slate-50'}`}>
         <div className="absolute top-0 left-1/4 w-72 h-72 rounded-full bg-blue-600/10 blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full bg-orange-500/10 blur-3xl pointer-events-none" />
 
         <div className="container mx-auto px-4 max-w-8xl relative z-10">
-          {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1337,16 +1314,16 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white/80 text-xs font-bold uppercase tracking-widest mb-5 border border-white/15">
+            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-5 border ${isDarkMode ? 'bg-white/10 text-white/80 border-white/15' : 'bg-orange-50 text-orange-700 border-orange-200'}`}>
               <Building2 className="w-3.5 h-3.5" /> Industry Solutions
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">
+            <h2 className={`text-4xl md:text-5xl font-bold tracking-tight mb-4 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
               Businesses achieve more<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">
                 with KonnectERP
               </span>
             </h2>
-            <p className="text-lg text-slate-400 max-w-lg mx-auto">
+            <p className={`text-lg max-w-lg mx-auto ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
               Purpose-built workflows for the industries that power India's economy.
             </p>
           </motion.div>
@@ -1464,7 +1441,7 @@ export default function Home() {
             </button>
             <button
               onClick={openDemo}
-              className="h-11 px-6 text-sm font-semibold bg-white/10 hover:bg-white/20 text-white border border-white/15 rounded-md transition-colors backdrop-blur-sm"
+              className={`h-11 px-6 text-sm font-semibold rounded-md border transition-colors backdrop-blur-sm ${isDarkMode ? 'bg-white/10 hover:bg-white/20 text-white border-white/15' : 'bg-white hover:bg-slate-50 text-[#0B1F4A] border-slate-300'}`}
             >
               Talk to an Expert
             </button>
@@ -1473,14 +1450,12 @@ export default function Home() {
       </section>
 
       {/* 6. Why Businesses Choose KonnectERP — Deep Industry Knowledge */}
-      <section id="benefits" className="py-24 bg-[#06163C] relative overflow-hidden">
-        {/* Subtle background glows */}
+      <section id="benefits" className={`py-24 relative overflow-hidden ${isDarkMode ? 'bg-[#06163C]' : 'bg-white'}`}>
         <div className="absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full bg-blue-600/6 blur-[120px] pointer-events-none" />
         <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full bg-orange-500/6 blur-[120px] pointer-events-none" />
 
         <div className="container mx-auto px-4 max-w-8xl relative z-10">
 
-          {/* Section header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1489,11 +1464,11 @@ export default function Home() {
             className="text-center mb-20"
           >
             <p className="text-xs font-bold tracking-[0.2em] uppercase text-slate-400 mb-5">Built for your sector</p>
-            <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-5">
+            <h2 className={`text-4xl md:text-5xl font-bold leading-tight mb-5 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
               Deep Industry Knowledge.<br />
               <span className="text-[#F97316]">Not Generic Templates.</span>
             </h2>
-            <p className="text-slate-400 max-w-lg mx-auto text-base leading-relaxed">
+            <p className={`max-w-lg mx-auto text-base leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
               KonnectERP ships with pre-configured workflows for 20+<br />
               Indian industry verticals. Less setup. Faster go-live.
             </p>
@@ -1519,32 +1494,30 @@ export default function Home() {
                   style={{ maxHeight: 320 }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-                <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-[#06163C]/75 backdrop-blur-md border border-white/10 rounded-full px-3 py-1.5">
+                <div className={`absolute top-4 right-4 flex items-center gap-1.5 backdrop-blur-md border border-white/10 rounded-full px-3 py-1.5 ${isDarkMode ? 'bg-[#06163C]/75' : 'bg-white/80'}`}>
                   <Activity className="w-3.5 h-3.5 text-green-400" />
-                  <span className="text-xs font-semibold text-white">Real-Time Data</span>
+                  <span className={`text-xs font-semibold ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>Real-Time Data</span>
                 </div>
               </div>
 
               {/* Content card */}
               <div className="lg:w-[56%] relative px-10 overflow-hidden flex flex-col justify-between">
-                {/* Ghost number */}
-                <span className="absolute top-2 right-6 text-[110px] font-black leading-none text-white/[0.05] select-none pointer-events-none">01</span>
+                <span className={`absolute top-2 right-6 text-[110px] font-black leading-none select-none pointer-events-none ${isDarkMode ? 'text-white/[0.05]' : 'text-slate-900/[0.04]'}`}>01</span>
 
                 <div>
-                  {/* Icon */}
                   <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-600 to-blue-500 flex items-center justify-center mb-5 shadow-lg shadow-blue-900/40">
                     <TrendingUp className="w-5 h-5 text-white" />
                   </div>
                   <p className="text-[10px] font-bold tracking-[0.18em] uppercase text-slate-400 mb-2">Manufacturing</p>
-                  <h3 className="text-2xl font-bold text-white mb-3 leading-snug">Discrete &amp; Process Manufacturing</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed mb-6">
+                  <h3 className={`text-2xl font-bold mb-3 leading-snug ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>Discrete &amp; Process Manufacturing</h3>
+                  <p className={`text-sm leading-relaxed mb-6 ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
                     From automotive components to food processing — KonnectERP handles multi-level BOMs, work orders, quality control, and shop-floor tracking. Built for India's factory floors.
                   </p>
                   <div className="grid grid-cols-2 gap-x-6 gap-y-2.5 mb-8">
                     {['Automotive Components', 'Electrical &amp; Electronics', 'Sheet Metal Fabrication', 'Food Processing', 'Injection Molding', 'EV Manufacturers'].map((item) => (
                       <div key={item} className="flex items-center gap-2">
                         <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0" />
-                        <span className="text-sm text-slate-300" dangerouslySetInnerHTML={{ __html: item }} />
+                        <span className={`text-sm ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`} dangerouslySetInnerHTML={{ __html: item }} />
                       </div>
                     ))}
                   </div>
@@ -1577,31 +1550,30 @@ export default function Home() {
                   style={{ maxHeight: 320 }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-                <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-[#06163C]/75 backdrop-blur-md border border-white/10 rounded-full px-3 py-1.5">
+                <div className={`absolute top-4 right-4 flex items-center gap-1.5 backdrop-blur-md border border-white/10 rounded-full px-3 py-1.5 ${isDarkMode ? 'bg-[#06163C]/75' : 'bg-white/80'}`}>
                   <Activity className="w-3.5 h-3.5 text-green-400" />
-                  <span className="text-xs font-semibold text-white">Real-Time Data</span>
+                  <span className={`text-xs font-semibold ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>Real-Time Data</span>
                 </div>
               </div>
 
               {/* Content card */}
               <div className="lg:w-[56%] relative overflow-hidden px-10 flex flex-col justify-between">
-                {/* Ghost number */}
-                <span className="absolute top-2 right-6 text-[110px] font-black leading-none text-white/[0.05] select-none pointer-events-none">02</span>
+                <span className={`absolute top-2 right-6 text-[110px] font-black leading-none select-none pointer-events-none ${isDarkMode ? 'text-white/[0.05]' : 'text-slate-900/[0.04]'}`}>02</span>
 
                 <div>
                   <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-600 to-blue-500 flex items-center justify-center mb-5 shadow-lg shadow-blue-900/40">
                     <TrendingUp className="w-5 h-5 text-white" />
                   </div>
                   <p className="text-[10px] font-bold tracking-[0.18em] uppercase text-slate-400 mb-2">Trading</p>
-                  <h3 className="text-2xl font-bold text-white mb-3 leading-snug">Trading &amp; Distribution</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed mb-6">
+                  <h3 className={`text-2xl font-bold mb-3 leading-snug ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>Trading &amp; Distribution</h3>
+                  <p className={`text-sm leading-relaxed mb-6 ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
                     Multi-warehouse inventory, purchase orders, sales orders, and GST-compliant invoicing for super stockists, distributors, and importers/exporters.
                   </p>
                   <div className="grid grid-cols-2 gap-x-6 gap-y-2.5 mb-8">
                     {['Consumer Electronics', 'Super Stockists', 'Wholesale Distribution', 'Domestic &amp; Exports'].map((item) => (
                       <div key={item} className="flex items-center gap-2">
                         <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0" />
-                        <span className="text-sm text-slate-300" dangerouslySetInnerHTML={{ __html: item }} />
+                        <span className={`text-sm ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`} dangerouslySetInnerHTML={{ __html: item }} />
                       </div>
                     ))}
                   </div>
@@ -1634,31 +1606,30 @@ export default function Home() {
                   style={{ maxHeight: 320 }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-                <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-[#06163C]/75 backdrop-blur-md border border-white/10 rounded-full px-3 py-1.5">
+                <div className={`absolute top-4 right-4 flex items-center gap-1.5 backdrop-blur-md border border-white/10 rounded-full px-3 py-1.5 ${isDarkMode ? 'bg-[#06163C]/75' : 'bg-white/80'}`}>
                   <Activity className="w-3.5 h-3.5 text-green-400" />
-                  <span className="text-xs font-semibold text-white">Real-Time Data</span>
+                  <span className={`text-xs font-semibold ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>Real-Time Data</span>
                 </div>
               </div>
 
               {/* Content card */}
               <div className="lg:w-[56%] relative p-10 overflow-hidden flex flex-col justify-between">
-                {/* Ghost number */}
-                <span className="absolute top-2 right-6 text-[110px] font-black leading-none text-white/[0.05] select-none pointer-events-none">03</span>
+                <span className={`absolute top-2 right-6 text-[110px] font-black leading-none select-none pointer-events-none ${isDarkMode ? 'text-white/[0.05]' : 'text-slate-900/[0.04]'}`}>03</span>
 
                 <div>
                   <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-600 to-blue-500 flex items-center justify-center mb-5 shadow-lg shadow-blue-900/40">
                     <TrendingUp className="w-5 h-5 text-white" />
                   </div>
                   <p className="text-[10px] font-bold tracking-[0.18em] uppercase text-slate-400 mb-2">Job Work</p>
-                  <h3 className="text-2xl font-bold text-white mb-3 leading-snug">Contract &amp; Job Work</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed mb-6">
+                  <h3 className={`text-2xl font-bold mb-3 leading-snug ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>Contract &amp; Job Work</h3>
+                  <p className={`text-sm leading-relaxed mb-6 ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
                     Track material in/out, sub-contracting, process costing, and challan management. From surface finishing to full contract manufacturing.
                   </p>
                   <div className="grid grid-cols-2 gap-x-6 gap-y-2.5 mb-8">
                     {['Surface Finishing', 'Powder Coating', 'Tools &amp; Dies', 'Project-Based Manufacturing'].map((item) => (
                       <div key={item} className="flex items-center gap-2">
                         <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0" />
-                        <span className="text-sm text-slate-300" dangerouslySetInnerHTML={{ __html: item }} />
+                        <span className={`text-sm ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`} dangerouslySetInnerHTML={{ __html: item }} />
                       </div>
                     ))}
                   </div>
@@ -2059,11 +2030,10 @@ export default function Home() {
       </section>
 
       {/* 8. Customer Success Stories */}
-      <section className="py-24 bg-[#080E1D] relative overflow-hidden">
+      <section className={`py-24 relative overflow-hidden ${isDarkMode ? 'bg-[#080E1D]' : 'bg-slate-50'}`}>
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-blue-700/5 blur-[120px] pointer-events-none" />
 
         <div className="container mx-auto px-4 max-w-8xl relative z-10">
-          {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -2071,49 +2041,48 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="text-center mb-14"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
+            <h2 className={`text-4xl md:text-5xl font-bold leading-tight mb-4 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
               Real Result From Real{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-violet-400">
                 Business.
               </span>
             </h2>
-            <p className="text-slate-400 max-w-lg mx-auto text-base leading-relaxed">
+            <p className={`max-w-lg mx-auto text-base leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
               Stop jumping between disconnected tools. KonnectERP brings every department into one unified, intelligent system.
             </p>
           </motion.div>
 
-          {/* Case-study cards */}
           <div className="grid md:grid-cols-3 gap-5">
             {[
               {
                 company: 'Bharti Manufacturing',
                 ind: 'Manufacturing',
-                indColor: 'text-blue-400 bg-blue-400/10 border-blue-400/20',
+                indColor: isDarkMode ? 'text-blue-400 bg-blue-400/10 border-blue-400/20' : 'text-blue-600 bg-blue-50 border-blue-200',
                 challenge: 'Disconnected systems leading to stockouts.',
                 solution: 'Full ERP integration across 3 facilities.',
                 result: '"Reduced operational costs by 28%"',
                 badge: '-28% Costs',
-                badgeColor: 'text-blue-400',
+                badgeColor: isDarkMode ? 'text-blue-400' : 'text-blue-600',
               },
               {
                 company: 'Nexus Retail Chain',
                 ind: 'Retail & E-commerce',
-                indColor: 'text-teal-400 bg-teal-400/10 border-teal-400/20',
+                indColor: isDarkMode ? 'text-teal-400 bg-teal-400/10 border-teal-400/20' : 'text-teal-600 bg-teal-50 border-teal-200',
                 challenge: 'High inventory shrinkage and slow reconciliation.',
                 solution: 'Real-time POS and warehouse tracking.',
                 result: '"Inventory accuracy improved to 99.8%"',
                 badge: '99.8% Accuracy',
-                badgeColor: 'text-teal-400',
+                badgeColor: isDarkMode ? 'text-teal-400' : 'text-teal-600',
               },
               {
                 company: 'SwiftDistrib',
                 ind: 'Wholesale',
-                indColor: 'text-violet-400 bg-violet-400/10 border-violet-400/20',
+                indColor: isDarkMode ? 'text-violet-400 bg-violet-400/10 border-violet-400/20' : 'text-violet-600 bg-violet-50 border-violet-200',
                 challenge: 'Manual, paper-based purchase orders.',
                 solution: 'Automated procurement and vendor portal.',
                 result: '"Order processing time cut by 60%"',
                 badge: '60% Faster',
-                badgeColor: 'text-violet-400',
+                badgeColor: isDarkMode ? 'text-violet-400' : 'text-violet-600',
               },
             ].map((story, i) => (
               <motion.div
@@ -2122,25 +2091,25 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
-                className="flex flex-col rounded-2xl bg-[#0d1626] border border-white/[0.07] p-7 hover:border-white/[0.14] transition-colors"
+                className={`flex flex-col rounded-2xl p-7 transition-colors ${isDarkMode ? 'bg-[#0d1626] border border-white/[0.07] hover:border-white/[0.14]' : 'bg-white border border-slate-200 hover:border-slate-300 shadow-sm'}`}
               >
                 <div className={`inline-block self-start px-2.5 py-1 rounded-md border text-[10px] font-bold tracking-widest uppercase mb-5 ${story.indColor}`}>
                   {story.ind}
                 </div>
-                <h3 className="text-xl font-bold text-white mb-5">{story.company}</h3>
+                <h3 className={`text-xl font-bold mb-5 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>{story.company}</h3>
                 <div className="space-y-4 flex-1 mb-6">
                   <div>
                     <span className="text-[10px] font-bold tracking-widest uppercase text-slate-500 block mb-1">Challenge</span>
-                    <p className="text-slate-300 text-sm leading-relaxed">{story.challenge}</p>
+                    <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>{story.challenge}</p>
                   </div>
                   <div>
                     <span className="text-[10px] font-bold tracking-widest uppercase text-slate-500 block mb-1">Solution</span>
-                    <p className="text-slate-300 text-sm leading-relaxed">{story.solution}</p>
+                    <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>{story.solution}</p>
                   </div>
                 </div>
-                <div className="pt-5 border-t border-white/[0.07] mt-auto">
+                <div className={`pt-5 mt-auto border-t ${isDarkMode ? 'border-white/[0.07]' : 'border-slate-100'}`}>
                   <span className="text-[10px] font-bold tracking-widest uppercase text-slate-500 block mb-2">Result</span>
-                  <p className="text-white font-semibold text-sm mb-2">{story.result}</p>
+                  <p className={`font-semibold text-sm mb-2 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>{story.result}</p>
                   <span className={`text-lg font-black ${story.badgeColor}`}>{story.badge}</span>
                 </div>
               </motion.div>
@@ -2150,7 +2119,7 @@ export default function Home() {
       </section>
 
       {/* 9. Built Different / Globe section + Stats */}
-      <section className="bg-[#060C1A] relative overflow-hidden">
+      <section className={`relative overflow-hidden ${isDarkMode ? 'bg-[#060C1A]' : 'bg-white'}`}>
 
         {/* ── Globe + Built Different ── */}
         <div className="relative overflow-hidden" style={{ minHeight: 460 }}>
@@ -2179,7 +2148,7 @@ export default function Home() {
               <p className="text-[10px] font-bold tracking-[0.22em] uppercase text-slate-400 mb-4">
                 Why 5,000 Businesses Choose Konnect
               </p>
-              <h2 className="text-4xl md:text-[52px] font-bold text-white leading-tight">
+              <h2 className={`text-4xl md:text-[52px] font-bold leading-tight ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
                 Built Different.<br />
                 <span className="text-[#F97316]">Proven in the Field.</span>
               </h2>
@@ -2191,31 +2160,16 @@ export default function Home() {
               {/* Col 1 — features left */}
               <div className="flex flex-col gap-8">
                 {[
-                  {
-                    icon: Server,
-                    title: 'Cloud-Native, Low TCO',
-                    desc: 'No servers to buy, no IT staff to manage. Start for a fraction of what legacy ERP costs.',
-                  },
-                  {
-                    icon: Layers,
-                    title: 'Modular by Design',
-                    desc: "Start with finance and inventory. Add CRM, HRMS, and BI when you're ready. No forced bundles.",
-                  },
+                  { icon: Server, title: 'Cloud-Native, Low TCO', desc: 'No servers to buy, no IT staff to manage. Start for a fraction of what legacy ERP costs.' },
+                  { icon: Layers, title: 'Modular by Design', desc: "Start with finance and inventory. Add CRM, HRMS, and BI when you're ready. No forced bundles." },
                 ].map((feat, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 14 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1, duration: 0.45 }}
-                    className="flex gap-3"
-                  >
+                  <motion.div key={i} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.45 }} className="flex gap-3">
                     <div className="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/25 flex items-center justify-center shrink-0 mt-0.5">
                       <feat.icon className="w-4 h-4 text-blue-400" />
                     </div>
                     <div>
-                      <p className="text-white font-semibold text-sm mb-1">{feat.title}</p>
-                      <p className="text-slate-400 text-xs leading-relaxed">{feat.desc}</p>
+                      <p className={`font-semibold text-sm mb-1 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>{feat.title}</p>
+                      <p className={`text-xs leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>{feat.desc}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -2224,60 +2178,31 @@ export default function Home() {
               {/* Col 2 — features right */}
               <div className="flex flex-col gap-8">
                 {[
-                  {
-                    icon: Shield,
-                    title: 'Amazon-Hosted Security',
-                    desc: 'Triple-layered data security on AWS. Your business data stays private and always backed up.',
-                  },
-                  {
-                    icon: Zap,
-                    title: 'Quickest Onboarding',
-                    desc: 'Go live in weeks, not months. Pre-configured industry templates mean 80% setup is already done.',
-                  },
+                  { icon: Shield, title: 'Amazon-Hosted Security', desc: 'Triple-layered data security on AWS. Your business data stays private and always backed up.' },
+                  { icon: Zap, title: 'Quickest Onboarding', desc: 'Go live in weeks, not months. Pre-configured industry templates mean 80% setup is already done.' },
                 ].map((feat, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 14 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.1 + i * 0.1, duration: 0.45 }}
-                    className="flex gap-3"
-                  >
+                  <motion.div key={i} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 + i * 0.1, duration: 0.45 }} className="flex gap-3">
                     <div className="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/25 flex items-center justify-center shrink-0 mt-0.5">
                       <feat.icon className="w-4 h-4 text-blue-400" />
                     </div>
                     <div>
-                      <p className="text-white font-semibold text-sm mb-1">{feat.title}</p>
-                      <p className="text-slate-400 text-xs leading-relaxed">{feat.desc}</p>
+                      <p className={`font-semibold text-sm mb-1 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>{feat.title}</p>
+                      <p className={`text-xs leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>{feat.desc}</p>
                     </div>
                   </motion.div>
                 ))}
               </div>
 
               {/* Col 3 — office & security callouts */}
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.15 }}
-                className="flex flex-col gap-6 lg:pl-8"
-              >
+              <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.15 }} className="flex flex-col gap-6 lg:pl-8">
                 <div>
-                  <p className="text-[9px] font-bold tracking-[0.2em] uppercase text-slate-400 mb-1.5">
-                    Coimbatore · Pune · Chennai
-                  </p>
-                  <h3 className="text-2xl md:text-3xl font-black text-white leading-tight">
-                    5 Offices Across India
-                  </h3>
+                  <p className="text-[9px] font-bold tracking-[0.2em] uppercase text-slate-400 mb-1.5">Coimbatore · Pune · Chennai</p>
+                  <h3 className={`text-2xl md:text-3xl font-black leading-tight ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>5 Offices Across India</h3>
                 </div>
-                <div className="w-12 h-px bg-white/10" />
+                <div className={`w-12 h-px ${isDarkMode ? 'bg-white/10' : 'bg-slate-200'}`} />
                 <div>
-                  <p className="text-[9px] font-bold tracking-[0.2em] uppercase text-slate-400 mb-1.5">
-                    Amazon AWS Hosted
-                  </p>
-                  <h3 className="text-2xl md:text-3xl font-black text-white leading-tight">
-                    Triple-layer security
-                  </h3>
+                  <p className="text-[9px] font-bold tracking-[0.2em] uppercase text-slate-400 mb-1.5">Amazon AWS Hosted</p>
+                  <h3 className={`text-2xl md:text-3xl font-black leading-tight ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>Triple-layer security</h3>
                 </div>
               </motion.div>
 
@@ -2285,8 +2210,8 @@ export default function Home() {
           </div>
         </div>
 
-        {/* ── Stats bar ── */}
-        <div className="border-t border-white/[0.07]">
+        {/* ── Stats bar — always dark navy ── */}
+        <div className={`border-t ${isDarkMode ? 'border-white/[0.07]' : 'bg-[#060C1A] border-white/[0.07]'}`}>
           <div className="container mx-auto px-4 max-w-8xl">
             <div className="grid grid-cols-2 md:grid-cols-4">
               {[
@@ -2548,7 +2473,7 @@ export default function Home() {
       </section>
 
       {/* 12. CTA / Demo Request Section */}
-      <section className="py-20 bg-[#080E1D] relative overflow-hidden">
+      <section className={`py-20 relative overflow-hidden ${isDarkMode ? 'bg-[#080E1D]' : 'bg-white'}`}>
         <div className="absolute top-0 right-1/3 w-[500px] h-[500px] rounded-full bg-blue-700/5 blur-[140px] pointer-events-none" />
 
         <div className="container mx-auto px-4 max-w-8xl relative z-10">
@@ -2559,11 +2484,11 @@ export default function Home() {
               <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-400 mb-4">
                 Why 5,000 Businesses Choose Konnect
               </p>
-              <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-5">
+              <h2 className={`text-4xl md:text-5xl font-bold leading-tight mb-5 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
                 Ready to See KonnectERP<br />
                 <span className="text-[#F97316]">Live?</span>
               </h2>
-              <p className="text-slate-400 text-base leading-relaxed mb-10 max-w-md">
+              <p className={`text-base leading-relaxed mb-10 max-w-md ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
                 Book a personalised 30-minute demo with our industry specialists. We'll show you exactly how KonnectERP works for your sector — not a generic product tour.
               </p>
 
@@ -2572,15 +2497,10 @@ export default function Home() {
                 <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-bold shrink-0 mt-0.5">1</div>
                 <div className="flex-1">
                   <div className="grid grid-cols-2 gap-x-8 gap-y-2">
-                    {[
-                      'Free 30-minute demo',
-                      'Live in weeks, not months',
-                      'No credit card required',
-                      '100% Confidential',
-                    ].map((item, i) => (
+                    {['Free 30-minute demo', 'Live in weeks, not months', 'No credit card required', '100% Confidential'].map((item, i) => (
                       <div key={i} className="flex items-center gap-2">
                         <CheckCircle2 className="w-3.5 h-3.5 text-blue-400 shrink-0" />
-                        <span className="text-slate-300 text-sm">{item}</span>
+                        <span className={`text-sm ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>{item}</span>
                       </div>
                     ))}
                   </div>
@@ -2591,13 +2511,13 @@ export default function Home() {
               <div className="flex gap-4 mb-8">
                 <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-bold shrink-0 mt-0.5">2</div>
                 <div>
-                  <p className="text-white font-bold text-sm mb-2">Reach Us Directly</p>
+                  <p className={`font-bold text-sm mb-2 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>Reach Us Directly</p>
                   <div className="flex flex-wrap gap-x-8 gap-y-1">
-                    <div className="flex items-center gap-2 text-slate-400 text-sm">
+                    <div className={`flex items-center gap-2 text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
                       <Mail className="w-3.5 h-3.5 text-blue-400" />
                       sales@konnectbi.com
                     </div>
-                    <div className="flex items-center gap-2 text-slate-400 text-sm">
+                    <div className={`flex items-center gap-2 text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
                       <Phone className="w-3.5 h-3.5 text-blue-400" />
                       +91 98431 11651
                     </div>
@@ -2609,26 +2529,26 @@ export default function Home() {
               <div className="flex gap-4">
                 <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-bold shrink-0 mt-0.5">3</div>
                 <div>
-                  <p className="text-white font-bold text-sm mb-1">Install, support, optimize</p>
-                  <p className="text-slate-400 text-sm">White-glove setup with ongoing optimization and support</p>
+                  <p className={`font-bold text-sm mb-1 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>Install, support, optimize</p>
+                  <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>White-glove setup with ongoing optimization and support</p>
                 </div>
               </div>
             </div>
 
             {/* ── Right column — inline form card ── */}
             <div className="lg:w-[48%] w-full">
-              <div className="rounded-2xl border border-white/[0.08] bg-[#0d1626] p-8">
+              <div className={`rounded-2xl p-8 ${isDarkMode ? 'border border-white/[0.08] bg-[#0d1626]' : 'border border-slate-200 bg-white shadow-lg'}`}>
                 {ctaSubmitted ? (
                   <div className="text-center py-10">
                     <div className="w-16 h-16 rounded-full bg-blue-600/20 flex items-center justify-center mx-auto mb-4">
                       <CheckCircle2 className="w-8 h-8 text-blue-400" />
                     </div>
-                    <h3 className="text-2xl font-bold text-white mb-2">You're all set!</h3>
-                    <p className="text-slate-400">We'll reach out within 24 hours to confirm your demo slot.</p>
+                    <h3 className={`text-2xl font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>You're all set!</h3>
+                    <p className={isDarkMode ? 'text-slate-400' : 'text-slate-600'}>We'll reach out within 24 hours to confirm your demo slot.</p>
                   </div>
                 ) : (
                   <form onSubmit={handleCtaSubmit} className="space-y-5">
-                    <h3 className="text-2xl font-bold text-white mb-6">Request Your Free Demo</h3>
+                    <h3 className={`text-2xl font-bold mb-6 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>Request Your Free Demo</h3>
 
                     {/* Name + Company */}
                     <div className="grid grid-cols-2 gap-4">
@@ -2642,11 +2562,11 @@ export default function Home() {
                           value={ctaForm.name}
                           onChange={e => setCtaForm(f => ({ ...f, name: e.target.value }))}
                           required
-                          className="w-full h-11 px-3 rounded-lg bg-[#162035] border border-white/10 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:border-blue-500/60 transition-colors"
+                          className={`w-full h-11 px-3 rounded-lg border text-sm focus:outline-none focus:border-blue-500/60 transition-colors ${isDarkMode ? 'bg-[#162035] border-white/10 text-white placeholder:text-slate-500' : 'bg-slate-50 border-slate-200 text-[#0B1F4A] placeholder:text-slate-400'}`}
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] font-bold tracking-widest uppercase text-slate-400 mb-1.5">
+                        <label className="block text-[10px] font-bold tracking-widests uppercase text-slate-400 mb-1.5">
                           Company Name <span className="text-orange-400">*</span>
                         </label>
                         <input
@@ -2655,7 +2575,7 @@ export default function Home() {
                           value={ctaForm.company}
                           onChange={e => setCtaForm(f => ({ ...f, company: e.target.value }))}
                           required
-                          className="w-full h-11 px-3 rounded-lg bg-[#162035] border border-white/10 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:border-blue-500/60 transition-colors"
+                          className={`w-full h-11 px-3 rounded-lg border text-sm focus:outline-none focus:border-blue-500/60 transition-colors ${isDarkMode ? 'bg-[#162035] border-white/10 text-white placeholder:text-slate-500' : 'bg-slate-50 border-slate-200 text-[#0B1F4A] placeholder:text-slate-400'}`}
                         />
                       </div>
                     </div>
@@ -2666,7 +2586,7 @@ export default function Home() {
                         Mobile Number <span className="text-orange-400">*</span>
                       </label>
                       <div className="flex">
-                        <div className="flex items-center px-3 rounded-l-lg bg-[#162035] border border-r-0 border-white/10 text-slate-300 text-sm font-medium shrink-0">
+                        <div className={`flex items-center px-3 rounded-l-lg border border-r-0 text-sm font-medium shrink-0 ${isDarkMode ? 'bg-[#162035] border-white/10 text-slate-300' : 'bg-slate-100 border-slate-200 text-slate-600'}`}>
                           +91
                         </div>
                         <input
@@ -2675,7 +2595,7 @@ export default function Home() {
                           value={ctaForm.mobile}
                           onChange={e => setCtaForm(f => ({ ...f, mobile: e.target.value }))}
                           required
-                          className="flex-1 h-11 px-3 rounded-r-lg bg-[#162035] border border-white/10 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:border-blue-500/60 transition-colors"
+                          className={`flex-1 h-11 px-3 rounded-r-lg border text-sm focus:outline-none focus:border-blue-500/60 transition-colors ${isDarkMode ? 'bg-[#162035] border-white/10 text-white placeholder:text-slate-500' : 'bg-slate-50 border-slate-200 text-[#0B1F4A] placeholder:text-slate-400'}`}
                         />
                       </div>
                     </div>
@@ -2689,12 +2609,12 @@ export default function Home() {
                         value={ctaForm.industry}
                         onChange={e => setCtaForm(f => ({ ...f, industry: e.target.value }))}
                         required
-                        className="w-full h-11 px-3 rounded-lg bg-[#162035] border border-white/10 text-sm focus:outline-none focus:border-blue-500/60 transition-colors appearance-none"
-                        style={{ color: ctaForm.industry ? '#fff' : '#64748b' }}
+                        className={`w-full h-11 px-3 rounded-lg border text-sm focus:outline-none focus:border-blue-500/60 transition-colors appearance-none ${isDarkMode ? 'bg-[#162035] border-white/10' : 'bg-slate-50 border-slate-200 text-[#0B1F4A]'}`}
+                        style={{ color: ctaForm.industry ? (isDarkMode ? '#fff' : '#0B1F4A') : '#64748b' }}
                       >
                         <option value="" disabled>Select your industry</option>
                         {['Manufacturing', 'Trading & Distribution', 'Retail', 'Construction', 'Job Work', 'Healthcare', 'Education', 'Logistics', 'Other'].map(opt => (
-                          <option key={opt} value={opt} style={{ background: '#162035', color: '#fff' }}>{opt}</option>
+                          <option key={opt} value={opt} style={{ background: isDarkMode ? '#162035' : '#fff', color: isDarkMode ? '#fff' : '#0B1F4A' }}>{opt}</option>
                         ))}
                       </select>
                     </div>
@@ -2709,7 +2629,7 @@ export default function Home() {
                         placeholder="Number of employees"
                         value={ctaForm.teamSize}
                         onChange={e => setCtaForm(f => ({ ...f, teamSize: e.target.value }))}
-                        className="w-full h-11 px-3 rounded-lg bg-[#162035] border border-white/10 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:border-blue-500/60 transition-colors"
+                        className={`w-full h-11 px-3 rounded-lg border text-sm focus:outline-none focus:border-blue-500/60 transition-colors ${isDarkMode ? 'bg-[#162035] border-white/10 text-white placeholder:text-slate-500' : 'bg-slate-50 border-slate-200 text-[#0B1F4A] placeholder:text-slate-400'}`}
                       />
                     </div>
 
@@ -2794,7 +2714,7 @@ export default function Home() {
                 </a>
                 {/* YouTube */}
                 <a href="#" aria-label="YouTube" className="w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.14] flex items-center justify-center transition-colors">
-                  <svg viewBox="0 0 24 24" className="w-4 h-4 fill-slate-300"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#0B1220"/></svg>
+                  <svg viewBox="0 0 24 24" className="w-4 h-4 fill-slate-300"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" className="fill-[#0B1220]" /></svg>
                 </a>
                 {/* X / Twitter */}
                 <a href="#" aria-label="X" className="w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.14] flex items-center justify-center transition-colors">
