@@ -2125,18 +2125,14 @@ export default function Home() {
           {/* ── Animated globe SVG with spotlight + connecting beams ── */}
           <div className="absolute inset-0 pointer-events-none select-none overflow-hidden" style={{ zIndex: 0 }}>
 
-            {/* Slowly rotating globe */}
-            <motion.div
-              className="absolute inset-0 flex items-center justify-center"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 90, repeat: Infinity, ease: 'linear' }}
-            >
+            {/* Static globe */}
+            <div className="absolute inset-0 flex items-center justify-center">
               <img
                 src="/images/global.svg"
                 alt=""
                 className={`w-full h-full object-cover object-top ${isDarkMode ? 'opacity-70' : 'opacity-20'}`}
               />
-            </motion.div>
+            </div>
 
             {/* Spotlight / radar sweep */}
             <motion.div
