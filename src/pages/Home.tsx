@@ -433,9 +433,9 @@ export default function Home() {
   const { scrollY } = useScroll();
   const headerBgOpacity = useTransform(scrollY, [0, 50], [0, 1]);
   const headerBlur = useTransform(scrollY, [0, 50], [0, 8]);
-  const headerBg = useTransform(headerBgOpacity, v => `rgba(255, 255, 255, ${v * 0.85})`);
-  const headerBackdropFilter = useTransform(headerBlur, v => `blur(${v}px)`);
-  const headerBorderColor = useTransform(headerBgOpacity, v => `rgba(226, 232, 240, ${v})`);
+  const headerBg = useTransform(headerBgOpacity, v => `rgba(0, 0, 0, ${0.05})`);
+  const headerBackdropFilter = useTransform(headerBlur, v => `blur(${10}px)`);
+  const headerBorderColor = useTransform(headerBgOpacity, v => `rgba(226, 232, 240, ${0.14})`);
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -797,7 +797,7 @@ export default function Home() {
           
           <nav className="hidden lg:flex items-center gap-8">
             <div className="relative group cursor-pointer py-8">
-              <span className="text-sm font-medium text-muted-foreground hover:text-foreground flex items-center gap-1">
+              <span className="text-sm font-medium text-white flex items-center gap-1">
                 Products <ChevronRight className="w-3 h-3 group-hover:rotate-90 transition-transform" />
               </span>
               <div className="absolute top-full left-1/2 -translate-x-1/2 w-[600px] bg-card border border-border rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 p-6 grid grid-cols-2 gap-6">
@@ -819,9 +819,9 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <a href="#solutions" className="text-sm font-medium text-muted-foreground hover:text-foreground">Solutions</a>
-            <a href="#industries" className="text-sm font-medium text-muted-foreground hover:text-foreground">Industries</a>
-            <a href="#benefits" className="text-sm font-medium text-muted-foreground hover:text-foreground">Benefits</a>
+            <a href="#solutions" className="text-sm font-medium text-white ">Solutions</a>
+            <a href="#industries" className="text-sm font-medium text-white ">Industries</a>
+            <a href="#benefits" className="text-sm font-medium text-white ">Benefits</a>
           </nav>
 
           <div className="hidden lg:flex items-center gap-4">
@@ -886,7 +886,7 @@ export default function Home() {
             className="absolute inset-0"
             style={{
               background:
-                'linear-gradient(180deg, rgba(4,10,26,0.55) 0%, rgba(4,10,26,0.72) 30%, rgba(3,8,22,0.90) 62%, rgba(2,6,18,0.97) 100%)',
+                'linear-gradient(180deg, rgba(4,10,26,0.14) 0%, rgba(4,10,26,0.72) 30%, rgba(3,8,22,0.90) 62%, rgba(2,6,18,0.97) 100%)',
             }}
           />
           {/* Particle network mesh, blended over the photo */}
@@ -1024,7 +1024,7 @@ export default function Home() {
         <div className="absolute top-0 left-1/3 w-96 h-96 rounded-full bg-blue-600/10 blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 right-1/4 w-72 h-72 rounded-full bg-orange-500/10 blur-3xl pointer-events-none" />
 
-        <div className="container mx-auto px-4 max-w-6xl relative z-10">
+        <div className="container mx-auto px-4 max-w-8xl relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1141,8 +1141,8 @@ export default function Home() {
       </section>
 
       {/* 4b. Offerings Showcase — tabbed product deep-dive */}
-      <section className="py-24 bg-white overflow-hidden">
-        <div className="container mx-auto px-4 max-w-7xl">
+      <section className="hidden py-24 bg-white overflow-hidden">
+        <div className="container mx-auto px-4 max-w-8xl">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -1275,7 +1275,7 @@ export default function Home() {
       </section>
 
       {/* 5. Industry Solutions Section */}
-      <section id="industries" className="py-24 bg-foreground relative overflow-hidden">
+      <section id="industries" className="hidden py-24 bg-foreground relative overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/20 to-transparent opacity-50 blur-3xl rounded-full" />
         <div className="absolute bottom-0 left-0 w-1/2 h-full bg-gradient-to-r from-blue-600/20 to-transparent opacity-50 blur-3xl rounded-full" />
@@ -1319,7 +1319,7 @@ export default function Home() {
         <div className="absolute top-0 left-1/4 w-72 h-72 rounded-full bg-blue-600/10 blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full bg-orange-500/10 blur-3xl pointer-events-none" />
 
-        <div className="container mx-auto px-4 max-w-7xl relative z-10">
+        <div className="container mx-auto px-4 max-w-8xl relative z-10">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -1464,12 +1464,12 @@ export default function Home() {
       </section>
 
       {/* 6. Why Businesses Choose KonnectERP — Deep Industry Knowledge */}
-      <section id="benefits" className="py-24 bg-[#0A1628] relative overflow-hidden">
+      <section id="benefits" className="py-24 bg-[#06163C] relative overflow-hidden">
         {/* Subtle background glows */}
         <div className="absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full bg-blue-600/6 blur-[120px] pointer-events-none" />
         <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full bg-orange-500/6 blur-[120px] pointer-events-none" />
 
-        <div className="container mx-auto px-4 max-w-7xl relative z-10">
+        <div className="container mx-auto px-4 max-w-8xl relative z-10">
 
           {/* Section header */}
           <motion.div
@@ -1484,7 +1484,7 @@ export default function Home() {
               Deep Industry Knowledge.<br />
               <span className="text-[#F97316]">Not Generic Templates.</span>
             </h2>
-            <p className="text-slate-400 max-w-sm mx-auto text-base leading-relaxed">
+            <p className="text-slate-400 max-w-lg mx-auto text-base leading-relaxed">
               KonnectERP ships with pre-configured workflows for 20+<br />
               Indian industry verticals. Less setup. Faster go-live.
             </p>
@@ -1502,22 +1502,22 @@ export default function Home() {
               className="flex flex-col lg:flex-row gap-6 items-stretch"
             >
               {/* Photo */}
-              <div className="lg:w-[44%] relative rounded-2xl overflow-hidden min-h-[300px]">
+              <div className="lg:w-[44%] relative rounded-2xl overflow-hidden max-h-[320px]">
                 <img
                   src="/images/industry-manufacturing.jpg"
                   alt="Discrete & Process Manufacturing"
                   className="w-full h-full object-cover"
-                  style={{ minHeight: 300 }}
+                  style={{ maxHeight: 320 }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-                <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-[#0A1628]/75 backdrop-blur-md border border-white/10 rounded-full px-3 py-1.5">
+                <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-[#06163C]/75 backdrop-blur-md border border-white/10 rounded-full px-3 py-1.5">
                   <Activity className="w-3.5 h-3.5 text-green-400" />
                   <span className="text-xs font-semibold text-white">Real-Time Data</span>
                 </div>
               </div>
 
               {/* Content card */}
-              <div className="lg:w-[56%] relative bg-[#0d1b2e] rounded-2xl border border-white/[0.06] p-8 overflow-hidden flex flex-col justify-between">
+              <div className="lg:w-[56%] relative px-10 overflow-hidden flex flex-col justify-between">
                 {/* Ghost number */}
                 <span className="absolute top-2 right-6 text-[110px] font-black leading-none text-white/[0.05] select-none pointer-events-none">01</span>
 
@@ -1568,14 +1568,14 @@ export default function Home() {
                   style={{ minHeight: 280 }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-                <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-[#0A1628]/75 backdrop-blur-md border border-white/10 rounded-full px-3 py-1.5">
+                <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-[#06163C]/75 backdrop-blur-md border border-white/10 rounded-full px-3 py-1.5">
                   <Activity className="w-3.5 h-3.5 text-green-400" />
                   <span className="text-xs font-semibold text-white">Real-Time Data</span>
                 </div>
               </div>
 
               {/* Content card */}
-              <div className="lg:w-[56%] relative bg-[#0d1b2e] rounded-2xl border border-white/[0.06] p-8 overflow-hidden flex flex-col justify-between">
+              <div className="lg:w-[56%] relative overflow-hidden flex flex-col justify-between">
                 {/* Ghost number */}
                 <span className="absolute top-2 right-6 text-[110px] font-black leading-none text-white/[0.05] select-none pointer-events-none">02</span>
 
@@ -1625,7 +1625,7 @@ export default function Home() {
                   style={{ minHeight: 300 }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-                <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-[#0A1628]/75 backdrop-blur-md border border-white/10 rounded-full px-3 py-1.5">
+                <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-[#06163C]/75 backdrop-blur-md border border-white/10 rounded-full px-3 py-1.5">
                   <Activity className="w-3.5 h-3.5 text-green-400" />
                   <span className="text-xs font-semibold text-white">Real-Time Data</span>
                 </div>
@@ -1670,7 +1670,7 @@ export default function Home() {
       </section>
 
       {/* 7. ERP Dashboard Showcase */}
-      <section className="py-24 bg-muted/30">
+      <section className="hidden py-24 bg-muted/30">
         <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto mb-12">
                 <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6 tracking-tight">Experience The Platform</h2>
@@ -1765,14 +1765,14 @@ export default function Home() {
       </section>
 
       {/* 7b. Immersive Platform Showcase + Floating Video Player */}
-      <section className="relative overflow-hidden py-24" style={{ background: 'linear-gradient(145deg, #060d1f 0%, #0a1a3a 35%, #071428 65%, #040c1c 100%)' }}>
+      <section className="hidden relative overflow-hidden py-24" style={{ background: 'linear-gradient(145deg, #060d1f 0%, #0a1a3a 35%, #071428 65%, #040c1c 100%)' }}>
         {/* Star-field dots */}
         <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
         {/* Glow orbs */}
         <div className="absolute -top-20 left-1/4 w-[500px] h-[500px] bg-blue-600/15 rounded-full blur-[80px]" />
         <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-indigo-500/10 rounded-full blur-[60px]" />
 
-        <div className="container mx-auto px-4 max-w-7xl relative z-10">
+        <div className="container mx-auto px-4 max-w-8xl relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
 
             {/* ── Left: rich dark ERP mockup ── */}
@@ -2003,7 +2003,7 @@ export default function Home() {
                       style={{ background: 'linear-gradient(135deg, #0d1f4a 0%, #1a3a6b 50%, #0B5CFF 100%)' }}
                     >
                       {/* Mini dashboard inside thumbnail */}
-                      <div className="absolute inset-2 rounded-lg bg-[#0a1628]/80 border border-white/10 overflow-hidden flex flex-col">
+                      <div className="absolute inset-2 rounded-lg bg-[#06163C]/80 border border-white/10 overflow-hidden flex flex-col">
                         <div className="h-4 bg-[#111827] flex items-center gap-1 px-2">
                           {[0,1,2].map(i => <div key={i} className="w-1.5 h-1.5 rounded-full bg-white/20" />)}
                         </div>
@@ -2053,7 +2053,7 @@ export default function Home() {
       <section className="py-24 bg-[#080E1D] relative overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-blue-700/5 blur-[120px] pointer-events-none" />
 
-        <div className="container mx-auto px-4 max-w-6xl relative z-10">
+        <div className="container mx-auto px-4 max-w-8xl relative z-10">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -2148,60 +2148,12 @@ export default function Home() {
 
           {/* ── Full-width wireframe globe SVG ── */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none" style={{ zIndex: 0 }}>
-            <svg
-              viewBox="0 0 1400 520"
-              className="w-full h-full"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              preserveAspectRatio="xMidYMid slice"
-            >
-              <defs>
-                <radialGradient id="globeGlow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="#1165EF" stopOpacity="0.12"/>
-                  <stop offset="100%" stopColor="#1165EF" stopOpacity="0"/>
-                </radialGradient>
-              </defs>
-
-              {/* Ambient centre glow */}
-              <ellipse cx="700" cy="260" rx="260" ry="260" fill="url(#globeGlow)"/>
-
-              {/* Outer sphere boundary */}
-              <ellipse cx="700" cy="260" rx="245" ry="245" stroke="#1165EF" strokeOpacity="0.35" strokeWidth="0.8"/>
-
-              {/* Latitude parallels — proportional ellipses */}
-              {([-200,-152,-100,-48, 0, 48, 100, 152, 200] as number[]).map((yOff, i) => {
-                const r = 245;
-                if (Math.abs(yOff) >= r) return null;
-                const rx = Math.sqrt(r * r - yOff * yOff);
-                return (
-                  <ellipse
-                    key={`lat-${i}`}
-                    cx="700"
-                    cy={260 + yOff}
-                    rx={rx}
-                    ry={rx * 0.26}
-                    stroke="#1165EF"
-                    strokeOpacity="0.22"
-                    strokeWidth="0.65"
-                  />
-                );
-              })}
-
-              {/* Longitude meridians — narrow ellipses rotated around globe centre */}
-              {([0,18,36,54,72,90,108,126,144,162] as number[]).map((angle) => (
-                <ellipse
-                  key={`lon-${angle}`}
-                  cx="700"
-                  cy="260"
-                  rx="28"
-                  ry="245"
-                  stroke="#1165EF"
-                  strokeOpacity="0.22"
-                  strokeWidth="0.65"
-                  transform={`rotate(${angle} 700 260)`}
+            <img
+                  src="/images/global.svg"
+                  alt="Globally Connected"
+                  className="w-full h-full object-cover object-position-top"
+                  // style={{ minHeight: 590 }}
                 />
-              ))}
-            </svg>
           </div>
 
           {/* ── Content overlaid on globe ── */}
@@ -2326,7 +2278,7 @@ export default function Home() {
 
         {/* ── Stats bar ── */}
         <div className="border-t border-white/[0.07]">
-          <div className="container mx-auto px-4 max-w-6xl">
+          <div className="container mx-auto px-4 max-w-8xl">
             <div className="grid grid-cols-2 md:grid-cols-4">
               {[
                 { value: 500, suffix: '+', label: 'Businesses Managed' },
@@ -2351,7 +2303,7 @@ export default function Home() {
       </section>
 
       {/* 10. Integrations Section */}
-      <section className="py-24 bg-muted/50">
+      <section className="hidden py-24 bg-muted/50">
           <div className="container mx-auto px-4 text-center">
               <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6 tracking-tight">Connect With Your Favorite Tools</h2>
               <p className="text-lg text-muted-foreground mb-16 max-w-2xl mx-auto">KonnectERP plays nice with the software you already use. Seamlessly sync data across your entire tech stack.</p>
@@ -2370,7 +2322,7 @@ export default function Home() {
 
       {/* 10b. Finance & Payments Orbital Section */}
       <section
-        className="relative overflow-hidden py-28"
+        className="hidden relative overflow-hidden py-28"
         style={{ background: 'linear-gradient(160deg, #070B18 0%, #0B1020 55%, #060d1c 100%)' }}
       >
         {/* Subtle dot grid */}
@@ -2379,7 +2331,7 @@ export default function Home() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#0B5CFF]/8 rounded-full blur-[120px]" />
         <div className="absolute -bottom-20 right-0 w-96 h-96 bg-indigo-600/5 rounded-full blur-[80px]" />
 
-        <div className="container mx-auto px-4 max-w-7xl relative z-10">
+        <div className="container mx-auto px-4 max-w-8xl relative z-10">
           {/* Header */}
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 mb-5 px-4 py-1.5 rounded-full border text-xs font-bold tracking-widest uppercase text-[#60A5FA]"
@@ -2530,7 +2482,7 @@ export default function Home() {
       </section>
 
       {/* 11. Security Section */}
-      <section className="py-24 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0B1F4A 0%, #162d66 40%, #F97316 100%)' }}>
+      <section className="hidden py-24 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0B1F4A 0%, #162d66 40%, #F97316 100%)' }}>
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col lg:flex-row items-center gap-16">
             <div className="lg:w-1/2">
@@ -2590,7 +2542,7 @@ export default function Home() {
       <section className="py-20 bg-[#080E1D] relative overflow-hidden">
         <div className="absolute top-0 right-1/3 w-[500px] h-[500px] rounded-full bg-blue-700/5 blur-[140px] pointer-events-none" />
 
-        <div className="container mx-auto px-4 max-w-7xl relative z-10">
+        <div className="container mx-auto px-4 max-w-8xl relative z-10">
           <div className="flex flex-col lg:flex-row gap-16 items-start">
 
             {/* ── Left column ── */}
@@ -2803,7 +2755,7 @@ export default function Home() {
         </div>
 
         {/* Main content */}
-        <div className="relative z-10 container mx-auto px-8 pt-14 pb-0 max-w-7xl">
+        <div className="relative z-10 container mx-auto px-8 pt-14 pb-0 max-w-8xl">
           <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-10 mb-14">
 
             {/* Brand column */}
