@@ -431,30 +431,65 @@ function VideoModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   );
 }
 
+// Normal text: blur + fade + slight rise per word
 const smoothTitleVariants = {
   container: {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.07, delayChildren: 0 },
+      transition: { staggerChildren: 0.08, delayChildren: 0 },
     },
   },
   item: {
-    hidden: { opacity: 0, y: 10 },
+    hidden: { opacity: 0, y: 10, filter: 'blur(8px)' },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.45, ease: [0.25, 0.1, 0.25, 1] },
+      filter: 'blur(0px)',
+      transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] },
     },
   },
 };
 
-function InViewTextEffect({ children, className }: { children: string; className?: string }) {
+// Gradient text: NO blur on items — filter:blur() on child spans breaks
+// background-clip:text on ancestor elements by creating separate compositing layers.
+// Gradient class is applied directly on the TextEffect root span instead.
+const smoothGradientVariants = {
+  container: {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.08, delayChildren: 0 },
+    },
+  },
+  item: {
+    hidden: { opacity: 0, y: 14 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.55, ease: [0.25, 0.1, 0.25, 1] },
+    },
+  },
+};
+
+function InViewTextEffect({
+  children,
+  className,
+  gradient,
+}: {
+  children: string;
+  className?: string;
+  gradient?: string; // pass bg-clip-text gradient classes here instead of a parent wrapper
+}) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.1 });
+  const variants = gradient ? smoothGradientVariants : smoothTitleVariants;
+  const effectClass = gradient
+    ? [gradient, className].filter(Boolean).join(' ')
+    : className;
   return (
     <span ref={ref}>
-      <TextEffect as='span' per='word' variants={smoothTitleVariants} trigger={isInView} className={className}>
+      <TextEffect as='span' per='word' variants={variants} trigger={isInView} className={effectClass}>
         {children}
       </TextEffect>
     </span>
@@ -1014,9 +1049,7 @@ export default function Home() {
 
           <motion.h1 variants={fadeInUp} className={`text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.15] mb-5 tracking-tight max-w-3xl ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
             <InViewTextEffect>Run Every Department.</InViewTextEffect><br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">
-              <InViewTextEffect>From One Dashboard.</InViewTextEffect>
-            </span>
+            <InViewTextEffect gradient="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">From One Dashboard.</InViewTextEffect>
           </motion.h1>
 
           <motion.p variants={fadeInUp} className={`text-base md:text-lg mb-8 max-w-2xl leading-relaxed ${isDarkMode ? 'text-slate-200/85' : 'text-[#0B1F4A]/65'}`}>
@@ -1139,9 +1172,7 @@ export default function Home() {
             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">The Complete Platform</p>
             <h2 className={`text-4xl md:text-5xl font-bold tracking-tight mb-4 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
               <InViewTextEffect>Everything Your Business Needs.</InViewTextEffect><br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">
-                <InViewTextEffect>Nothing You Don't.</InViewTextEffect>
-              </span>
+              <InViewTextEffect gradient="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">Nothing You Don't.</InViewTextEffect>
             </h2>
             <p className={`text-lg max-w-lg mx-auto ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
               Pick the modules you need today. Add more as you grow. All sharing the same data layer so nothing falls through the cracks.
@@ -1285,7 +1316,7 @@ export default function Home() {
             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">India Compliance, Built In</p>
             <h2 className={`text-3xl md:text-5xl font-bold mb-6 tracking-tight ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
               <InViewTextEffect>GST, E-Invoice, Payroll.</InViewTextEffect><br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]"><InViewTextEffect>All Automated.</InViewTextEffect></span>
+              <InViewTextEffect gradient="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">All Automated.</InViewTextEffect>
             </h2>
             <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
               Stop switching between portals. KonnectERP handles every Indian compliance requirement from within your normal workflows — no plugins, no third-party subscriptions, no re-keying.
@@ -2008,7 +2039,7 @@ export default function Home() {
               </div>
               <h2 className="text-4xl md:text-5xl font-bold text-white leading-[1.15] mb-5 tracking-tight">
                 <InViewTextEffect>Rock solid.</InViewTextEffect><br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300"><InViewTextEffect>Always on.</InViewTextEffect></span>
+                <InViewTextEffect gradient="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">Always on.</InViewTextEffect>
               </h2>
               <p className="text-lg text-gray-400 leading-relaxed mb-8 max-w-md">
                 KonnectERP runs your entire business without downtime, lag, or data loss — giving you the confidence to focus on growth, not firefighting.
@@ -2137,9 +2168,7 @@ export default function Home() {
           >
             <h2 className={`text-4xl md:text-5xl font-bold leading-tight mb-4 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
               <InViewTextEffect>Real Result From Real</InViewTextEffect>{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-violet-400">
-                <InViewTextEffect>Business.</InViewTextEffect>
-              </span>
+              <InViewTextEffect gradient="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-violet-400">Business.</InViewTextEffect>
             </h2>
             <p className={`max-w-lg mx-auto text-base leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
               Stop jumping between disconnected tools. KonnectERP brings every department into one unified, intelligent system.
