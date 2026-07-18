@@ -436,23 +436,22 @@ const smoothTitleVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.12, delayChildren: 0 },
+      transition: { staggerChildren: 0.07, delayChildren: 0 },
     },
   },
   item: {
-    hidden: { opacity: 0, filter: 'blur(10px)', y: 8 },
+    hidden: { opacity: 0, y: 10 },
     visible: {
       opacity: 1,
-      filter: 'blur(0px)',
       y: 0,
-      transition: { duration: 0.65, ease: [0.25, 0.1, 0.25, 1] },
+      transition: { duration: 0.45, ease: [0.25, 0.1, 0.25, 1] },
     },
   },
 };
 
 function InViewTextEffect({ children, className }: { children: string; className?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-60px' });
+  const isInView = useInView(ref, { once: true, amount: 0.1 });
   return (
     <span ref={ref}>
       <TextEffect as='span' per='word' variants={smoothTitleVariants} trigger={isInView} className={className}>
