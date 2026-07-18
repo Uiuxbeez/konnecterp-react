@@ -174,8 +174,8 @@ export default function RotatingEarth({ height = 520, className = "", darkMode =
             if (projected && projected[0] >= 0 && projected[0] <= containerWidth && projected[1] >= 0 && projected[1] <= containerHeight) {
               context.beginPath()
               context.arc(projected[0], projected[1], 1.4 * scaleFactor, 0, 2 * Math.PI)
-              context.fillStyle = "#38bdf8"
-              context.globalAlpha = 0.7
+              context.fillStyle = "#1e3a8a"
+              context.globalAlpha = 0.85
               context.fill()
               context.globalAlpha = 1
             }
@@ -256,23 +256,13 @@ export default function RotatingEarth({ height = 520, className = "", darkMode =
       document.addEventListener("mouseup", handleMouseUp)
     }
 
-    const handleWheel = (event: WheelEvent) => {
-      event.preventDefault()
-      const scaleFactor = event.deltaY > 0 ? 0.9 : 1.1
-      const newRadius = Math.max(radius * 0.5, Math.min(radius * 3, projection.scale() * scaleFactor))
-      projection.scale(newRadius)
-      render()
-    }
-
     canvas.addEventListener("mousedown", handleMouseDown)
-    canvas.addEventListener("wheel", handleWheel)
 
     loadWorldData()
 
     return () => {
       rotationTimer.stop()
       canvas.removeEventListener("mousedown", handleMouseDown)
-      canvas.removeEventListener("wheel", handleWheel)
     }
   }, [height, darkMode])
 
@@ -299,7 +289,7 @@ export default function RotatingEarth({ height = 520, className = "", darkMode =
         style={{ display: "block", width: "100%", height: "100%" }}
       />
       <div className="absolute bottom-4 left-4 text-xs text-blue-400/40 px-2 py-1 rounded-md">
-        Drag to rotate · Scroll to zoom
+        Drag to rotate
       </div>
     </div>
   )
