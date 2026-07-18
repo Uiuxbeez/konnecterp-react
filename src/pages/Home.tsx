@@ -860,10 +860,10 @@ export default function Home() {
             <button onClick={toggleDarkMode} className={`p-2 rounded-full border backdrop-blur-sm transition-colors ${isDarkMode ? 'text-white bg-white/10 hover:bg-white/20 border-white/15' : 'text-[#0B1F4A] bg-slate-100 hover:bg-slate-200 border-slate-200'}`}>
               {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
-            <button className={`h-9 px-4 text-sm font-semibold rounded-md border transition-colors backdrop-blur-sm ${isDarkMode ? 'bg-white/10 hover:bg-white/20 text-white border-white/15' : 'bg-transparent hover:bg-slate-50 text-[#0B1F4A] border-[#0B1F4A]/25'}`}>Log In</button>
             <Button onClick={openDemo} className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/25">
               Request Demo
             </Button>
+            <button className={`h-9 px-4 text-sm font-semibold rounded-md border transition-colors backdrop-blur-sm ${isDarkMode ? 'bg-white/10 hover:bg-white/20 text-white border-white/15' : 'bg-[#041D4D] text-[#ffffff] border-[#041D4D]/25'}`}>Log In</button>
           </div>
 
           <button className="lg:hidden p-2 text-foreground" onClick={() => setIsMobileMenuOpen(true)}>
@@ -918,8 +918,8 @@ export default function Home() {
             className="absolute inset-0"
             style={{
               background: isDarkMode
-                ? 'linear-gradient(180deg, rgba(4,10,26,0.14) 0%, rgba(4,10,26,0.72) 30%, rgba(3,8,22,0.90) 62%, rgba(2,6,18,0.97) 100%)'
-                : 'linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.78) 30%, rgba(255,255,255,0.93) 65%, rgba(255,255,255,1.00) 100%)',
+                ? 'linear-gradient(180deg, rgba(4,10,26,0.14) 0%, rgba(4,10,26,0.50) 30%, rgba(3,8,22,0.77) 62%, rgba(2,6,18,0.86) 100%)'
+                : 'linear-gradient(180deg, rgba(255,255,255,0.23) 0%, rgba(255,255,255,0.78) 30%, rgba(255,255,255,0.93) 65%, rgba(255,255,255,1.00) 100%)',
             }}
           />
           {/* Particle network mesh */}
@@ -1054,6 +1054,155 @@ export default function Home() {
                 <span className={`w-1.5 h-1.5 rounded-full border ${isDarkMode ? 'border-slate-300/60' : 'border-slate-400'}`} /> {badge}
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+ {/* 5b. Industry Solutions — feature + grid layout */}
+      <section className={`py-24 relative overflow-hidden ${isDarkMode ? 'bg-[#0B1220]' : 'bg-slate-50'}`}>
+        <div className="absolute top-0 left-1/4 w-72 h-72 rounded-full bg-blue-600/10 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full bg-orange-500/10 blur-3xl pointer-events-none" />
+
+        <div className="container mx-auto px-4 max-w-8xl relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-5 border ${isDarkMode ? 'bg-white/10 text-white/80 border-white/15' : 'bg-orange-50 text-orange-700 border-orange-200'}`}>
+              <Building2 className="w-3.5 h-3.5" /> Industry Solutions
+            </div>
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">The Complete Platform</p>
+            <h2 className={`text-4xl md:text-5xl font-bold tracking-tight mb-4 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
+              <InViewTextEffect>Everything Your Business Needs.</InViewTextEffect><br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">
+                <InViewTextEffect>Nothing You Don't.</InViewTextEffect>
+              </span>
+            </h2>
+            <p className={`text-lg max-w-lg mx-auto ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+              Pick the modules you need today. Add more as you grow. All sharing the same data layer so nothing falls through the cracks.
+            </p>
+          </motion.div>
+
+          {/* Feature row: expandable accordion of industry cards */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="flex flex-col lg:flex-row gap-4 lg:h-[420px]"
+          >
+            {INDUSTRY_CARDS.map((card, idx) => {
+              const Icon = card.icon;
+              const isOpen = expandedIndustry === idx;
+              return (
+                <motion.div
+                  key={card.id}
+                  onClick={() => setExpandedIndustry(idx)}
+                  onMouseEnter={() => setExpandedIndustry(idx)}
+                  animate={{ flex: isOpen ? 2.6 : 1 }}
+                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  className="relative min-h-[220px] lg:min-h-0 rounded-2xl overflow-hidden flex flex-col justify-between p-6 md:p-8 cursor-pointer"
+                  style={{ background: card.gradient }}
+                >
+                  {card.image && (
+                    <img
+                      src={card.image}
+                      alt={card.tag}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t to-transparent from-[#101a30]" />
+                  <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+
+                  <div className="relative z-10 flex items-center gap-2">
+                    <div className="w-9 h-9 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center border border-white/20 shrink-0">
+                      <Icon className="w-4.5 h-4.5 text-white" style={{ width: 18, height: 18 }} />
+                    </div>
+                    <motion.span
+                      animate={{ opacity: isOpen ? 1 : 0, width: isOpen ? 'auto' : 0 }}
+                      transition={{ duration: 0.4 }}
+                      className="text-xs font-bold px-2.5 py-1 rounded-full border whitespace-nowrap overflow-hidden"
+                      style={{ color: card.accentColor, borderColor: `${card.accentColor}40`, backgroundColor: `${card.accentColor}18` }}
+                    >
+                      {card.tag}
+                    </motion.span>
+                  </div>
+
+                  <div className="relative z-10 overflow-hidden">
+                    <AnimatePresence mode="wait">
+                      {isOpen ? (
+                        <motion.div
+                          key="open"
+                          initial={{ opacity: 0, y: 12 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 8 }}
+                          transition={{ duration: 0.35, delay: 0.1 }}
+                        >
+                          <h3 className="text-xl md:text-2xl font-bold text-white leading-snug mb-3 max-w-sm">
+                            {card.title}
+                          </h3>
+                          <p className="text-sm text-white/75 leading-relaxed mb-5 max-w-sm">
+                            {card.desc}
+                          </p>
+                          <div className="flex flex-wrap gap-1.5 mb-6">
+                            {card.highlights.slice(0, 3).map((h, i) => (
+                              <span key={i} className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-white/10 text-white/80 border border-white/15 backdrop-blur-sm">
+                                {h}
+                              </span>
+                            ))}
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <div
+                              className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold"
+                              style={{ backgroundColor: `${card.accentColor}22`, color: card.accentColor, border: `1px solid ${card.accentColor}40` }}
+                            >
+                              <TrendingUp className="w-3.5 h-3.5" />
+                              {card.metric}
+                            </div>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); openDemo(); }}
+                              className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform shrink-0"
+                            >
+                              <ArrowRight className="w-4 h-4 text-gray-800" />
+                            </button>
+                          </div>
+                        </motion.div>
+                      ) : (
+                        <motion.span
+                          key="closed"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="block text-xs font-bold text-white/90 tracking-wide [writing-mode:vertical-rl] rotate-180 lg:[writing-mode:vertical-rl]"
+                        >
+                          {card.tag}
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+
+          {/* CTA buttons */}
+          <div className="flex flex-col sm:flex-row gap-3 justify-center mt-10">
+            <button
+              onClick={openDemo}
+              className="h-11 px-6 text-sm font-semibold bg-[#F97316] hover:bg-[#EA580C] text-white rounded-md transition-colors shadow-lg shadow-orange-900/20"
+            >
+              Explore More
+            </button>
+            <button
+              onClick={openDemo}
+              className={`h-11 px-6 text-sm font-semibold rounded-md border transition-colors backdrop-blur-sm ${isDarkMode ? 'bg-white/10 hover:bg-white/20 text-white border-white/15' : 'bg-white hover:bg-slate-50 text-[#0B1F4A] border-slate-300'}`}
+            >
+              Talk to an Expert
+            </button>
           </div>
         </div>
       </section>
@@ -1331,154 +1480,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5b. Industry Solutions — feature + grid layout */}
-      <section className={`py-24 relative overflow-hidden ${isDarkMode ? 'bg-[#0B1220]' : 'bg-slate-50'}`}>
-        <div className="absolute top-0 left-1/4 w-72 h-72 rounded-full bg-blue-600/10 blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full bg-orange-500/10 blur-3xl pointer-events-none" />
-
-        <div className="container mx-auto px-4 max-w-8xl relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-5 border ${isDarkMode ? 'bg-white/10 text-white/80 border-white/15' : 'bg-orange-50 text-orange-700 border-orange-200'}`}>
-              <Building2 className="w-3.5 h-3.5" /> Industry Solutions
-            </div>
-            <h2 className={`text-4xl md:text-5xl font-bold tracking-tight mb-4 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
-              <InViewTextEffect>Businesses achieve more</InViewTextEffect><br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">
-                <InViewTextEffect>with KonnectERP</InViewTextEffect>
-              </span>
-            </h2>
-            <p className={`text-lg max-w-lg mx-auto ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
-              Purpose-built workflows for the industries that power India's economy.
-            </p>
-          </motion.div>
-
-          {/* Feature row: expandable accordion of industry cards */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="flex flex-col lg:flex-row gap-4 lg:h-[420px]"
-          >
-            {INDUSTRY_CARDS.map((card, idx) => {
-              const Icon = card.icon;
-              const isOpen = expandedIndustry === idx;
-              return (
-                <motion.div
-                  key={card.id}
-                  onClick={() => setExpandedIndustry(idx)}
-                  onMouseEnter={() => setExpandedIndustry(idx)}
-                  animate={{ flex: isOpen ? 2.6 : 1 }}
-                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative min-h-[220px] lg:min-h-0 rounded-2xl overflow-hidden flex flex-col justify-between p-6 md:p-8 cursor-pointer"
-                  style={{ background: card.gradient }}
-                >
-                  {card.image && (
-                    <img
-                      src={card.image}
-                      alt={card.tag}
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                  )}
-                  <div className="absolute inset-0 bg-black/35" />
-                  <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-
-                  <div className="relative z-10 flex items-center gap-2">
-                    <div className="w-9 h-9 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center border border-white/20 shrink-0">
-                      <Icon className="w-4.5 h-4.5 text-white" style={{ width: 18, height: 18 }} />
-                    </div>
-                    <motion.span
-                      animate={{ opacity: isOpen ? 1 : 0, width: isOpen ? 'auto' : 0 }}
-                      transition={{ duration: 0.4 }}
-                      className="text-xs font-bold px-2.5 py-1 rounded-full border whitespace-nowrap overflow-hidden"
-                      style={{ color: card.accentColor, borderColor: `${card.accentColor}40`, backgroundColor: `${card.accentColor}18` }}
-                    >
-                      {card.tag}
-                    </motion.span>
-                  </div>
-
-                  <div className="relative z-10 overflow-hidden">
-                    <AnimatePresence mode="wait">
-                      {isOpen ? (
-                        <motion.div
-                          key="open"
-                          initial={{ opacity: 0, y: 12 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 8 }}
-                          transition={{ duration: 0.35, delay: 0.1 }}
-                        >
-                          <h3 className="text-xl md:text-2xl font-bold text-white leading-snug mb-3 max-w-sm">
-                            {card.title}
-                          </h3>
-                          <p className="text-sm text-white/75 leading-relaxed mb-5 max-w-sm">
-                            {card.desc}
-                          </p>
-                          <div className="flex flex-wrap gap-1.5 mb-6">
-                            {card.highlights.slice(0, 3).map((h, i) => (
-                              <span key={i} className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-white/10 text-white/80 border border-white/15 backdrop-blur-sm">
-                                {h}
-                              </span>
-                            ))}
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <div
-                              className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold"
-                              style={{ backgroundColor: `${card.accentColor}22`, color: card.accentColor, border: `1px solid ${card.accentColor}40` }}
-                            >
-                              <TrendingUp className="w-3.5 h-3.5" />
-                              {card.metric}
-                            </div>
-                            <button
-                              onClick={(e) => { e.stopPropagation(); openDemo(); }}
-                              className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform shrink-0"
-                            >
-                              <ArrowRight className="w-4 h-4 text-gray-800" />
-                            </button>
-                          </div>
-                        </motion.div>
-                      ) : (
-                        <motion.span
-                          key="closed"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.3 }}
-                          className="block text-xs font-bold text-white/90 tracking-wide [writing-mode:vertical-rl] rotate-180 lg:[writing-mode:vertical-rl]"
-                        >
-                          {card.tag}
-                        </motion.span>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </motion.div>
-
-          {/* CTA buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center mt-10">
-            <button
-              onClick={openDemo}
-              className="h-11 px-6 text-sm font-semibold bg-[#F97316] hover:bg-[#EA580C] text-white rounded-md transition-colors shadow-lg shadow-orange-900/20"
-            >
-              Explore More
-            </button>
-            <button
-              onClick={openDemo}
-              className={`h-11 px-6 text-sm font-semibold rounded-md border transition-colors backdrop-blur-sm ${isDarkMode ? 'bg-white/10 hover:bg-white/20 text-white border-white/15' : 'bg-white hover:bg-slate-50 text-[#0B1F4A] border-slate-300'}`}
-            >
-              Talk to an Expert
-            </button>
-          </div>
-        </div>
-      </section>
-
+     
       {/* 6. Why Businesses Choose KonnectERP — Deep Industry Knowledge */}
       <section id="benefits" className={`py-24 relative overflow-hidden ${isDarkMode ? 'bg-[#06163C]' : 'bg-white'}`}>
         <div className="absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full bg-blue-600/6 blur-[120px] pointer-events-none" />
@@ -2097,22 +2099,22 @@ export default function Home() {
               {
                 company: 'Nexus Retail Chain',
                 ind: 'Retail & E-commerce',
-                indColor: isDarkMode ? 'text-teal-400 bg-teal-400/10 border-teal-400/20' : 'text-teal-600 bg-teal-50 border-teal-200',
+                indColor: isDarkMode ? 'text-blue-400 bg-blue-400/10 border-blue-400/20' : 'text-blue-600 bg-blue-50 border-blue-200',
                 challenge: 'High inventory shrinkage and slow reconciliation.',
                 solution: 'Real-time POS and warehouse tracking.',
                 result: '"Inventory accuracy improved to 99.8%"',
                 badge: '99.8% Accuracy',
-                badgeColor: isDarkMode ? 'text-teal-400' : 'text-teal-600',
+                badgeColor: isDarkMode ? 'text-blue-400' : 'text-blue-600',
               },
               {
                 company: 'SwiftDistrib',
                 ind: 'Wholesale',
-                indColor: isDarkMode ? 'text-violet-400 bg-violet-400/10 border-violet-400/20' : 'text-violet-600 bg-violet-50 border-violet-200',
+                indColor: isDarkMode ? 'text-blue-400 bg-blue-400/10 border-blue-400/20' : 'text-blue-600 bg-blue-50 border-blue-200',
                 challenge: 'Manual, paper-based purchase orders.',
                 solution: 'Automated procurement and vendor portal.',
                 result: '"Order processing time cut by 60%"',
                 badge: '60% Faster',
-                badgeColor: isDarkMode ? 'text-violet-400' : 'text-violet-600',
+                badgeColor: isDarkMode ? 'text-blue-400' : 'text-blue-600',
               },
             ].map((story, i) => (
               <motion.div
@@ -2149,7 +2151,7 @@ export default function Home() {
       </section>
 
       {/* 9. Built Different / Globe section + Stats */}
-      <section className={`relative overflow-hidden ${isDarkMode ? 'bg-[#060C1A]' : 'bg-white'}`}>
+      <section className={`relative overflow-hidden ${isDarkMode ? 'bg-[#001133]' : 'bg-white'}`}>
 
         {/* ── Globe + Built Different ── */}
         <div className="relative overflow-hidden" style={{ minHeight: 460 }}>
@@ -2258,7 +2260,7 @@ export default function Home() {
           </div>
 
           {/* ── Content overlaid on globe ── */}
-          <div className="relative z-10 px-8 md:px-16 py-16 max-w-[1400px] mx-auto">
+          <div className="relative z-10 px-8 md:px-16 py-20 max-w-[1400px] mx-auto">
 
             {/* Top headline — centred */}
             <motion.div
@@ -2286,7 +2288,7 @@ export default function Home() {
                   { icon: Server, title: 'Cloud-Native, Low TCO', desc: 'No servers to buy, no IT staff to manage. Start for a fraction of what legacy ERP costs.' },
                   { icon: Layers, title: 'Modular by Design', desc: "Start with finance and inventory. Add CRM, HRMS, and BI when you're ready. No forced bundles." },
                 ].map((feat, i) => (
-                  <motion.div key={i} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.45 }} className="flex gap-3">
+                  <motion.div key={i} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.45 }} className="flex gap-3 flex gap-3 rounded-[5px] border border-[rgba(178,178,178,0.23)] bg-white/10 backdrop-blur-sm p-3">
                     <div className="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/25 flex items-center justify-center shrink-0 mt-0.5">
                       <feat.icon className="w-4 h-4 text-blue-400" />
                     </div>
@@ -2304,7 +2306,7 @@ export default function Home() {
                   { icon: Shield, title: 'Amazon-Hosted Security', desc: 'Triple-layered data security on AWS. Your business data stays private and always backed up.' },
                   { icon: Zap, title: 'Quickest Onboarding', desc: 'Go live in weeks, not months. Pre-configured industry templates mean 80% setup is already done.' },
                 ].map((feat, i) => (
-                  <motion.div key={i} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 + i * 0.1, duration: 0.45 }} className="flex gap-3">
+                  <motion.div key={i} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 + i * 0.1, duration: 0.45 }} className="flex gap-3 flex gap-3 rounded-[5px] border border-[rgba(178,178,178,0.23)] bg-white/10 backdrop-blur-sm p-3">
                     <div className="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/25 flex items-center justify-center shrink-0 mt-0.5">
                       <feat.icon className="w-4 h-4 text-blue-400" />
                     </div>
@@ -2334,7 +2336,7 @@ export default function Home() {
         </div>
 
         {/* ── Stats bar — always dark navy ── */}
-        <div className={`border-t ${isDarkMode ? 'border-white/[0.07]' : 'bg-[#060C1A] border-white/[0.07]'}`}>
+        <div className={`border-t ${isDarkMode ? 'border-white/[0.07]' : 'bg-[#001133] border-white/[0.07]'}`}>
           <div className="container mx-auto px-4 max-w-8xl">
             <div className="grid grid-cols-2 md:grid-cols-4">
               {[
@@ -2637,11 +2639,11 @@ export default function Home() {
                   <p className={`font-bold text-sm mb-2 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>Reach Us Directly</p>
                   <div className="flex flex-wrap gap-x-8 gap-y-1">
                     <div className={`flex items-center gap-2 text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
-                      <Mail className="w-3.5 h-3.5 text-blue-400" />
+                      <Mail className="w-3.5 h-3.5 text-primary" />
                       sales@konnectbi.com
                     </div>
                     <div className={`flex items-center gap-2 text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
-                      <Phone className="w-3.5 h-3.5 text-blue-400" />
+                      <Phone className="w-3.5 h-3.5 text-primary" />
                       +91 98431 11651
                     </div>
                   </div>
@@ -2789,13 +2791,13 @@ export default function Home() {
       </section>
 
       {/* 13. Footer */}
-      <footer className="bg-[#0B1220] relative overflow-hidden">
+      <footer className="bg-[#0B204B] relative overflow-hidden">
 
         {/* Large faint watermark */}
         <div
           className="absolute bottom-0 left-1/2 -translate-x-1/2 select-none pointer-events-none whitespace-nowrap"
           style={{
-            fontSize: 'clamp(80px, 14vw, 180px)',
+            fontSize: 'clamp(80px, 14vw, 320px)',
             fontWeight: 900,
             color: 'rgba(255,255,255,0.04)',
             letterSpacing: '-0.02em',
