@@ -6,9 +6,10 @@ import * as d3 from "d3"
 interface RotatingEarthProps {
   height?: number
   className?: string
+  darkMode?: boolean
 }
 
-export default function RotatingEarth({ height = 520, className = "" }: RotatingEarthProps) {
+export default function RotatingEarth({ height = 520, className = "", darkMode = true }: RotatingEarthProps) {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -130,50 +131,56 @@ export default function RotatingEarth({ height = 520, className = "" }: Rotating
       const currentScale = projection.scale()
       const scaleFactor = currentScale / radius
 
-      // Draw ocean (globe background) — dark blue, no stroke border
-      context.beginPath()
-      context.arc(containerWidth / 2, containerHeight / 2, currentScale, 0, 2 * Math.PI)
-      context.fillStyle = "#001133"
-      context.fill()
-
-      if (landFeatures) {
-        // Draw graticule
-        const graticule = d3.geoGraticule()
+      if (darkMode) {
+        // Dark mode: solid dark-blue ocean fill + grid + dots
         context.beginPath()
-        path(graticule())
-        context.strokeStyle = "#1e4080"
-        context.lineWidth = 0.5 * scaleFactor
-        context.globalAlpha = 0.4
-        context.stroke()
-        context.globalAlpha = 1
+        context.arc(containerWidth / 2, globeCenterY, currentScale, 0, 2 * Math.PI)
+        context.fillStyle = "#001133"
+        context.fill()
 
-        // Draw land outlines
-        context.beginPath()
-        landFeatures.features.forEach((feature: any) => {
-          path(feature)
-        })
-        context.strokeStyle = "#3b82f6"
-        context.lineWidth = 0.8 * scaleFactor
-        context.globalAlpha = 0.5
-        context.stroke()
-        context.globalAlpha = 1
+        if (landFeatures) {
+          const graticule = d3.geoGraticule()
+          context.beginPath()
+          path(graticule())
+          context.strokeStyle = "#1e4080"
+          context.lineWidth = 0.5 * scaleFactor
+          context.globalAlpha = 0.4
+          context.stroke()
+          context.globalAlpha = 1
 
-        // Draw halftone dots
-        allDots.forEach((dot) => {
-          const projected = projection([dot.lng, dot.lat])
-          if (
-            projected &&
-            projected[0] >= 0 &&
-            projected[0] <= containerWidth &&
-            projected[1] >= 0 &&
-            projected[1] <= containerHeight
-          ) {
-            context.beginPath()
-            context.arc(projected[0], projected[1], 1.2 * scaleFactor, 0, 2 * Math.PI)
-            context.fillStyle = "#60a5fa"
-            context.fill()
-          }
-        })
+          context.beginPath()
+          landFeatures.features.forEach((feature: any) => { path(feature) })
+          context.strokeStyle = "#3b82f6"
+          context.lineWidth = 0.8 * scaleFactor
+          context.globalAlpha = 0.5
+          context.stroke()
+          context.globalAlpha = 1
+
+          allDots.forEach((dot) => {
+            const projected = projection([dot.lng, dot.lat])
+            if (projected && projected[0] >= 0 && projected[0] <= containerWidth && projected[1] >= 0 && projected[1] <= containerHeight) {
+              context.beginPath()
+              context.arc(projected[0], projected[1], 1.2 * scaleFactor, 0, 2 * Math.PI)
+              context.fillStyle = "#60a5fa"
+              context.fill()
+            }
+          })
+        }
+      } else {
+        // Light mode: no background fill — only sky-blue dots, no grid, no outline
+        if (landFeatures) {
+          allDots.forEach((dot) => {
+            const projected = projection([dot.lng, dot.lat])
+            if (projected && projected[0] >= 0 && projected[0] <= containerWidth && projected[1] >= 0 && projected[1] <= containerHeight) {
+              context.beginPath()
+              context.arc(projected[0], projected[1], 1.4 * scaleFactor, 0, 2 * Math.PI)
+              context.fillStyle = "#38bdf8"
+              context.globalAlpha = 0.7
+              context.fill()
+              context.globalAlpha = 1
+            }
+          })
+        }
       }
     }
 
@@ -267,7 +274,7 @@ export default function RotatingEarth({ height = 520, className = "" }: Rotating
       canvas.removeEventListener("mousedown", handleMouseDown)
       canvas.removeEventListener("wheel", handleWheel)
     }
-  }, [height])
+  }, [height, darkMode])
 
   if (error) {
     return (

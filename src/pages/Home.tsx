@@ -2160,7 +2160,7 @@ export default function Home() {
           {/* ── Rotating dotted globe — full width ── */}
           <div className="absolute inset-0 pointer-events-none select-none overflow-hidden" style={{ zIndex: 0 }}>
             <div className="pointer-events-auto w-full h-full">
-              <RotatingEarth height={680} className="w-full h-full opacity-95" />
+              <RotatingEarth height={680} darkMode={isDarkMode} className="w-full h-full opacity-95" />
             </div>
           </div>
 
