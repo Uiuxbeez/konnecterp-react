@@ -2155,12 +2155,12 @@ export default function Home() {
       <section className={`relative overflow-hidden ${isDarkMode ? 'bg-[#001133]' : 'bg-white'}`}>
 
         {/* ── Globe + Built Different ── */}
-        <div className="relative overflow-hidden" style={{ minHeight: 460 }}>
+        <div className="relative overflow-hidden" style={{ minHeight: 680 }}>
 
           {/* ── Rotating dotted globe — full width ── */}
           <div className="absolute inset-0 pointer-events-none select-none overflow-hidden" style={{ zIndex: 0 }}>
             <div className="pointer-events-auto w-full h-full">
-              <RotatingEarth height={520} className="w-full h-full opacity-95" />
+              <RotatingEarth height={680} className="w-full h-full opacity-95" />
             </div>
           </div>
 

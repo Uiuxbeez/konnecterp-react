@@ -34,11 +34,13 @@ export default function RotatingEarth({ height = 520, className = "" }: Rotating
     context.scale(dpr, dpr)
 
     // Create projection and path generator for Canvas
-    // Position center at bottom so the top of the globe fills from the top of the section
+    // Center the globe so its top arc is just inside the top of the canvas (~20px padding)
+    // then the bottom hemisphere clips below — shows the rounded top of the globe
+    const globeCenterY = radius + 20
     const projection = d3
       .geoOrthographic()
       .scale(radius)
-      .translate([containerWidth / 2, containerHeight])
+      .translate([containerWidth / 2, globeCenterY])
       .clipAngle(90)
 
     const path = d3.geoPath().projection(projection).context(context)
