@@ -166,18 +166,37 @@ export default function RotatingEarth({ height = 520, className = "", darkMode =
             }
           })
         }
+
+        // Gradient overlay: bright/light at top fading to deep dark at bottom
+        context.save()
+        context.beginPath()
+        context.arc(containerWidth / 2, globeCenterY, currentScale, 0, 2 * Math.PI)
+        context.clip()
+        const darkGrad = context.createLinearGradient(0, 0, 0, containerHeight)
+        darkGrad.addColorStop(0,   'rgba(147, 197, 253, 0.18)')  // light-blue tint at top
+        darkGrad.addColorStop(0.4, 'rgba(0, 17, 51, 0.0)')        // transparent mid
+        darkGrad.addColorStop(1,   'rgba(0, 4, 20, 0.72)')         // deep dark at bottom
+        context.fillStyle = darkGrad
+        context.fillRect(0, 0, containerWidth, containerHeight)
+        context.restore()
+
       } else {
-        // Light mode: no background fill — only sky-blue dots, no grid, no outline
+        // Light mode: dots only, no fill — colour each dot by its Y position (light → dark top-to-bottom)
         if (landFeatures) {
           allDots.forEach((dot) => {
             const projected = projection([dot.lng, dot.lat])
             if (projected && projected[0] >= 0 && projected[0] <= containerWidth && projected[1] >= 0 && projected[1] <= containerHeight) {
+              // 0 = top of canvas, 1 = bottom
+              const yRatio = Math.min(1, Math.max(0, projected[1] / containerHeight))
+              // Interpolate: top → #93c5fd (light blue-300), bottom → #1e3a8a (dark blue-800)
+              const r = Math.round(147 + (30  - 147) * yRatio)
+              const g = Math.round(197 + (58  - 197) * yRatio)
+              const b = Math.round(253 + (138 - 253) * yRatio)
+              const alpha = 0.55 + yRatio * 0.35  // more opaque towards bottom
               context.beginPath()
               context.arc(projected[0], projected[1], 1.4 * scaleFactor, 0, 2 * Math.PI)
-              context.fillStyle = "#1e3a8a"
-              context.globalAlpha = 0.85
+              context.fillStyle = `rgba(${r},${g},${b},${alpha})`
               context.fill()
-              context.globalAlpha = 1
             }
           })
         }
