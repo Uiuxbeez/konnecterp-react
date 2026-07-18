@@ -470,7 +470,27 @@ export default function Home() {
   const headerBorderColor = useTransform(headerBgOpacity, v => `rgba(226, 232, 240, ${0.14})`);
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // ── Theme: 'light' | 'dark' | 'auto' ──────────────────────────────
+  type ThemeMode = 'light' | 'dark' | 'auto';
+  const isNightTime = (d: Date) => {
+    const mins = d.getHours() * 60 + d.getMinutes();
+    return mins >= 18 * 60 + 30 || mins < 4 * 60; // 18:30 → 04:00
+  };
+  const [themeMode, setThemeMode] = useState<ThemeMode>('auto');
+  const [now, setNow] = useState(() => new Date());
+  const isDarkMode = themeMode === 'dark' || (themeMode === 'auto' && isNightTime(now));
+
+  // Tick every minute so auto mode reacts to time changes
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 60_000);
+    return () => clearInterval(id);
+  }, []);
+
+  // Keep <html> class in sync
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', isDarkMode);
+  }, [isDarkMode]);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const openDemo = () => setIsDemoModalOpen(true);
@@ -793,10 +813,6 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle('dark');
-  };
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
@@ -857,9 +873,32 @@ export default function Home() {
           </nav>
 
           <div className="hidden lg:flex items-center gap-4">
-            <button onClick={toggleDarkMode} className={`p-2 rounded-full border backdrop-blur-sm transition-colors ${isDarkMode ? 'text-white bg-white/10 hover:bg-white/20 border-white/15' : 'text-[#0B1F4A] bg-slate-100 hover:bg-slate-200 border-slate-200'}`}>
-              {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
+            {/* Three-mode theme toggle: Light / Auto / Dark */}
+            <div className={`flex items-center rounded-full border p-0.5 gap-0.5 transition-colors ${isDarkMode ? 'bg-white/10 border-white/15' : 'bg-slate-100 border-slate-200'}`}>
+              {([
+                { mode: 'light', icon: <Sun className="w-4 h-4" />,     label: 'Light' },
+                { mode: 'auto',  icon: <Monitor className="w-4 h-4" />, label: 'Auto'  },
+                { mode: 'dark',  icon: <Moon className="w-4 h-4" />,    label: 'Dark'  },
+              ] as { mode: ThemeMode; icon: React.ReactNode; label: string }[]).map(({ mode, icon, label }) => (
+                <button
+                  key={mode}
+                  onClick={() => setThemeMode(mode)}
+                  title={mode === 'auto' ? 'Auto — light 4 AM–6:30 PM, dark 6:30 PM–4 AM' : `${label} mode`}
+                  className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
+                    themeMode === mode
+                      ? isDarkMode
+                        ? 'bg-white/25 text-white shadow-sm'
+                        : 'bg-white text-[#0B1F4A] shadow-sm'
+                      : isDarkMode
+                        ? 'text-white/40 hover:text-white/70'
+                        : 'text-slate-400 hover:text-slate-600'
+                  }`}
+                >
+                  {icon}
+                  <span className={themeMode === mode ? 'inline' : 'hidden'}>{label}</span>
+                </button>
+              ))}
+            </div>
             <Button onClick={openDemo} className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/25">
               Request Demo
             </Button>
@@ -894,7 +933,30 @@ export default function Home() {
                   {item}
                 </a>
               ))}
-              <div className="pt-4 flex flex-col gap-4">
+              {/* Theme toggle in mobile menu */}
+              <div className="pt-2 pb-1">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-2">Theme</p>
+                <div className="flex items-center gap-2 rounded-full border border-border bg-muted p-1">
+                  {([
+                    { mode: 'light', icon: <Sun className="w-4 h-4" />,     label: 'Light' },
+                    { mode: 'auto',  icon: <Monitor className="w-4 h-4" />, label: 'Auto'  },
+                    { mode: 'dark',  icon: <Moon className="w-4 h-4" />,    label: 'Dark'  },
+                  ] as { mode: ThemeMode; icon: React.ReactNode; label: string }[]).map(({ mode, icon, label }) => (
+                    <button
+                      key={mode}
+                      onClick={() => setThemeMode(mode)}
+                      className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
+                        themeMode === mode
+                          ? 'bg-background text-foreground shadow-sm'
+                          : 'text-muted-foreground hover:text-foreground'
+                      }`}
+                    >
+                      {icon}{label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="pt-2 flex flex-col gap-3">
                 <Button variant="outline" className="w-full justify-center" onClick={() => setIsMobileMenuOpen(false)}>Log In</Button>
                 <Button className="w-full justify-center" onClick={() => { setIsMobileMenuOpen(false); openDemo(); }}>Request Demo</Button>
               </div>
