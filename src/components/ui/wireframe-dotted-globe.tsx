@@ -21,10 +21,10 @@ export default function RotatingEarth({ height = 520, className = "" }: Rotating
     const context = canvas.getContext("2d")
     if (!context) return
 
-    // Fill the wrapper container
+    // Fill the wrapper container — radius fills full width so globe spans edge-to-edge
     const containerWidth = wrapperRef.current.offsetWidth || window.innerWidth
     const containerHeight = height
-    const radius = Math.min(containerWidth, containerHeight) / 2.5
+    const radius = containerWidth / 2
 
     const dpr = window.devicePixelRatio || 1
     canvas.width = containerWidth * dpr
