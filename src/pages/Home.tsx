@@ -2157,10 +2157,10 @@ export default function Home() {
         {/* ── Globe + Built Different ── */}
         <div className="relative overflow-hidden" style={{ minHeight: 460 }}>
 
-          {/* ── Rotating dotted globe ── */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden" style={{ zIndex: 0 }}>
-            <div className="pointer-events-auto w-full h-full flex items-center justify-center">
-              <RotatingEarth width={900} height={520} className="opacity-90" />
+          {/* ── Rotating dotted globe — full width ── */}
+          <div className="absolute inset-0 pointer-events-none select-none overflow-hidden" style={{ zIndex: 0 }}>
+            <div className="pointer-events-auto w-full h-full">
+              <RotatingEarth height={520} className="w-full h-full opacity-95" />
             </div>
           </div>
 

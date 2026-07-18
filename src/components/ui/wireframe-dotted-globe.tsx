@@ -4,26 +4,26 @@ import { useEffect, useRef, useState } from "react"
 import * as d3 from "d3"
 
 interface RotatingEarthProps {
-  width?: number
   height?: number
   className?: string
 }
 
-export default function RotatingEarth({ width = 800, height = 600, className = "" }: RotatingEarthProps) {
+export default function RotatingEarth({ height = 520, className = "" }: RotatingEarthProps) {
+  const wrapperRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!canvasRef.current) return
+    if (!canvasRef.current || !wrapperRef.current) return
 
     const canvas = canvasRef.current
     const context = canvas.getContext("2d")
     if (!context) return
 
-    // Set up responsive dimensions
-    const containerWidth = Math.min(width, window.innerWidth - 40)
-    const containerHeight = Math.min(height, window.innerHeight - 100)
+    // Fill the wrapper container
+    const containerWidth = wrapperRef.current.offsetWidth || window.innerWidth
+    const containerHeight = height
     const radius = Math.min(containerWidth, containerHeight) / 2.5
 
     const dpr = window.devicePixelRatio || 1
@@ -127,23 +127,20 @@ export default function RotatingEarth({ width = 800, height = 600, className = "
       const currentScale = projection.scale()
       const scaleFactor = currentScale / radius
 
-      // Draw ocean (globe background)
+      // Draw ocean (globe background) — dark blue, no stroke border
       context.beginPath()
       context.arc(containerWidth / 2, containerHeight / 2, currentScale, 0, 2 * Math.PI)
-      context.fillStyle = "#000000"
+      context.fillStyle = "#001133"
       context.fill()
-      context.strokeStyle = "#ffffff"
-      context.lineWidth = 2 * scaleFactor
-      context.stroke()
 
       if (landFeatures) {
         // Draw graticule
         const graticule = d3.geoGraticule()
         context.beginPath()
         path(graticule())
-        context.strokeStyle = "#ffffff"
-        context.lineWidth = 1 * scaleFactor
-        context.globalAlpha = 0.25
+        context.strokeStyle = "#1e4080"
+        context.lineWidth = 0.5 * scaleFactor
+        context.globalAlpha = 0.4
         context.stroke()
         context.globalAlpha = 1
 
@@ -152,9 +149,11 @@ export default function RotatingEarth({ width = 800, height = 600, className = "
         landFeatures.features.forEach((feature: any) => {
           path(feature)
         })
-        context.strokeStyle = "#ffffff"
-        context.lineWidth = 1 * scaleFactor
+        context.strokeStyle = "#3b82f6"
+        context.lineWidth = 0.8 * scaleFactor
+        context.globalAlpha = 0.5
         context.stroke()
+        context.globalAlpha = 1
 
         // Draw halftone dots
         allDots.forEach((dot) => {
@@ -168,7 +167,7 @@ export default function RotatingEarth({ width = 800, height = 600, className = "
           ) {
             context.beginPath()
             context.arc(projected[0], projected[1], 1.2 * scaleFactor, 0, 2 * Math.PI)
-            context.fillStyle = "#999999"
+            context.fillStyle = "#60a5fa"
             context.fill()
           }
         })
@@ -265,32 +264,31 @@ export default function RotatingEarth({ width = 800, height = 600, className = "
       canvas.removeEventListener("mousedown", handleMouseDown)
       canvas.removeEventListener("wheel", handleWheel)
     }
-  }, [width, height])
+  }, [height])
 
   if (error) {
     return (
-      <div className={`dark flex items-center justify-center bg-card rounded-2xl p-8 ${className}`}>
+      <div className={`flex items-center justify-center p-8 ${className}`}>
         <div className="text-center">
-          <p className="dark text-destructive font-semibold mb-2">Error loading Earth visualization</p>
-          <p className="dark text-muted-foreground text-sm">{error}</p>
+          <p className="text-red-400 font-semibold mb-2">Error loading globe</p>
+          <p className="text-white/50 text-sm">{error}</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className={`relative ${className}`}>
+    <div ref={wrapperRef} className={`relative w-full ${className}`} style={{ height }}>
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-blue-500/30 border-t-blue-400 rounded-full animate-spin" />
         </div>
       )}
       <canvas
         ref={canvasRef}
-        className="w-full h-auto rounded-2xl bg-black dark"
-        style={{ maxWidth: "100%", height: "auto" }}
+        style={{ display: "block", width: "100%", height: "100%" }}
       />
-      <div className="absolute bottom-4 left-4 text-xs text-white/40 px-2 py-1 rounded-md">
+      <div className="absolute bottom-4 left-4 text-xs text-blue-400/40 px-2 py-1 rounded-md">
         Drag to rotate · Scroll to zoom
       </div>
     </div>
