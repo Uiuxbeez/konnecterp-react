@@ -1173,11 +1173,15 @@ export default function Home() {
       </section>
 
  {/* 5b. Industry Solutions — feature + grid layout */}
-      <section className="py-24 relative overflow-hidden bg-[#080f1e]">
-        {/* deep blue glow orbs */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full bg-blue-700/20 blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full bg-indigo-700/15 blur-3xl pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full bg-blue-900/20 blur-3xl pointer-events-none" />
+      <section className={`py-24 relative overflow-hidden ${isDarkMode ? 'bg-[#080f1e]' : 'bg-white'}`}>
+        {/* glow orbs — only in dark mode */}
+        {isDarkMode && (
+          <>
+            <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full bg-blue-700/20 blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full bg-indigo-700/15 blur-3xl pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full bg-blue-900/20 blur-3xl pointer-events-none" />
+          </>
+        )}
 
         <div className="container mx-auto px-4 max-w-8xl relative z-10">
           <motion.div
@@ -1187,15 +1191,15 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-5 border bg-white/10 text-white/80 border-white/15">
-              <Building2 className="w-3.5 h-3.5" /> Core ERP
+            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-5 border ${isDarkMode ? 'bg-white/10 text-white/80 border-white/15' : 'bg-orange-50 text-orange-600 border-orange-200'}`}>
+              <Building2 className="w-3.5 h-3.5" /> Industry Solutions
             </div>
-            <p className="text-xs font-bold text-blue-400/70 uppercase tracking-widest mb-4">The Complete Platform</p>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-white">
+            <p className={`text-xs font-bold uppercase tracking-widest mb-4 ${isDarkMode ? 'text-blue-400/70' : 'text-slate-500'}`}>The Complete Platform</p>
+            <h2 className={`text-4xl md:text-5xl font-bold tracking-tight mb-4 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
               <InViewTextEffect>Everything Your Business Needs.</InViewTextEffect><br />
               <InViewTextEffect gradient="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">Nothing You Don't.</InViewTextEffect>
             </h2>
-            <p className="text-lg max-w-lg mx-auto text-slate-400">
+            <p className={`text-lg max-w-lg mx-auto ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
               Pick the modules you need today. Add more as you grow. All sharing the same data layer so nothing falls through the cracks.
             </p>
           </motion.div>
@@ -1315,7 +1319,7 @@ export default function Home() {
             </button>
             <button
               onClick={openDemo}
-              className="h-11 px-6 text-sm font-semibold rounded-md border transition-colors backdrop-blur-sm bg-white/10 hover:bg-white/20 text-white border-white/15"
+              className={`h-11 px-6 text-sm font-semibold rounded-md border transition-colors ${isDarkMode ? 'bg-white/10 hover:bg-white/20 text-white border-white/15 backdrop-blur-sm' : 'bg-white hover:bg-slate-50 text-[#0B1F4A] border-slate-300'}`}
             >
               Talk to an Expert
             </button>
