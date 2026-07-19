@@ -1162,12 +1162,13 @@ export default function Home() {
             {/* right fade */}
             <div className={`absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none ${isDarkMode ? 'bg-gradient-to-l from-[#080c18] to-transparent' : 'bg-gradient-to-l from-white to-transparent'}`} />
 
-            <div className="flex animate-marquee whitespace-nowrap">
-              {[...Array(3)].map((_, copy) =>
+            {/* Exactly 2 copies → translateX(-50%) snaps back to the start perfectly = no flicker */}
+            <div className="flex animate-marquee whitespace-nowrap will-change-transform">
+              {[0, 1].map((copy) =>
                 ['Rajesh Industries', 'TechCorp', 'MegaRetail', 'BuildRight', 'LogiWave', 'GlobalManufacturing', 'Apex Traders', 'SwiftLogix'].map((name) => (
                   <div
                     key={`${copy}-${name}`}
-                    className={`inline-flex items-center gap-2 text-sm font-semibold mx-8 shrink-0 ${isDarkMode ? 'text-slate-400/70' : 'text-slate-500'}`}
+                    className={`inline-flex items-center gap-2 text-sm font-semibold mx-10 shrink-0 ${isDarkMode ? 'text-slate-400/70' : 'text-slate-500'}`}
                   >
                     <Building2 className="w-4 h-4 shrink-0" />
                     {name}
@@ -1186,6 +1187,15 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── Colour-blur divider — visible in light mode only ── */}
+      {!isDarkMode && (
+        <div className="relative h-28 overflow-hidden pointer-events-none select-none -my-1" aria-hidden>
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-40 rounded-full bg-orange-400/20 blur-3xl" />
+          <div className="absolute left-1/3 top-1/2 -translate-y-1/2 w-64 h-32 rounded-full bg-blue-400/15 blur-3xl" />
+          <div className="absolute right-1/3 top-1/2 -translate-y-1/2 w-64 h-32 rounded-full bg-indigo-400/15 blur-3xl" />
+        </div>
+      )}
 
  {/* 5b. Industry Solutions — feature + grid layout */}
       <section className={`py-24 relative overflow-hidden ${isDarkMode ? 'bg-[#080f1e]' : 'bg-white'}`}>
