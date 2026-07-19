@@ -498,12 +498,16 @@ function InViewTextEffect({
 
 export default function Home() {
   const { scrollY } = useScroll();
-  const headerBgOpacity = useTransform(scrollY, [0, 60], [0, 0.95]);
-  const headerBlur = useTransform(scrollY, [0, 60], [0, 12]);
-  const headerBg = useTransform(headerBgOpacity, v => `rgba(255, 255, 255, ${v})`);
+  const headerBlur = useTransform(scrollY, [0, 60], [0, 14]);
   const headerBackdropFilter = useTransform(headerBlur, v => `blur(${v}px)`);
-  const headerBorderColor = useTransform(scrollY, [0, 60], ['rgba(226,232,240,0)', 'rgba(226,232,240,0.8)']);
-  const headerShadow = useTransform(scrollY, [0, 60], ['0 0 0 0 rgba(0,0,0,0)', '0 1px 12px 0 rgba(0,0,0,0.07)']);
+  // Light mode: fades to white
+  const headerBgLight = useTransform(scrollY, [0, 60], ['rgba(255,255,255,0)', 'rgba(255,255,255,0.95)']);
+  const headerBorderLight = useTransform(scrollY, [0, 60], ['rgba(226,232,240,0)', 'rgba(226,232,240,0.8)']);
+  const headerShadowLight = useTransform(scrollY, [0, 60], ['0 0 0 0 rgba(0,0,0,0)', '0 1px 12px 0 rgba(0,0,0,0.07)']);
+  // Dark mode: fades to deep navy
+  const headerBgDark = useTransform(scrollY, [0, 60], ['rgba(8,12,24,0)', 'rgba(8,12,24,0.88)']);
+  const headerBorderDark = useTransform(scrollY, [0, 60], ['rgba(255,255,255,0)', 'rgba(255,255,255,0.08)']);
+  const headerShadowDark = useTransform(scrollY, [0, 60], ['0 0 0 0 rgba(0,0,0,0)', '0 1px 20px 0 rgba(0,0,0,0.4)']);
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -868,10 +872,10 @@ export default function Home() {
       {/* 1. Sticky Header / Navbar */}
       <motion.header
         style={{
-          backgroundColor: headerBg,
+          backgroundColor: isDarkMode ? headerBgDark : headerBgLight,
           backdropFilter: headerBackdropFilter,
-          borderBottomColor: headerBorderColor,
-          boxShadow: headerShadow,
+          borderBottomColor: isDarkMode ? headerBorderDark : headerBorderLight,
+          boxShadow: isDarkMode ? headerShadowDark : headerShadowLight,
         }}
         className="fixed top-0 w-full z-50 border-b"
       >
@@ -882,7 +886,7 @@ export default function Home() {
           
           <nav className="hidden lg:flex items-center gap-8">
             <div className="relative group cursor-pointer py-8">
-              <span className="text-sm font-medium flex items-center gap-1 text-[#0B1F4A]">
+              <span className={`text-sm font-medium flex items-center gap-1 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
                 Products <ChevronRight className="w-3 h-3 group-hover:rotate-90 transition-transform" />
               </span>
               <div className="absolute top-full left-1/2 -translate-x-1/2 w-[600px] bg-card border border-border rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 p-6 grid grid-cols-2 gap-6">
@@ -904,14 +908,14 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <a href="#solutions" className="text-sm font-medium text-[#0B1F4A]">Solutions</a>
-            <a href="#industries" className="text-sm font-medium text-[#0B1F4A]">Industries</a>
-            <a href="#benefits" className="text-sm font-medium text-[#0B1F4A]">Benefits</a>
+            <a href="#solutions" className={`text-sm font-medium ${isDarkMode ? 'text-white hover:text-white/80' : 'text-[#0B1F4A]'}`}>Solutions</a>
+            <a href="#industries" className={`text-sm font-medium ${isDarkMode ? 'text-white hover:text-white/80' : 'text-[#0B1F4A]'}`}>Industries</a>
+            <a href="#benefits" className={`text-sm font-medium ${isDarkMode ? 'text-white hover:text-white/80' : 'text-[#0B1F4A]'}`}>Benefits</a>
           </nav>
 
           <div className="hidden lg:flex items-center gap-4">
             {/* Three-mode theme toggle: Light / Auto / Dark */}
-            <div className="flex items-center rounded-full border p-0.5 gap-0.5 transition-colors bg-slate-100 border-slate-200">
+            <div className={`flex items-center rounded-full border p-0.5 gap-0.5 transition-colors ${isDarkMode ? 'bg-white/10 border-white/15' : 'bg-slate-100 border-slate-200'}`}>
               {([
                 { mode: 'light', icon: <Sun className="w-4 h-4" />,     label: 'Light' },
                 { mode: 'auto',  icon: <Monitor className="w-4 h-4" />, label: 'Auto'  },
@@ -923,8 +927,8 @@ export default function Home() {
                   title={mode === 'auto' ? 'Auto — light 4 AM–6:30 PM, dark 6:30 PM–4 AM' : `${label} mode`}
                   className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
                     themeMode === mode
-                      ? 'bg-white text-[#0B1F4A] shadow-sm'
-                      : 'text-slate-400 hover:text-slate-600'
+                      ? isDarkMode ? 'bg-white/20 text-white shadow-sm' : 'bg-white text-[#0B1F4A] shadow-sm'
+                      : isDarkMode ? 'text-white/50 hover:text-white/80' : 'text-slate-400 hover:text-slate-600'
                   }`}
                 >
                   {icon}
@@ -932,10 +936,10 @@ export default function Home() {
                 </button>
               ))}
             </div>
-            <Button onClick={openDemo} className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/25">
+            <Button onClick={openDemo} className="bg-[#F97316] hover:bg-[#EA580C] text-white shadow-lg shadow-orange-900/30 border-0">
               Request Demo
             </Button>
-            <button className="h-9 px-4 text-sm font-semibold rounded-md border transition-colors bg-[#041D4D] text-white border-[#041D4D]/25 hover:bg-[#0a2d6b]">Log In</button>
+            <button className={`h-9 px-4 text-sm font-semibold rounded-md border transition-colors ${isDarkMode ? 'bg-transparent text-white border-white/30 hover:bg-white/10' : 'bg-[#041D4D] text-white border-[#041D4D]/25 hover:bg-[#0a2d6b]'}`}>Log In</button>
           </div>
 
           <button className="lg:hidden p-2 text-foreground" onClick={() => setIsMobileMenuOpen(true)}>
