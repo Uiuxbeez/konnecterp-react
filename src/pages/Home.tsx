@@ -880,8 +880,21 @@ export default function Home() {
         className="fixed top-0 w-full z-50 border-b"
       >
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-          <div className="flex items-center cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <img src="/images/konnect-logo.png" alt="KonnectERP" className="h-10 w-auto" />
+          <div className="relative flex items-center cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            {/* Blurred glow behind logo — dark mode only, fades out at top (transparent header) */}
+            {isDarkMode && (
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-0 -z-10"
+                style={{
+                  background: 'radial-gradient(ellipse 120% 140% at 50% 55%, rgba(251,146,60,0.28) 0%, rgba(59,130,246,0.18) 55%, transparent 100%)',
+                  filter: 'blur(14px)',
+                  transform: 'scale(1.35)',
+                  borderRadius: '50%',
+                }}
+              />
+            )}
+            <img src="/images/konnect-logo.png" alt="KonnectERP" className="h-10 w-auto relative" />
           </div>
           
           <nav className="hidden lg:flex items-center gap-8">
