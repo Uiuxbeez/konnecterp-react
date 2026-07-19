@@ -1025,13 +1025,13 @@ export default function Home() {
             alt=""
             className="w-full h-full object-cover"
           />
-          {/* Overlay — dark in dark mode, soft white in light mode */}
+          {/* Overlay — dark in dark mode, very light in light mode so photo stays prominent */}
           <div
             className="absolute inset-0"
             style={{
               background: isDarkMode
                 ? 'linear-gradient(180deg, rgba(4,10,26,0.14) 0%, rgba(4,10,26,0.50) 30%, rgba(3,8,22,0.77) 62%, rgba(2,6,18,0.86) 100%)'
-                : 'linear-gradient(180deg, rgba(255,255,255,0.23) 0%, rgba(255,255,255,0.78) 30%, rgba(255,255,255,0.93) 65%, rgba(255,255,255,1.00) 100%)',
+                : 'linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.18) 30%, rgba(255,255,255,0.30) 62%, rgba(255,255,255,0.42) 100%)',
             }}
           />
           {/* Particle network mesh */}
@@ -1058,29 +1058,29 @@ export default function Home() {
           variants={staggerContainer}
           className="relative z-10 flex flex-col items-center text-center pt-28 md:pt-32 pb-10 px-4"
         >
-          <motion.div variants={fadeInUp} className={`inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold mb-6 backdrop-blur-sm tracking-wide border ${isDarkMode ? 'bg-white/10 text-white/80 border-white/15' : 'bg-orange-50 text-orange-700 border-orange-200'}`}>
+          <motion.div variants={fadeInUp} className={`inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold mb-6 backdrop-blur-sm tracking-wide border ${isDarkMode ? 'bg-white/10 text-white/80 border-white/15' : 'bg-white/60 text-slate-700 border-slate-300/70'}`}>
             Cloud ERP for Indian Manufacturing &amp; Trading
           </motion.div>
 
-          <motion.h1 variants={fadeInUp} className={`text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.15] mb-5 tracking-tight max-w-3xl ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
+          <motion.h1 variants={fadeInUp} className={`text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.15] mb-5 tracking-tight max-w-3xl ${isDarkMode ? 'text-white' : 'text-[#111827]'}`}>
             <InViewTextEffect>Run Every Department.</InViewTextEffect><br />
             <InViewTextEffect gradient="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">From One Dashboard.</InViewTextEffect>
           </motion.h1>
 
-          <motion.p variants={fadeInUp} className={`text-base md:text-lg mb-8 max-w-2xl leading-relaxed ${isDarkMode ? 'text-slate-200/85' : 'text-[#0B1F4A]/65'}`}>
+          <motion.p variants={fadeInUp} className={`text-base md:text-lg mb-8 max-w-2xl leading-relaxed ${isDarkMode ? 'text-slate-200/85' : 'text-[#111827]/80'}`}>
             KonnectERP unifies your production, sales, procurement, HR, and accounts — with GST, E-Invoicing, and Indian compliance built in from day one. No integrations to cobble together. No data silos.
           </motion.p>
 
           <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-3 justify-center">
             <button
               onClick={openDemo}
-              className="h-11 px-6 text-sm font-semibold bg-[#F97316] hover:bg-[#ea6c0a] text-white rounded-md transition-colors shadow-lg shadow-orange-500/30"
+              className={`h-11 px-6 text-sm font-semibold rounded-md transition-colors shadow-lg ${isDarkMode ? 'bg-[#F97316] hover:bg-[#ea6c0a] text-white shadow-orange-500/30' : 'bg-[#0B1F4A] hover:bg-[#162d68] text-white shadow-slate-900/30'}`}
             >
               Request Free Demo
             </button>
             <button
               onClick={openVideo}
-              className={`h-11 px-6 text-sm font-semibold rounded-md border transition-colors backdrop-blur-sm ${isDarkMode ? 'bg-white/10 hover:bg-white/20 text-white border-white/15' : 'bg-white/70 hover:bg-white text-[#0B1F4A] border-slate-300'}`}
+              className={`h-11 px-6 text-sm font-semibold rounded-md border transition-colors backdrop-blur-sm ${isDarkMode ? 'bg-white/10 hover:bg-white/20 text-white border-white/15' : 'bg-transparent hover:bg-orange-50 text-[#F97316] border-[#F97316]'}`}
             >
               Explore Platform
             </button>
@@ -1108,7 +1108,7 @@ export default function Home() {
               { icon: Activity, value: 400, suffix: '+', label: 'Transactions Built-in', sub: 'ZERO-INTEGRATION NEEDED' },
               { icon: BarChart3, value: 150, suffix: '+', label: 'Reports & Dashboards', sub: 'REAL-TIME ANALYTICS' },
             ].map((s, i) => (
-              <div key={i} className={`relative rounded-2xl p-0.5 ${isDarkMode ? 'border-[0.75px] border-white/10' : 'border border-slate-200/80 shadow-md shadow-slate-200/60'}`}>
+              <div key={i} className="relative rounded-2xl p-0.5 border-[0.75px] border-white/10">
                 <GlowingEffect
                   spread={40}
                   glow={true}
@@ -1119,18 +1119,15 @@ export default function Home() {
                 />
                 <div
                   className="relative rounded-[calc(1rem-2px)] p-5 h-full overflow-hidden"
-                  style={isDarkMode
-                    ? { background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(8px)' }
-                    : { background: s.accent ? '#FFF7ED' : '#FFFFFF' }
-                  }
+                  style={{ background: 'rgba(11,31,74,0.82)', backdropFilter: 'blur(10px)' }}
                 >
-                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center mb-4 ${s.accent ? 'bg-[#F97316]/20 text-[#F97316]' : isDarkMode ? 'bg-white/10 text-white/70' : 'bg-slate-100 text-slate-500'}`}>
+                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center mb-4 ${s.accent ? 'bg-[#F97316]/20 text-[#F97316]' : 'bg-white/10 text-white/70'}`}>
                     <s.icon className="w-4.5 h-4.5" />
                   </div>
-                  <div className={`text-3xl font-extrabold mb-1 ${s.accent ? 'text-[#F97316]' : isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
+                  <div className={`text-3xl font-extrabold mb-1 ${s.accent ? 'text-[#F97316]' : 'text-white'}`}>
                     {s.value.toLocaleString()}{s.suffix}
                   </div>
-                  <div className={`text-sm font-semibold mb-1 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>{s.label}</div>
+                  <div className="text-sm font-semibold mb-1 text-white">{s.label}</div>
                   <div className="text-[10px] font-medium text-slate-400 tracking-wide">{s.sub}</div>
                 </div>
               </div>
