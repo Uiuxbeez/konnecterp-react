@@ -1032,13 +1032,13 @@ export default function Home() {
             alt=""
             className="w-full h-full object-cover"
           />
-          {/* Overlay — dark in dark mode, very light in light mode so photo stays prominent */}
+          {/* Overlay — dark in dark mode, heavy white in light mode */}
           <div
             className="absolute inset-0"
             style={{
               background: isDarkMode
                 ? 'linear-gradient(180deg, rgba(4,10,26,0.14) 0%, rgba(4,10,26,0.50) 30%, rgba(3,8,22,0.77) 62%, rgba(2,6,18,0.86) 100%)'
-                : 'linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.18) 30%, rgba(255,255,255,0.30) 62%, rgba(255,255,255,0.42) 100%)',
+                : 'linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.82) 35%, rgba(255,255,255,0.96) 68%, rgba(255,255,255,1.00) 100%)',
             }}
           />
           {/* Particle network mesh */}
@@ -1151,18 +1151,33 @@ export default function Home() {
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full bg-orange-500/10 blur-3xl pointer-events-none" />
             </>
           )}
-          <div className="container mx-auto px-4 text-center mb-6 relative">
+          <div className="text-center mb-6 relative">
             <p className={`text-xs font-bold uppercase tracking-widest ${isDarkMode ? 'text-slate-400' : 'text-slate-400'}`}>Trusted by growing businesses across multiple industries</p>
           </div>
-          <div className="container mx-auto px-4 flex flex-wrap items-center justify-center gap-x-10 gap-y-3 mb-8">
-            {['Rajesh Industries', 'TechCorp', 'MegaRetail', 'BuildRight', 'LogiWave', 'GlobalManufacturing'].map((name) => (
-              <div key={name} className={`flex items-center gap-2 text-sm font-semibold ${isDarkMode ? 'text-slate-400/70' : 'text-slate-500'}`}>
-                <Building2 className="w-4 h-4" />
-                {name}
-              </div>
-            ))}
+
+          {/* Infinite marquee carousel */}
+          <div className="relative w-full overflow-hidden mb-8">
+            {/* left fade */}
+            <div className={`absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none ${isDarkMode ? 'bg-gradient-to-r from-[#080c18] to-transparent' : 'bg-gradient-to-r from-white to-transparent'}`} />
+            {/* right fade */}
+            <div className={`absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none ${isDarkMode ? 'bg-gradient-to-l from-[#080c18] to-transparent' : 'bg-gradient-to-l from-white to-transparent'}`} />
+
+            <div className="flex animate-marquee whitespace-nowrap">
+              {[...Array(3)].map((_, copy) =>
+                ['Rajesh Industries', 'TechCorp', 'MegaRetail', 'BuildRight', 'LogiWave', 'GlobalManufacturing', 'Apex Traders', 'SwiftLogix'].map((name) => (
+                  <div
+                    key={`${copy}-${name}`}
+                    className={`inline-flex items-center gap-2 text-sm font-semibold mx-8 shrink-0 ${isDarkMode ? 'text-slate-400/70' : 'text-slate-500'}`}
+                  >
+                    <Building2 className="w-4 h-4 shrink-0" />
+                    {name}
+                  </div>
+                ))
+              )}
+            </div>
           </div>
-          <div className="container mx-auto px-4 flex flex-wrap justify-center gap-4">
+
+          <div className="flex flex-wrap justify-center gap-4">
             {['ISO 27001 Certified', 'SOC 2 Type II', 'GDPR Ready'].map(badge => (
               <div key={badge} className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-medium ${isDarkMode ? 'border-white/15 text-slate-300' : 'border-slate-200 text-slate-500 bg-white'}`}>
                 <span className={`w-1.5 h-1.5 rounded-full border ${isDarkMode ? 'border-slate-300/60' : 'border-slate-400'}`} /> {badge}
