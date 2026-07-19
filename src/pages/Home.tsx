@@ -865,13 +865,8 @@ export default function Home() {
   return (
     <div className={`min-h-screen bg-background font-sans overflow-x-hidden ${isDarkMode ? 'dark' : ''}`}>
       {/* 1. Sticky Header / Navbar */}
-      <motion.header 
-        style={isDarkMode ? { 
-          backgroundColor: headerBg,
-          backdropFilter: headerBackdropFilter,
-          borderBottomColor: headerBorderColor
-        } : undefined}
-        className={`fixed top-0 w-full z-50 border-b transition-colors duration-300 ${isDarkMode ? 'border-transparent' : 'bg-white/95 backdrop-blur-md border-slate-200/80 shadow-sm'}`}
+      <motion.header
+        className="fixed top-0 w-full z-50 border-b transition-colors duration-300 bg-white/95 backdrop-blur-md border-slate-200/80 shadow-sm"
       >
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
           <div className="flex items-center cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
@@ -880,7 +875,7 @@ export default function Home() {
           
           <nav className="hidden lg:flex items-center gap-8">
             <div className="relative group cursor-pointer py-8">
-              <span className={`text-sm font-medium flex items-center gap-1 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
+              <span className="text-sm font-medium flex items-center gap-1 text-[#0B1F4A]">
                 Products <ChevronRight className="w-3 h-3 group-hover:rotate-90 transition-transform" />
               </span>
               <div className="absolute top-full left-1/2 -translate-x-1/2 w-[600px] bg-card border border-border rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 p-6 grid grid-cols-2 gap-6">
@@ -902,14 +897,14 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <a href="#solutions" className={`text-sm font-medium ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>Solutions</a>
-            <a href="#industries" className={`text-sm font-medium ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>Industries</a>
-            <a href="#benefits" className={`text-sm font-medium ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>Benefits</a>
+            <a href="#solutions" className="text-sm font-medium text-[#0B1F4A]">Solutions</a>
+            <a href="#industries" className="text-sm font-medium text-[#0B1F4A]">Industries</a>
+            <a href="#benefits" className="text-sm font-medium text-[#0B1F4A]">Benefits</a>
           </nav>
 
           <div className="hidden lg:flex items-center gap-4">
             {/* Three-mode theme toggle: Light / Auto / Dark */}
-            <div className={`flex items-center rounded-full border p-0.5 gap-0.5 transition-colors ${isDarkMode ? 'bg-white/10 border-white/15' : 'bg-slate-100 border-slate-200'}`}>
+            <div className="flex items-center rounded-full border p-0.5 gap-0.5 transition-colors bg-slate-100 border-slate-200">
               {([
                 { mode: 'light', icon: <Sun className="w-4 h-4" />,     label: 'Light' },
                 { mode: 'auto',  icon: <Monitor className="w-4 h-4" />, label: 'Auto'  },
@@ -921,12 +916,8 @@ export default function Home() {
                   title={mode === 'auto' ? 'Auto — light 4 AM–6:30 PM, dark 6:30 PM–4 AM' : `${label} mode`}
                   className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
                     themeMode === mode
-                      ? isDarkMode
-                        ? 'bg-white/25 text-white shadow-sm'
-                        : 'bg-white text-[#0B1F4A] shadow-sm'
-                      : isDarkMode
-                        ? 'text-white/40 hover:text-white/70'
-                        : 'text-slate-400 hover:text-slate-600'
+                      ? 'bg-white text-[#0B1F4A] shadow-sm'
+                      : 'text-slate-400 hover:text-slate-600'
                   }`}
                 >
                   {icon}
@@ -937,7 +928,7 @@ export default function Home() {
             <Button onClick={openDemo} className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/25">
               Request Demo
             </Button>
-            <button className={`h-9 px-4 text-sm font-semibold rounded-md border transition-colors backdrop-blur-sm ${isDarkMode ? 'bg-white/10 hover:bg-white/20 text-white border-white/15' : 'bg-[#041D4D] text-[#ffffff] border-[#041D4D]/25'}`}>Log In</button>
+            <button className="h-9 px-4 text-sm font-semibold rounded-md border transition-colors bg-[#041D4D] text-white border-[#041D4D]/25 hover:bg-[#0a2d6b]">Log In</button>
           </div>
 
           <button className="lg:hidden p-2 text-foreground" onClick={() => setIsMobileMenuOpen(true)}>
