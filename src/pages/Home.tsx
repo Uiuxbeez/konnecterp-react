@@ -498,11 +498,12 @@ function InViewTextEffect({
 
 export default function Home() {
   const { scrollY } = useScroll();
-  const headerBgOpacity = useTransform(scrollY, [0, 50], [0, 1]);
-  const headerBlur = useTransform(scrollY, [0, 50], [0, 8]);
-  const headerBg = useTransform(headerBgOpacity, v => `rgba(0, 0, 0, ${0.05})`);
-  const headerBackdropFilter = useTransform(headerBlur, v => `blur(${10}px)`);
-  const headerBorderColor = useTransform(headerBgOpacity, v => `rgba(226, 232, 240, ${0.14})`);
+  const headerBgOpacity = useTransform(scrollY, [0, 60], [0, 0.95]);
+  const headerBlur = useTransform(scrollY, [0, 60], [0, 12]);
+  const headerBg = useTransform(headerBgOpacity, v => `rgba(255, 255, 255, ${v})`);
+  const headerBackdropFilter = useTransform(headerBlur, v => `blur(${v}px)`);
+  const headerBorderColor = useTransform(scrollY, [0, 60], ['rgba(226,232,240,0)', 'rgba(226,232,240,0.8)']);
+  const headerShadow = useTransform(scrollY, [0, 60], ['0 0 0 0 rgba(0,0,0,0)', '0 1px 12px 0 rgba(0,0,0,0.07)']);
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -866,7 +867,13 @@ export default function Home() {
     <div className={`min-h-screen bg-background font-sans overflow-x-hidden ${isDarkMode ? 'dark' : ''}`}>
       {/* 1. Sticky Header / Navbar */}
       <motion.header
-        className="fixed top-0 w-full z-50 border-b transition-colors duration-300 bg-white/95 backdrop-blur-md border-slate-200/80 shadow-sm"
+        style={{
+          backgroundColor: headerBg,
+          backdropFilter: headerBackdropFilter,
+          borderBottomColor: headerBorderColor,
+          boxShadow: headerShadow,
+        }}
+        className="fixed top-0 w-full z-50 border-b"
       >
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
           <div className="flex items-center cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
