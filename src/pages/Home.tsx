@@ -534,6 +534,13 @@ export default function Home() {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const openDemo = () => setIsDemoModalOpen(true);
+
+  // Auto-open the demo modal 20 seconds after every page load
+  useEffect(() => {
+    const timer = setTimeout(() => setIsDemoModalOpen(true), 20000);
+    return () => clearTimeout(timer);
+  }, []);
+
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isFloatingPlayerOpen, setIsFloatingPlayerOpen] = useState(true);
   const openVideo = () => setIsVideoModalOpen(true);
