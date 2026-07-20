@@ -1074,7 +1074,7 @@ export default function Home() {
             <InViewTextEffect gradient="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">From One Dashboard.</InViewTextEffect>
           </motion.h1>
 
-          <motion.p variants={fadeInUp} className={`text-base md:text-lg mb-8 max-w-2xl leading-relaxed ${isDarkMode ? 'text-slate-200/85' : 'text-[#111827]/80'}`}>
+          <motion.p variants={fadeInUp} className={`text-base md:text-lg mb-8 max-w-2xl leading-relaxed ${isDarkMode ? 'text-slate-200/85' : 'text-[#141414]/95'}`}>
             KonnectERP unifies your production, sales, procurement, HR, and accounts — with GST, E-Invoicing, and Indian compliance built in from day one. No integrations to cobble together. No data silos.
           </motion.p>
 
