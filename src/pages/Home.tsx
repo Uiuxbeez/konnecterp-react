@@ -884,7 +884,7 @@ export default function Home() {
           borderBottomColor: isDarkMode ? headerBorderDark : headerBorderLight,
           boxShadow: isDarkMode ? headerShadowDark : headerShadowLight,
         }}
-        className="fixed top-0 w-full z-50 border-b"
+        className="fixed top-0 overflow-hidden w-full z-50 border-b"
       >
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
           <div className="relative flex items-center cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
@@ -894,10 +894,10 @@ export default function Home() {
                 aria-hidden
                 className="pointer-events-none absolute inset-0 -z-10"
                 style={{
-                  background: 'radial-gradient(ellipse 120% 140% at 50% 55%, rgba(251,146,60,0.28) 0%, rgba(59,130,246,0.18) 55%, transparent 100%)',
-                  filter: 'blur(14px)',
-                  transform: 'scale(1.35)',
-                  borderRadius: '50%',
+                  background: 'radial-gradient(ellipse 120% 140% at 50% 55%, rgba(251,146,60,0.68) 0%, rgba(59,130,246,0.18) 55%, transparent 100%)',
+                  filter: 'blur(16px)',
+                  transform: 'scale(2)',
+                  borderRadius: '68%',
                 }}
               />
             )}
