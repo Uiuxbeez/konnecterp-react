@@ -1190,7 +1190,7 @@ export default function Home() {
 
       {/* ── Colour-blur divider — visible in light mode only ── */}
       {!isDarkMode && (
-        <div className="relative h-28 overflow-hidden pointer-events-none select-none -my-1" aria-hidden>
+        <div className="relative h-2 overflow-hidden pointer-events-none select-none -my-1" aria-hidden>
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-40 rounded-full bg-orange-400/20 blur-3xl" />
           <div className="absolute left-1/3 top-1/2 -translate-y-1/2 w-64 h-32 rounded-full bg-blue-400/15 blur-3xl" />
           <div className="absolute right-1/3 top-1/2 -translate-y-1/2 w-64 h-32 rounded-full bg-indigo-400/15 blur-3xl" />
