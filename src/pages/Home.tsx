@@ -377,6 +377,72 @@ function NetworkMesh() {
 
 // ── Video Lightbox Modal ───────────────────────────────────────────────────────
 const DEMO_VIDEO_URL = 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0&modestbranding=1';
+const BRAND_LOGOS = [
+  { src: '/images/brands/brand-1.avif', alt: 'Brand logo 1' },
+  { src: '/images/brands/brand-2.jpg', alt: 'Brand logo 2' },
+  { src: '/images/brands/brand-3.png', alt: 'Brand logo 3' },
+  { src: '/images/brands/brand-4.jpg', alt: 'Brand logo 4' },
+  { src: '/images/brands/brand-5.png', alt: 'Brand logo 5' },
+  { src: '/images/brands/brand-6.jpg', alt: 'Brand logo 6' },
+  { src: '/images/brands/brand-7.png', alt: 'Brand logo 7' },
+];
+
+type MenuGroup = {
+  label: string;
+  footerLabel?: string;
+  href: string;
+  items: { label: string; href: string }[];
+};
+
+const MENU_GROUPS: MenuGroup[] = [
+  {
+    label: 'Products',
+    href: '#products',
+    items: [
+      { label: 'ERP for SMEs', href: '#products' },
+      { label: 'ERP for Enterprise', href: '#products' },
+      { label: 'Trading & Distribution', href: '#products' },
+    ],
+  },
+  {
+    label: 'Industries',
+    href: '#industries',
+    items: [
+      { label: 'Discrete Manufacturing', href: '#industries' },
+      { label: 'Process Manufacturing', href: '#industries' },
+      { label: 'Trading/Distribution', href: '#industries' },
+      { label: 'Job Work', href: '#industries' },
+    ],
+  },
+  {
+    label: 'Customers',
+    href: '#customers',
+    items: [
+      { label: 'Case Studies', href: '#customers' },
+      { label: 'Testimonials', href: '#customers' },
+    ],
+  },
+  {
+    label: 'Resources',
+    href: '#resources',
+    items: [
+      { label: 'Product Brochure', href: '#resources' },
+      { label: 'Implementation Methodology', href: '#resources' },
+      { label: 'Blog', href: '#resources' },
+      { label: 'FAQ', href: '#resources' },
+    ],
+  },
+  {
+    label: 'About Us',
+    footerLabel: 'Company',
+    href: '#about-us',
+    items: [
+      { label: 'About Us', href: '#about-us' },
+      { label: 'Career', href: '#career' },
+      { label: 'Contact Us', href: '#contact' },
+    ],
+  },
+];
 
 function VideoModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   useEffect(() => {
@@ -904,33 +970,28 @@ export default function Home() {
             <img src="/images/konnect-logo.png" alt="KonnectERP" className="h-10 w-auto relative" />
           </div>
           
-          <nav className="hidden lg:flex items-center gap-8">
-            <div className="relative group cursor-pointer py-8">
-              <span className={`text-sm font-medium flex items-center gap-1 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
-                Products <ChevronRight className="w-3 h-3 group-hover:rotate-90 transition-transform" />
-              </span>
-              <div className="absolute top-full left-1/2 -translate-x-1/2 w-[600px] bg-card border border-border rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 p-6 grid grid-cols-2 gap-6">
-                {[
-                  { icon: BarChart3, title: 'Finance', desc: 'Accounting & Analytics' },
-                  { icon: Box, title: 'Inventory', desc: 'Warehouse & Stock' },
-                  { icon: Users, title: 'HR & Payroll', desc: 'Employee Management' },
-                  { icon: Factory, title: 'Manufacturing', desc: 'Production Planning' }
-                ].map((item, i) => (
-                  <div key={i} className="flex gap-4 p-3 hover:bg-muted rounded-lg transition-colors">
-                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center text-primary shrink-0">
-                      <item.icon className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-foreground">{item.title}</h4>
-                      <p className="text-sm text-muted-foreground">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
+          <nav className="hidden lg:flex items-center gap-7">
+            <button
+              type="button"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className={`text-sm font-medium ${isDarkMode ? 'text-white hover:text-white/80' : 'text-[#0B1F4A]'}`}
+            >
+              Home
+            </button>
+            {MENU_GROUPS.map((group) => (
+              <div key={group.label} className="relative group cursor-pointer py-8">
+                <a href={group.href} className={`text-sm font-medium flex items-center gap-1 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
+                  {group.label} <ChevronRight className="w-3 h-3 group-hover:rotate-90 transition-transform" />
+                </a>
+                <div className="absolute top-full left-1/2 -translate-x-1/2 min-w-[260px] bg-card border border-border rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 p-3">
+                  {group.items.map((item) => (
+                    <a key={item.label} href={item.href} className="block rounded-lg px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted transition-colors">
+                      {item.label}
+                    </a>
+                  ))}
+                </div>
               </div>
-            </div>
-            <a href="#solutions" className={`text-sm font-medium ${isDarkMode ? 'text-white hover:text-white/80' : 'text-[#0B1F4A]'}`}>Solutions</a>
-            <a href="#industries" className={`text-sm font-medium ${isDarkMode ? 'text-white hover:text-white/80' : 'text-[#0B1F4A]'}`}>Industries</a>
-            <a href="#benefits" className={`text-sm font-medium ${isDarkMode ? 'text-white hover:text-white/80' : 'text-[#0B1F4A]'}`}>Benefits</a>
+            ))}
           </nav>
 
           <div className="hidden lg:flex items-center gap-4">
@@ -984,11 +1045,27 @@ export default function Home() {
                 <X className="w-6 h-6" />
               </button>
             </div>
-            <div className="p-4 flex flex-col gap-4">
-              {['Products', 'Solutions', 'Industries', 'Benefits'].map(item => (
-                <a key={item} href={`#${item.toLowerCase()}`} className="text-lg font-medium text-foreground py-2 border-b border-border" onClick={() => setIsMobileMenuOpen(false)}>
-                  {item}
-                </a>
+            <div className="p-4 flex flex-col gap-4 overflow-y-auto">
+              <button
+                type="button"
+                className="text-left text-lg font-medium text-foreground py-2 border-b border-border"
+                onClick={() => { setIsMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              >
+                Home
+              </button>
+              {MENU_GROUPS.map((group) => (
+                <div key={group.label} className="border-b border-border pb-3">
+                  <a href={group.href} className="block text-lg font-medium text-foreground py-2" onClick={() => setIsMobileMenuOpen(false)}>
+                    {group.label}
+                  </a>
+                  <div className="grid gap-1 pl-3">
+                    {group.items.map((item) => (
+                      <a key={item.label} href={item.href} className="py-1.5 text-sm text-muted-foreground" onClick={() => setIsMobileMenuOpen(false)}>
+                        {item.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
               ))}
               {/* Theme toggle in mobile menu */}
               <div className="pt-2 pb-1">
@@ -1066,16 +1143,16 @@ export default function Home() {
           className="relative z-10 flex flex-col items-center text-center pt-28 md:pt-32 pb-10 px-4"
         >
           <motion.div variants={fadeInUp} className={`inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold mb-6 backdrop-blur-sm tracking-wide border ${isDarkMode ? 'bg-white/10 text-white/80 border-white/15' : 'bg-white/60 text-slate-700 border-slate-300/70'}`}>
-            Cloud ERP for Indian Manufacturing &amp; Trading
+            Next-Gen Enterprise Solutions on Cloud
           </motion.div>
 
           <motion.h1 variants={fadeInUp} className={`text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.15] mb-5 tracking-tight max-w-3xl ${isDarkMode ? 'text-white' : 'text-[#111827]'}`}>
-            <InViewTextEffect>Run Every Department.</InViewTextEffect><br />
-            <InViewTextEffect gradient="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">From One Dashboard.</InViewTextEffect>
+            <InViewTextEffect>One Platform</InViewTextEffect><br />
+            <InViewTextEffect gradient="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">Total Operational Control</InViewTextEffect>
           </motion.h1>
 
           <motion.p variants={fadeInUp} className={`text-base md:text-lg mb-8 max-w-2xl leading-relaxed ${isDarkMode ? 'text-slate-200/85' : 'text-[#141414]/95'}`}>
-            KonnectERP unifies your production, sales, procurement, HR, and accounts — with GST, E-Invoicing, and Indian compliance built in from day one. No integrations to cobble together. No data silos.
+            Seamlessly connect Procure-to-Pay, Plan-to-Produce, Asset-to-Performance, and Project-to-Profit on a single platform. Konnect ERP delivers end-to-end operational clarity with pre-defined industry templates and native Indian compliance from day one.
           </motion.p>
 
           <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -1083,20 +1160,20 @@ export default function Home() {
               onClick={openDemo}
               className={`h-11 px-6 text-sm font-semibold rounded-md transition-colors shadow-lg ${isDarkMode ? 'bg-[#F97316] hover:bg-[#ea6c0a] text-white shadow-orange-500/30' : 'bg-[#0B1F4A] hover:bg-[#162d68] text-white shadow-slate-900/30'}`}
             >
-              Request Free Demo
+              Schedule Demo
             </button>
             <button
               onClick={openVideo}
               className={`h-11 px-6 text-sm font-semibold rounded-md border transition-colors backdrop-blur-sm ${isDarkMode ? 'bg-white/10 hover:bg-white/20 text-white border-white/15' : 'bg-transparent hover:bg-orange-50 text-[#F97316] border-[#F97316]'}`}
             >
-              Explore Platform
+               Watch Platform Overview
             </button>
           </motion.div>
 
           <motion.div variants={fadeInUp} className={`mt-5 flex items-center gap-5 text-xs ${isDarkMode ? 'text-slate-300/70' : 'text-slate-500'}`}>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className={`w-3.5 h-3.5 ${isDarkMode ? 'text-slate-300/60' : 'text-orange-400'}`} /> No credit card required</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className={`w-3.5 h-3.5 ${isDarkMode ? 'text-slate-300/60' : 'text-orange-400'}`} /> 14-day free trial</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className={`w-3.5 h-3.5 ${isDarkMode ? 'text-slate-300/60' : 'text-orange-400'}`} /> Setup in minutes</span>
+            <span className="flex items-center gap-1.5"><CheckCircle2 className={`w-3.5 h-3.5 ${isDarkMode ? 'text-slate-300/60' : 'text-orange-400'}`} /> Pre-Build Industry Specific ERP</span>
+            <span className="flex items-center gap-1.5"><CheckCircle2 className={`w-3.5 h-3.5 ${isDarkMode ? 'text-slate-300/60' : 'text-orange-400'}`} /> Faster Deployment</span>
+            <span className="flex items-center gap-1.5"><CheckCircle2 className={`w-3.5 h-3.5 ${isDarkMode ? 'text-slate-300/60' : 'text-orange-400'}`} /> Transparent Pricing</span>
           </motion.div>
         </motion.div>
 
@@ -1158,20 +1235,24 @@ export default function Home() {
           {/* Infinite marquee carousel */}
           <div className="relative w-full overflow-hidden mb-8">
             {/* left fade */}
-            <div className={`absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none ${isDarkMode ? 'bg-gradient-to-r from-[#080c18] to-transparent' : 'bg-gradient-to-r from-white to-transparent'}`} />
+            <div className={`absolute left-0 top-0 bottom-0 w-24 md:w-32 z-10 pointer-events-none ${isDarkMode ? 'bg-gradient-to-r from-[#080c18] to-transparent' : 'bg-gradient-to-r from-white to-transparent'}`} />
             {/* right fade */}
-            <div className={`absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none ${isDarkMode ? 'bg-gradient-to-l from-[#080c18] to-transparent' : 'bg-gradient-to-l from-white to-transparent'}`} />
+            <div className={`absolute right-0 top-0 bottom-0 w-24 md:w-32 z-10 pointer-events-none ${isDarkMode ? 'bg-gradient-to-l from-[#080c18] to-transparent' : 'bg-gradient-to-l from-white to-transparent'}`} />
 
             {/* Exactly 2 copies → translateX(-50%) snaps back to the start perfectly = no flicker */}
             <div className="flex animate-marquee whitespace-nowrap will-change-transform">
               {[0, 1].map((copy) =>
-                ['Rajesh Industries', 'TechCorp', 'MegaRetail', 'BuildRight', 'LogiWave', 'GlobalManufacturing', 'Apex Traders', 'SwiftLogix'].map((name) => (
+                BRAND_LOGOS.map((brand) => (
                   <div
-                    key={`${copy}-${name}`}
-                    className={`inline-flex items-center gap-2 text-sm font-semibold mx-10 shrink-0 ${isDarkMode ? 'text-slate-400/70' : 'text-slate-500'}`}
+                    key={`${copy}-${brand.src}`}
+                    className="inline-flex h-24 w-[220px] md:w-[300px] lg:w-[320px] items-center justify-center mx-5 md:mx-10 shrink-0"
                   >
-                    <Building2 className="w-4 h-4 shrink-0" />
-                    {name}
+                    <img
+                      src={brand.src}
+                      alt={brand.alt}
+                      className={`max-h-20 max-w-full object-contain transition-opacity ${isDarkMode ? 'opacity-90 brightness-110' : 'opacity-90'}`}
+                      loading="lazy"
+                    />
                   </div>
                 ))
               )}
@@ -1219,13 +1300,12 @@ export default function Home() {
             <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-5 border ${isDarkMode ? 'bg-white/10 text-white/80 border-white/15' : 'bg-orange-50 text-orange-600 border-orange-200'}`}>
               <Building2 className="w-3.5 h-3.5" /> Industry Solutions
             </div>
-            <p className={`text-xs font-bold uppercase tracking-widest mb-4 ${isDarkMode ? 'text-blue-400/70' : 'text-slate-500'}`}>The Complete Platform</p>
             <h2 className={`text-4xl md:text-5xl font-bold tracking-tight mb-4 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
-              <InViewTextEffect>Everything Your Business Needs.</InViewTextEffect><br />
-              <InViewTextEffect gradient="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">Nothing You Don't.</InViewTextEffect>
+              <InViewTextEffect>Flexible Modules</InViewTextEffect><br />
+              <InViewTextEffect gradient="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">Unified Control</InViewTextEffect>
             </h2>
             <p className={`text-lg max-w-lg mx-auto ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
-              Pick the modules you need today. Add more as you grow. All sharing the same data layer so nothing falls through the cracks.
+              Deploy the exact solution your business requires today - from core inventory to full end-to-end production. Every module shares the same real-time data, eliminating workarounds and data silos.
             </p>
           </motion.div>
 
@@ -2294,7 +2374,7 @@ export default function Home() {
       </section>
 
       {/* 9. Built Different / Globe section + Stats */}
-      <section className={`relative overflow-hidden ${isDarkMode ? 'bg-[#001133]' : 'bg-white'}`}>
+      <section className={`relative hidden overflow-hidden ${isDarkMode ? 'bg-[#001133]' : 'bg-white'}`}>
 
         {/* ── Globe + Built Different ── */}
         <div className="relative overflow-hidden" style={{ minHeight: 680 }}>
@@ -2408,6 +2488,216 @@ export default function Home() {
 
       </section>
 
+      {/* 9. Built Different / Globe section + Stats */}
+      <section className={`relative overflow-hidden ${isDarkMode ? 'bg-[#001133]' : 'bg-white'}`}>
+
+        {/* ── Globe + Built Different ── */}
+        <div className="relative overflow-hidden" style={{ minHeight: 460 }}>
+
+          {/* ── Animated globe SVG with spotlight + connecting beams ── */}
+          <div className="absolute inset-0 pointer-events-none select-none overflow-hidden" style={{ zIndex: 0 }}>
+
+            {/* Static globe */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <img
+                src="/images/global.svg"
+                alt=""
+                className={`w-full h-full object-cover object-top ${isDarkMode ? 'opacity-70' : 'opacity-20'}`}
+              />
+            </div>
+
+            {/* Spotlight — static radial glow at center */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  'radial-gradient(ellipse 55% 45% at 50% 45%, rgba(249,115,22,0.10) 0%, rgba(17,101,239,0.07) 45%, transparent 70%)',
+              }}
+            />
+
+            {/* City connection dots + beams — drawn as inline SVG so they scale perfectly */}
+            <svg
+              className="absolute inset-0 w-full h-full"
+              viewBox="0 0 1280 460"
+              preserveAspectRatio="xMidYMid slice"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {/* Connection lines (animated stroke-dashoffset) */}
+              {[
+                { x1: 320, y1: 195, x2: 437, y2: 77 },
+                { x1: 437, y1: 77, x2: 640, y2: 68 },
+                { x1: 640, y1: 68, x2: 860, y2: 203 },
+                { x1: 860, y1: 203, x2: 870, y2: 122 },
+                { x1: 870, y1: 122, x2: 950, y2: 167 },
+                { x1: 950, y1: 167, x2: 860, y2: 203 },
+                { x1: 860, y1: 203, x2: 320, y2: 195 },
+              ].map((ln, i) => {
+                const len = Math.hypot(ln.x2 - ln.x1, ln.y2 - ln.y1);
+                return (
+                  <motion.line
+                    key={i}
+                    x1={ln.x1} y1={ln.y1} x2={ln.x2} y2={ln.y2}
+                    stroke={isDarkMode ? 'rgba(99,179,237,0.35)' : 'rgba(17,101,239,0.20)'}
+                    strokeWidth="1"
+                    strokeDasharray={`${len}`}
+                    initial={{ strokeDashoffset: len }}
+                    animate={{ strokeDashoffset: [len, 0, -len] }}
+                    transition={{
+                      duration: 3.5,
+                      delay: i * 0.45,
+                      repeat: Infinity,
+                      repeatDelay: 1.2,
+                      ease: 'easeInOut',
+                    }}
+                  />
+                );
+              })}
+
+              {/* City dots */}
+              {[
+                { cx: 320,  cy: 195, label: 'Tamil Nadu' },
+                { cx: 437,  cy: 77, label: 'Maharashtra' },
+                { cx: 640,  cy: 68, label: 'Karnataka' },
+                { cx: 860,  cy: 203, label: 'Gujarat' },
+                { cx: 870,  cy: 122, label: 'Goa' },
+                { cx: 950, cy: 167, label: 'Kerala' },
+              ].map((dot, i) => (
+                <g key={dot.label}>
+                  {/* Outer pulse ring */}
+                  <motion.circle
+                    cx={dot.cx} cy={dot.cy} r={10}
+                    fill="none"
+                    stroke={isDarkMode ? 'rgba(249,115,22,0.5)' : 'rgba(249,115,22,0.4)'}
+                    strokeWidth="1"
+                    initial={{ scale: 0.6, opacity: 0.8 }}
+                    animate={{ scale: 2.2, opacity: 0 }}
+                    transition={{ duration: 2, delay: i * 0.35, repeat: Infinity, ease: 'easeOut' }}
+                    style={{ transformOrigin: `${dot.cx}px ${dot.cy}px` }}
+                  />
+                  {/* Inner dot */}
+                  <circle
+                    cx={dot.cx} cy={dot.cy} r={3.5}
+                    fill={isDarkMode ? '#F97316' : '#1165EF'}
+                  />
+                  {/* Label */}
+                  <text
+                    x={dot.cx} y={dot.cy - 10}
+                    textAnchor="middle"
+                    fontSize="9"
+                    fontWeight="600"
+                    fill={isDarkMode ? 'rgba(255,255,255,0.55)' : 'rgba(11,31,74,0.55)'}
+                    letterSpacing="0.04em"
+                  >
+                    {dot.label}
+                  </text>
+                </g>
+              ))}
+            </svg>
+
+          </div>
+
+          {/* ── Content overlaid on globe ── */}
+          <div className="relative z-10 px-8 md:px-16 py-20 max-w-[1400px] mx-auto">
+
+            {/* Top headline — centred */}
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.55 }}
+              className="text-center mb-12"
+            >
+              <p className="text-[10px] font-bold tracking-[0.22em] uppercase text-slate-400 mb-4">
+                Why 5,000 Businesses Choose Konnect
+              </p>
+              <h2 className={`text-4xl md:text-[52px] font-bold leading-tight ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
+                <InViewTextEffect>Built Different.</InViewTextEffect><br />
+                <span className="text-[#F97316]"><InViewTextEffect>Proven in the Field.</InViewTextEffect></span>
+              </h2>
+            </motion.div>
+
+            {/* Three-column row: feature-left | feature-right | callouts */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-6">
+
+              {/* Col 1 — features left */}
+              <div className="flex flex-col gap-8">
+                {[
+                  { icon: Server, title: 'Cloud-Native, Low TCO', desc: 'No servers to buy, no IT staff to manage. Start for a fraction of what legacy ERP costs.' },
+                  { icon: Layers, title: 'Modular by Design', desc: "Start with finance and inventory. Add CRM, HRMS, and BI when you're ready. No forced bundles." },
+                ].map((feat, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.45 }} className="flex gap-3 flex gap-3 rounded-[5px] border border-[rgba(178,178,178,0.23)] bg-white/10 backdrop-blur-sm p-3">
+                    <div className="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/25 flex items-center justify-center shrink-0 mt-0.5">
+                      <feat.icon className="w-4 h-4 text-blue-400" />
+                    </div>
+                    <div>
+                      <p className={`font-semibold text-sm mb-1 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>{feat.title}</p>
+                      <p className={`text-xs leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>{feat.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Col 2 — features right */}
+              <div className="flex flex-col gap-8">
+                {[
+                  { icon: Shield, title: 'Amazon-Hosted Security', desc: 'Triple-layered data security on AWS. Your business data stays private and always backed up.' },
+                  { icon: Zap, title: 'Quickest Onboarding', desc: 'Go live in weeks, not months. Pre-configured industry templates mean 80% setup is already done.' },
+                ].map((feat, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 + i * 0.1, duration: 0.45 }} className="flex gap-3 flex gap-3 rounded-[5px] border border-[rgba(178,178,178,0.23)] bg-white/10 backdrop-blur-sm p-3">
+                    <div className="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/25 flex items-center justify-center shrink-0 mt-0.5">
+                      <feat.icon className="w-4 h-4 text-blue-400" />
+                    </div>
+                    <div>
+                      <p className={`font-semibold text-sm mb-1 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>{feat.title}</p>
+                      <p className={`text-xs leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>{feat.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Col 3 — office & security callouts */}
+              <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.15 }} className="flex flex-col gap-6 lg:pl-8">
+                <div>
+                  <p className="text-[9px] font-bold tracking-[0.2em] uppercase text-slate-400 mb-1.5">Coimbatore · Pune · Chennai</p>
+                  <h3 className={`text-2xl md:text-3xl font-black leading-tight ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>5 Offices Across India</h3>
+                </div>
+                <div className={`w-12 h-px ${isDarkMode ? 'bg-white/10' : 'bg-slate-200'}`} />
+                <div>
+                  <p className="text-[9px] font-bold tracking-[0.2em] uppercase text-slate-400 mb-1.5">Amazon AWS Hosted</p>
+                  <h3 className={`text-2xl md:text-3xl font-black leading-tight ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>Triple-layer security</h3>
+                </div>
+              </motion.div>
+
+            </div>
+          </div>
+        </div>
+
+        {/* ── Stats bar — always dark navy ── */}
+        <div className={`border-t ${isDarkMode ? 'border-white/[0.07]' : 'bg-[#001133] border-white/[0.07]'}`}>
+          <div className="container mx-auto px-4 max-w-8xl">
+            <div className="grid grid-cols-2 md:grid-cols-4">
+              {[
+                { value: 500, suffix: '+', label: 'Businesses Managed' },
+                { value: 50, suffix: 'k+', label: 'Daily Transactions' },
+                { value: 99.9, suffix: '%', label: 'System Uptime' },
+                { value: 15, suffix: '+', label: 'Industry Verticals' },
+              ].map((stat, i) => (
+                <div
+                  key={i}
+                  className={`py-14 px-6 text-center ${i < 3 ? 'md:border-r border-white/[0.07]' : ''} ${i === 0 || i === 2 ? 'border-r border-white/[0.07] md:border-r-0' : ''}`}
+                >
+                  <div className="text-5xl md:text-6xl font-black text-white mb-2 tracking-tighter">
+                    <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+                  </div>
+                  <div className="text-slate-400 font-semibold text-xs uppercase tracking-widest">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+      </section>
       {/* 10. Integrations Section */}
       <section className="hidden py-24 bg-muted/50">
           <div className="container mx-auto px-4 text-center">
@@ -2857,7 +3147,7 @@ export default function Home() {
 
         {/* Main content */}
         <div className="relative z-10 container mx-auto px-8 pt-14 pb-0 max-w-8xl">
-          <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-10 mb-14">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[2fr_repeat(5,minmax(0,1fr))] gap-10 mb-14">
 
             {/* Brand column */}
             <div>
@@ -2895,45 +3185,16 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Products */}
-            <div>
-              <h4 className="text-white font-bold text-xs tracking-[0.16em] uppercase mb-5">Products</h4>
-              <ul className="space-y-3">
-                {['Finance', 'Inventory', 'Sales & CRM', 'HR & Payroll'].map(item => (
-                  <li key={item}><a href="#" className="text-slate-400 text-sm hover:text-white transition-colors">{item}</a></li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Solutions */}
-            <div>
-              <h4 className="text-white font-bold text-xs tracking-[0.16em] uppercase mb-5">Solutions</h4>
-              <ul className="space-y-3">
-                {['Small Business', 'Mid-Market', 'Enterprise'].map(item => (
-                  <li key={item}><a href="#" className="text-slate-400 text-sm hover:text-white transition-colors">{item}</a></li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Industries */}
-            <div>
-              <h4 className="text-white font-bold text-xs tracking-[0.16em] uppercase mb-5">Industries</h4>
-              <ul className="space-y-3">
-                {['Manufacturing', 'Retail', 'Distribution', 'Healthcare'].map(item => (
-                  <li key={item}><a href="#" className="text-slate-400 text-sm hover:text-white transition-colors">{item}</a></li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Company */}
-            <div>
-              <h4 className="text-white font-bold text-xs tracking-[0.16em] uppercase mb-5">Company</h4>
-              <ul className="space-y-3">
-                {['About Us', 'Careers', 'Contact'].map(item => (
-                  <li key={item}><a href="#" className="text-slate-400 text-sm hover:text-white transition-colors">{item}</a></li>
-                ))}
-              </ul>
-            </div>
+            {MENU_GROUPS.map((group) => (
+              <div key={group.label}>
+                <h4 className="text-white font-bold text-xs tracking-[0.16em] uppercase mb-5">{group.footerLabel ?? group.label}</h4>
+                <ul className="space-y-3">
+                  {group.items.map((item) => (
+                    <li key={item.label}><a href={item.href} className="text-slate-400 text-sm hover:text-white transition-colors">{item.label}</a></li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
 
           {/* Bottom bar */}
