@@ -2609,7 +2609,7 @@ export default function Home() {
               className="text-center mb-12"
             >
               <p className="text-[10px] font-bold tracking-[0.22em] uppercase text-slate-400 mb-4">
-                Why 5,000 Businesses Choose Konnect
+                Why 5,000 Businesses Choose KonnectERP
               </p>
               <h2 className={`text-4xl md:text-[52px] font-bold leading-tight ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
                 <InViewTextEffect>Built Different.</InViewTextEffect><br />
