@@ -86,14 +86,7 @@ function DemoModal({ open, onClose }: { open: boolean; onClose: () => void }) {
               >
                 <X className="w-4 h-4" />
               </button>
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-7 h-7 bg-white/20 rounded-lg flex items-center justify-center">
-                  <Layers className="w-4 h-4 text-white" />
-                </div>
-                <span className="text-white font-bold text-lg">KonnectERP.</span>
-              </div>
-              <h2 className="text-2xl font-bold text-white">Book Your Free Demo</h2>
-              <p className="text-blue-100 text-sm mt-1">See how KonnectERP can transform your business in 30 minutes.</p>
+              <p className="text-blue-100 text-sm mt-1">See How Manufacturing Industry-Specific Konnect ERP Fits Your Operations</p>
             </div>
 
             {/* Body */}
@@ -190,17 +183,15 @@ function DemoModal({ open, onClose }: { open: boolean; onClose: () => void }) {
                       {errors.size && <p className="text-red-500 text-xs mt-1">{errors.size}</p>}
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Interested In</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Specific Requirements</label>
                       <div className="relative">
-                        <select
+                        <input
+                          type="text"
                           value={form.module}
                           onChange={e => field('module', e.target.value)}
-                          className="w-full appearance-none pl-3 pr-8 py-2.5 rounded-lg border border-gray-200 bg-gray-50 text-sm outline-none focus:ring-2 focus:ring-[#F97316]/30 focus:border-[#F97316]"
-                        >
-                          <option value="">All Modules</option>
-                          {MODULES.map(m => <option key={m} value={m}>{m}</option>)}
-                        </select>
-                        <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
+                          placeholder="Describe any specific requirements"
+                          className="w-full pl-3 pr-4 py-2.5 rounded-lg border border-gray-200 bg-gray-50 text-sm outline-none focus:ring-2 focus:ring-[#F97316]/30 focus:border-[#F97316]"
+                        />
                       </div>
                     </div>
                   </div>
@@ -391,6 +382,7 @@ type MenuGroup = {
   label: string;
   footerLabel?: string;
   href: string;
+  description?: string;
   items: { label: string; href: string }[];
 };
 
@@ -398,6 +390,7 @@ const MENU_GROUPS: MenuGroup[] = [
   {
     label: 'Products',
     href: '#products',
+    description: 'ERP solutions for growing SMEs, large enterprises, and trading businesses.',
     items: [
       { label: 'ERP for SMEs', href: '#products' },
       { label: 'ERP for Enterprise', href: '#products' },
@@ -407,6 +400,7 @@ const MENU_GROUPS: MenuGroup[] = [
   {
     label: 'Industries',
     href: '#industries',
+    description: 'Tailored workflows for manufacturing, trading, distribution, and job work operations.',
     items: [
       { label: 'Discrete Manufacturing', href: '#industries' },
       { label: 'Process Manufacturing', href: '#industries' },
@@ -417,6 +411,7 @@ const MENU_GROUPS: MenuGroup[] = [
   {
     label: 'Customers',
     href: '#customers',
+    description: 'Proof points from real customer success and client experiences.',
     items: [
       { label: 'Case Studies', href: '#customers' },
       { label: 'Testimonials', href: '#customers' },
@@ -425,6 +420,7 @@ const MENU_GROUPS: MenuGroup[] = [
   {
     label: 'Resources',
     href: '#resources',
+    description: 'Brochures, implementation guidance, blog content, and answers to common questions.',
     items: [
       { label: 'Product Brochure', href: '#resources' },
       { label: 'Implementation Methodology', href: '#resources' },
@@ -436,6 +432,7 @@ const MENU_GROUPS: MenuGroup[] = [
     label: 'About Us',
     footerLabel: 'Company',
     href: '#about-us',
+    description: 'Learn more about the company, opportunities, and how to get in touch.',
     items: [
       { label: 'About Us', href: '#about-us' },
       { label: 'Career', href: '#career' },
@@ -950,7 +947,7 @@ export default function Home() {
           borderBottomColor: isDarkMode ? headerBorderDark : headerBorderLight,
           boxShadow: isDarkMode ? headerShadowDark : headerShadowLight,
         }}
-        className="fixed top-0 overflow-hidden w-full z-50 border-b"
+        className="fixed top-0 overflow-visible w-full z-50 border-b"
       >
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
           <div className="relative flex items-center cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
@@ -983,12 +980,18 @@ export default function Home() {
                 <a href={group.href} className={`text-sm font-medium flex items-center gap-1 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
                   {group.label} <ChevronRight className="w-3 h-3 group-hover:rotate-90 transition-transform" />
                 </a>
-                <div className="absolute top-full left-1/2 -translate-x-1/2 min-w-[260px] bg-card border border-border rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 p-3">
-                  {group.items.map((item) => (
-                    <a key={item.label} href={item.href} className="block rounded-lg px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted transition-colors">
-                      {item.label}
-                    </a>
-                  ))}
+                <div className="absolute top-full left-1/2 -translate-x-1/2 min-w-[290px] bg-card border border-border rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 p-4">
+                  <div className="mb-3 border-b border-border/70 pb-3">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">{group.footerLabel ?? group.label}</p>
+                    {group.description && <p className="mt-1 text-sm text-muted-foreground">{group.description}</p>}
+                  </div>
+                  <div className="space-y-1">
+                    {group.items.map((item) => (
+                      <a key={item.label} href={item.href} className="block rounded-lg px-3 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors">
+                        {item.label}
+                      </a>
+                    ))}
+                  </div>
                 </div>
               </div>
             ))}
@@ -1020,7 +1023,13 @@ export default function Home() {
             <Button onClick={openDemo} className="bg-[#F97316] hover:bg-[#EA580C] text-white shadow-lg shadow-orange-900/30 border-0">
               Request Demo
             </Button>
-            <button className={`h-9 px-4 text-sm font-semibold rounded-md border transition-colors ${isDarkMode ? 'bg-transparent text-white border-white/30 hover:bg-white/10' : 'bg-[#041D4D] text-white border-[#041D4D]/25 hover:bg-[#0a2d6b]'}`}>Log In</button>
+            <button
+              className={`h-9 px-4 text-sm font-semibold rounded-md border transition-colors btn-infinity ${isDarkMode ? 'bg-transparent text-white border-white/30 hover:bg-white/10' : 'bg-[#041D4D] text-white border-[#041D4D]/25 hover:bg-[#0a2d6b]'}`}
+              aria-label="Become a Partner"
+            >
+              <Handshake className="w-4 h-4 mr-2 inline-block" />
+              Become a Partner
+            </button>
           </div>
 
           <button className="lg:hidden p-2 text-foreground" onClick={() => setIsMobileMenuOpen(true)}>
@@ -1245,7 +1254,7 @@ export default function Home() {
                 BRAND_LOGOS.map((brand) => (
                   <div
                     key={`${copy}-${brand.src}`}
-                    className="inline-flex h-24 w-[220px] md:w-[300px] lg:w-[320px] items-center justify-center mx-5 md:mx-10 shrink-0"
+                    className="inline-flex h-24 w-[195px] md:w-[300px] lg:w-[203px] items-center justify-center mx-5 md:mx-10 shrink-0"
                   >
                     <img
                       src={brand.src}
@@ -1259,7 +1268,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="hidden flex flex-wrap justify-center gap-4">
             {['ISO 27001 Certified', 'SOC 2 Type II', 'GDPR Ready'].map(badge => (
               <div key={badge} className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-medium ${isDarkMode ? 'border-white/15 text-slate-300' : 'border-slate-200 text-slate-500 bg-white'}`}>
                 <span className={`w-1.5 h-1.5 rounded-full border ${isDarkMode ? 'border-slate-300/60' : 'border-slate-400'}`} /> {badge}
@@ -3295,6 +3304,45 @@ export default function Home() {
           0%, 100% { margin-top: 0px; }
           50%       { margin-top: -6px; }
         }
+        /* Marquee brand logos: mild blue tint by default, show full color on hover, keep marquee running */
+        .animate-marquee img {
+          /* mild blue tint to match theme */
+          filter: saturate(0.6) hue-rotate(200deg) brightness(0.95);
+          transition: filter 220ms ease, opacity 200ms ease;
+          opacity: 0.95;
+        }
+        /* On hover over an individual logo (or its link), reveal original colors without moving or pausing the marquee */
+        .animate-marquee img:hover,
+        .animate-marquee a:hover img,
+        .animate-marquee img:focus,
+        .animate-marquee a:focus img {
+          filter: none;
+          opacity: 1;
+        }
+        /* Infinite-line scroll animation for header partner button */
+        .btn-infinity {
+          position: relative;
+          overflow: hidden;
+        }
+        .btn-infinity::before {
+          content: '';
+          position: absolute;
+          left: -120%;
+          top: 0;
+          height: 100%;
+          width: 220%;
+          background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 20%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.06) 80%, transparent 100%);
+          transform: translateX(0);
+          animation: infinityMove 3.2s linear infinite;
+          pointer-events: none;
+        }
+        @keyframes infinityMove {
+          0% { transform: translateX(0%); }
+          100% { transform: translateX(-50%); }
+        }
+        /* subtle icon tilt on hover */
+        .btn-infinity svg { transition: transform 220ms ease; }
+        .btn-infinity:hover svg { transform: translateY(-2px) rotate(-6deg); }
       `}} />
     </div>
   );
