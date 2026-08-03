@@ -8,10 +8,13 @@ import { adminSectionsRouter, publicSectionsRouter } from "./routes/sections";
 import { uploadRouter } from "./routes/upload";
 
 const app = express();
-const PORT = Number(process.env.API_PORT ?? 5001);
-const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN ?? "http://localhost:5000";
+// Railway (and most PaaS hosts) inject PORT and expect the app to bind to it.
+const PORT = Number(process.env.PORT ?? process.env.API_PORT ?? 5001);
+// Comma-separated list so both a *.pages.dev preview URL and a custom domain can be allowed at once.
+const CLIENT_ORIGINS = (process.env.CLIENT_ORIGIN ?? "http://localhost:5000").split(",").map((s) => s.trim());
 
-app.use(cors({ origin: CLIENT_ORIGIN, credentials: true }));
+app.set("trust proxy", 1);
+app.use(cors({ origin: CLIENT_ORIGINS, credentials: true }));
 app.use(express.json({ limit: "2mb" }));
 app.use(cookieParser());
 app.use("/uploads", express.static(path.resolve(process.cwd(), "public", "uploads")));
@@ -29,6 +32,6 @@ app.use((err: any, _req: express.Request, res: express.Response, _next: express.
   res.status(err?.status ?? 500).json({ error: err?.message ?? "Internal server error" });
 });
 
-app.listen(PORT, () => {
-  console.log(`API server listening on http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`API server listening on port ${PORT}`);
 });

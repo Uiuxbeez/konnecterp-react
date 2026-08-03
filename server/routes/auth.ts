@@ -3,10 +3,15 @@ import { checkAdminCredentials, signSessionToken, verifySessionToken, requireAut
 
 export const authRouter = Router();
 
+// In production the frontend (Cloudflare Pages) and this API (Railway) are on
+// different domains, so the session cookie must be SameSite=None (which requires
+// Secure) to be sent on cross-site fetches. In dev, both run on localhost so Lax
+// is fine and avoids needing HTTPS locally.
+const isProd = process.env.NODE_ENV === "production";
 const COOKIE_OPTS = {
   httpOnly: true,
-  sameSite: "lax" as const,
-  secure: process.env.NODE_ENV === "production",
+  sameSite: (isProd ? "none" : "lax") as "none" | "lax",
+  secure: isProd,
   maxAge: 7 * 24 * 60 * 60 * 1000,
   path: "/",
 };
@@ -28,7 +33,7 @@ authRouter.post("/login", async (req, res) => {
 });
 
 authRouter.post("/logout", (_req, res) => {
-  res.clearCookie(COOKIE_NAME, { path: "/" });
+  res.clearCookie(COOKIE_NAME, { path: "/", sameSite: COOKIE_OPTS.sameSite, secure: COOKIE_OPTS.secure });
   res.status(204).end();
 });
 

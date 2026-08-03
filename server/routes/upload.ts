@@ -38,5 +38,9 @@ uploadRouter.post("/upload", upload.single("file"), (req, res) => {
     res.status(400).json({ error: "No file uploaded" });
     return;
   }
-  res.json({ url: `/uploads/${req.file.filename}` });
+  // Absolute URL: the frontend (Cloudflare Pages) and this API (Railway) are on
+  // different domains in production, so a relative /uploads/... path would 404
+  // when rendered from the frontend's origin.
+  const base = process.env.PUBLIC_API_URL ?? `${req.protocol}://${req.get("host")}`;
+  res.json({ url: `${base.replace(/\/$/, "")}/uploads/${req.file.filename}` });
 });

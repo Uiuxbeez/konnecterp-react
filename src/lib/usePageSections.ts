@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { SECTION_DEFS, type SectionType } from "@shared/sections";
+import { apiUrl } from "./api-base";
 
 export interface PageSection {
   id: number;
@@ -30,7 +31,7 @@ export function usePageSections(slug: string) {
 
   useEffect(() => {
     let cancelled = false;
-    const url = isPreview() ? `/api/admin/pages/${slug}/sections` : `/api/public/pages/${slug}`;
+    const url = apiUrl(isPreview() ? `/api/admin/pages/${slug}/sections` : `/api/public/pages/${slug}`);
 
     fetch(url, { credentials: "include" })
       .then((res) => {
