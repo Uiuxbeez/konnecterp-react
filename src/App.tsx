@@ -4,6 +4,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
+import { AuthProvider } from "@/admin/lib/AuthContext";
+import { RequireAuth } from "@/admin/lib/RequireAuth";
+import AdminLogin from "@/admin/pages/Login";
+import PageBuilder from "@/admin/pages/PageBuilder";
 
 const queryClient = new QueryClient();
 
@@ -11,6 +15,17 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/admin/login" component={AdminLogin} />
+      <Route path="/admin/page-builder">
+        <RequireAuth>
+          <PageBuilder />
+        </RequireAuth>
+      </Route>
+      <Route path="/admin">
+        <RequireAuth>
+          <PageBuilder />
+        </RequireAuth>
+      </Route>
       <Route component={NotFound} />
     </Switch>
   );
@@ -21,7 +36,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <Router />
+          <AuthProvider>
+            <Router />
+          </AuthProvider>
         </WouterRouter>
         <Toaster />
       </TooltipProvider>

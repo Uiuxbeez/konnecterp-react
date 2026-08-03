@@ -11,6 +11,7 @@ import { defineConfig } from "vite";
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "src"),
+        "@shared": path.resolve(__dirname, "shared"),
       },
       dedupe: ["react", "react-dom"],
     },
@@ -23,6 +24,16 @@ import { defineConfig } from "vite";
       host: "0.0.0.0",
       allowedHosts: true,
       open: false,
+      proxy: {
+        "/api": {
+          target: `http://localhost:${process.env.API_PORT ?? 5001}`,
+          changeOrigin: true,
+        },
+        "/uploads": {
+          target: `http://localhost:${process.env.API_PORT ?? 5001}`,
+          changeOrigin: true,
+        },
+      },
     },
     preview: {
       port: 4173,
