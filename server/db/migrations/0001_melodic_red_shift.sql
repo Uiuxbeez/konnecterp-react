@@ -1,0 +1,1 @@
+ALTER TABLE "pages" ADD COLUMN "template" text DEFAULT 'home' NOT NULL;

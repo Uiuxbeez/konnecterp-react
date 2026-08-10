@@ -27,14 +27,26 @@ function isPreview() {
 // never breaks if the backend/DB isn't running.
 export function usePageSections(slug: string) {
   const [sections, setSections] = useState<PageSection[] | null>(null);
+  const [page, setPage] = useState<{ slug: string; title: string; template?: string } | null>(null);
   const [loading, setLoading] = useState(true);
+  // True only when the API affirmatively said this page doesn't exist (HTTP 404) —
+  // as opposed to the API being unreachable, which falls back to defaults instead
+  // so the site never breaks if the backend/DB is down.
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
+    let is404 = false;
+    setNotFound(false);
     const url = apiUrl(isPreview() ? `/api/admin/pages/${slug}/sections` : `/api/public/pages/${slug}`);
 
     fetch(url, { credentials: "include" })
       .then((res) => {
+        if (res.status === 404) {
+          is404 = true;
+          if (!cancelled) setNotFound(true);
+          throw new Error("Page not found");
+        }
         if (!res.ok) throw new Error(`Request failed (${res.status})`);
         return res.json();
       })
@@ -51,9 +63,10 @@ export function usePageSections(slug: string) {
             content: (isPreview() ? s.content : s.content) ?? {},
           }));
         setSections(mapped.length > 0 ? mapped : FALLBACK_SECTIONS);
+        if (data.page) setPage(data.page);
       })
       .catch(() => {
-        if (!cancelled) setSections(FALLBACK_SECTIONS);
+        if (!cancelled && !is404) setSections(FALLBACK_SECTIONS);
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -70,5 +83,5 @@ export function usePageSections(slug: string) {
     return { ...fallback, ...(match?.content ?? {}) };
   };
 
-  return { sections: sections ?? FALLBACK_SECTIONS, loading, byType };
+  return { sections: sections ?? FALLBACK_SECTIONS, page, loading, notFound, byType };
 }

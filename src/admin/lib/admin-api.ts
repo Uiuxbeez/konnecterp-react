@@ -16,7 +16,15 @@ export interface AdminPage {
   id: number;
   slug: string;
   title: string;
+  template: string;
+  path: string;
   updatedAt: string;
+}
+
+export interface PageTemplateInfo {
+  key: string;
+  name: string;
+  description: string;
 }
 
 class ApiError extends Error {
@@ -51,6 +59,11 @@ export const adminApi = {
   reorder: (slug: string, order: { id: number; position: number }[]) =>
     request<{ sections: AdminSection[] }>(`/api/admin/pages/${slug}/reorder`, { method: "POST", body: JSON.stringify({ order }) }),
   publish: (slug: string) => request<{ published: boolean; publishedAt: string }>(`/api/admin/pages/${slug}/publish`, { method: "POST" }),
+
+  listPages: () => request<{ pages: AdminPage[]; templates: PageTemplateInfo[] }>("/api/admin/pages"),
+  createPage: (data: { title: string; slug: string; template: string }) =>
+    request<AdminPage>("/api/admin/pages", { method: "POST", body: JSON.stringify(data) }),
+  deletePage: (slug: string) => request<void>(`/api/admin/pages/${slug}`, { method: "DELETE" }),
 
   upload: async (file: File): Promise<{ url: string }> => {
     const form = new FormData();

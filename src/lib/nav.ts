@@ -12,7 +12,7 @@ export const MENU_GROUPS: MenuGroup[] = [
     href: "#products",
     description: "ERP solutions for growing SMEs, large enterprises, and trading businesses.",
     items: [
-      { label: "ERP for SMEs", href: "#products" },
+      { label: "ERP for SMEs", href: "/products/erp-for-smes" },
       { label: "ERP for Enterprise", href: "#products" },
       { label: "Trading & Distribution", href: "#products" },
     ],

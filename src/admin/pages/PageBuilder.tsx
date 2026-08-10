@@ -1,18 +1,22 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useSearch } from "wouter";
 import { Eye, Save, UploadCloud, Check, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { AdminShell } from "../components/AdminShell";
 import { SectionSidebar } from "../components/SectionSidebar";
 import { EditSectionPanel } from "../components/EditSectionPanel";
-import { adminApi, type AdminSection } from "../lib/admin-api";
+import { adminApi, type AdminSection, type AdminPage } from "../lib/admin-api";
 
-const PAGE_SLUG = "home";
 const SAVE_DEBOUNCE_MS = 800;
 
 type SaveStatus = "idle" | "saving" | "saved" | "error";
 
 export default function PageBuilder() {
+  const search = useSearch();
+  const pageSlug = new URLSearchParams(search).get("slug") ?? "home";
+
+  const [page, setPage] = useState<AdminPage | null>(null);
   const [sections, setSections] = useState<AdminSection[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
@@ -25,15 +29,19 @@ export default function PageBuilder() {
   const refreshPreview = () => setPreviewNonce((n) => n + 1);
 
   useEffect(() => {
-    adminApi.getSections(PAGE_SLUG).then(({ sections: rows }) => {
+    setLoading(true);
+    setPublishedAt(null);
+    adminApi.getSections(pageSlug).then(({ page: pageData, sections: rows }) => {
       const sorted = [...rows].sort((a, b) => a.position - b.position);
+      setPage(pageData);
       setSections(sorted);
       setSelectedId(sorted[0]?.id ?? null);
       setLoading(false);
     });
-  }, []);
+  }, [pageSlug]);
 
   const selected = useMemo(() => sections.find((s) => s.id === selectedId) ?? null, [sections, selectedId]);
+  const previewPath = page?.path ?? "/";
 
   const scheduleSave = (id: number, patch: Partial<Pick<AdminSection, "content" | "name" | "enabled">>) => {
     setSaveStatus("saving");
@@ -66,7 +74,7 @@ export default function PageBuilder() {
     setSaveStatus("saving");
     adminApi
       .reorder(
-        PAGE_SLUG,
+        pageSlug,
         orderedIds.map((id, i) => ({ id, position: i }))
       )
       .then(() => {
@@ -79,7 +87,7 @@ export default function PageBuilder() {
   const handlePublish = async () => {
     setPublishing(true);
     try {
-      const res = await adminApi.publish(PAGE_SLUG);
+      const res = await adminApi.publish(pageSlug);
       setPublishedAt(res.publishedAt);
     } finally {
       setPublishing(false);
@@ -87,7 +95,7 @@ export default function PageBuilder() {
   };
 
   const handlePreview = () => {
-    window.open("/?preview=1", "_blank", "noopener");
+    window.open(`${previewPath}?preview=1`, "_blank", "noopener");
   };
 
   const handleSaveDraftNow = async () => {
@@ -118,7 +126,7 @@ export default function PageBuilder() {
       <header className="flex h-16 shrink-0 items-center justify-between border-b border-slate-200 bg-white px-6">
         <div>
           <h1 className="text-sm font-bold text-slate-900">Page Builder</h1>
-          <p className="text-xs text-slate-400">Home Page</p>
+          <p className="text-xs text-slate-400">{page?.title ?? pageSlug}</p>
         </div>
         <div className="flex items-center gap-3">
           <SaveIndicator status={saveStatus} />
@@ -156,7 +164,7 @@ export default function PageBuilder() {
             </Button>
           </div>
           <div className="flex-1 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-            <iframe key={previewNonce} src="/?preview=1" title="Draft preview" className="h-full w-full" />
+            <iframe key={previewNonce} src={`${previewPath}?preview=1`} title="Draft preview" className="h-full w-full" />
           </div>
         </main>
 

@@ -3,6 +3,7 @@ import { eq, asc, and } from "drizzle-orm";
 import { db } from "../db/client";
 import { pages, sections } from "../db/schema";
 import { requireAuth } from "../auth";
+import { pagePath } from "../../shared/templates";
 
 export const adminSectionsRouter = Router();
 export const publicSectionsRouter = Router();
@@ -26,7 +27,7 @@ adminSectionsRouter.get("/pages/:slug/sections", async (req, res) => {
     .from(sections)
     .where(eq(sections.pageId, page.id))
     .orderBy(asc(sections.position));
-  res.json({ page, sections: rows });
+  res.json({ page: { ...page, path: pagePath(page.template, page.slug) }, sections: rows });
 });
 
 adminSectionsRouter.patch("/sections/:id", async (req, res) => {

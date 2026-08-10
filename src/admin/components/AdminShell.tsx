@@ -1,8 +1,9 @@
 import React from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import {
   LayoutDashboard,
   LayoutGrid,
+  Files,
   Image as ImageIcon,
   FileStack,
   Menu as MenuIcon,
@@ -14,17 +15,19 @@ import { useAuth } from "../lib/AuthContext";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
-  { label: "Dashboard", icon: LayoutDashboard, active: false },
-  { label: "Page Builder", icon: LayoutGrid, active: true },
-  { label: "Media Library", icon: ImageIcon, active: false },
-  { label: "Forms", icon: FileStack, active: false },
-  { label: "Menus", icon: MenuIcon, active: false },
-  { label: "Users", icon: Users, active: false },
-  { label: "Settings", icon: Settings, active: false },
+  { label: "Dashboard", icon: LayoutDashboard, href: null },
+  { label: "Pages", icon: Files, href: "/admin/pages" },
+  { label: "Page Builder", icon: LayoutGrid, href: "/admin/page-builder" },
+  { label: "Media Library", icon: ImageIcon, href: null },
+  { label: "Forms", icon: FileStack, href: null },
+  { label: "Menus", icon: MenuIcon, href: null },
+  { label: "Users", icon: Users, href: null },
+  { label: "Settings", icon: Settings, href: null },
 ];
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
   const { logout } = useAuth();
+  const [location] = useLocation();
 
   return (
     <div className="flex h-screen overflow-hidden bg-slate-50 text-slate-900">
@@ -36,22 +39,25 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         <nav className="flex-1 space-y-1 px-3">
           {NAV_ITEMS.map((item) => {
             const Icon = item.icon;
+            const active = item.href !== null && (location === item.href || location.startsWith(`${item.href}/`));
             const content = (
               <span
                 className={cn(
                   "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                  item.active
-                    ? "bg-primary/10 text-primary"
+                  item.href
+                    ? active
+                      ? "bg-primary/10 text-primary"
+                      : "text-slate-600 hover:bg-slate-50"
                     : "text-slate-400 cursor-not-allowed opacity-60"
                 )}
-                title={item.active ? undefined : "Coming soon"}
+                title={item.href ? undefined : "Coming soon"}
               >
                 <Icon className="h-4 w-4" />
                 {item.label}
               </span>
             );
-            return item.active ? (
-              <Link key={item.label} href="/admin/page-builder">
+            return item.href ? (
+              <Link key={item.label} href={item.href}>
                 {content}
               </Link>
             ) : (

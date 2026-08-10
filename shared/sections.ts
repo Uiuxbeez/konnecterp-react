@@ -15,7 +15,8 @@ export type FieldDef =
 export const ICON_OPTIONS = [
   "Users", "Building2", "Activity", "BarChart3", "Package", "Factory", "Shield",
   "ShoppingCart", "Layers", "FileText", "Truck", "CreditCard", "Briefcase",
-  "TrendingUp", "Handshake", "HardHat",
+  "TrendingUp", "Handshake", "HardHat", "UserCog", "Eye", "Zap", "Cloud",
+  "Server", "Monitor", "Smartphone", "CheckCircle2",
 ] as const;
 
 export type SectionType =
@@ -27,7 +28,15 @@ export type SectionType =
   | "why_choose_us"
   | "customer_stories"
   | "contact"
-  | "footer";
+  | "footer"
+  | "product_hero"
+  | "product_intro"
+  | "product_operations"
+  | "product_outcomes"
+  | "product_adapt"
+  | "product_industries"
+  | "product_gains"
+  | "product_cta";
 
 export interface SectionMeta {
   type: SectionType;
@@ -382,6 +391,230 @@ export const SECTION_DEFS: SectionMeta[] = [
     defaultContent: {
       tagline: "The intelligent cloud ERP platform that helps ambitious companies scale their operations efficiently.",
       copyright: "© 2026 KonnectERP. All rights reserved.",
+    },
+  },
+
+  // ── Product template sections (used by /products/:slug pages) ────────────
+  {
+    type: "product_hero",
+    name: "Hero Banner",
+    fields: [
+      { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
+      { key: "title", label: "Section Title", type: "text" },
+      { key: "highlight", label: "Highlight Text", type: "text" },
+      { key: "subhead", label: "Subhead", type: "text" },
+      { key: "description", label: "Description", type: "textarea" },
+      { key: "primaryButtonText", label: "Primary Button Text", type: "text" },
+    ],
+    defaultContent: {
+      eyebrow: "01 · ERP for SMEs",
+      title: "ERP Software Built for",
+      highlight: "Growing Businesses",
+      subhead: "Simplify Everyday Operations. Gain Control. Grow with Confidence.",
+      description:
+        "Growing businesses often rely on spreadsheets, disconnected applications, and manual coordination to manage day-to-day operations. As business volume increases, these systems make it harder to control inventory, track orders, monitor production, and understand profitability.",
+      primaryButtonText: "Talk to Our ERP Experts",
+    },
+  },
+  {
+    type: "product_intro",
+    name: "Intro (Dashboard Preview)",
+    fields: [
+      { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
+      { key: "title", label: "Section Title", type: "text" },
+      { key: "description", label: "Description", type: "textarea" },
+      { key: "dashboardUrl", label: "Browser Frame URL", type: "text" },
+    ],
+    defaultContent: {
+      eyebrow: "How It Works",
+      title: "One Connected System for Every Operation",
+      description:
+        "Konnect ERP for SMEs brings these operations into a structured business environment, helping growing companies replace fragmented processes with better visibility, automation, and control.",
+      dashboardUrl: "app.konnecterp.com/dashboard",
+    },
+  },
+  {
+    type: "product_operations",
+    name: "Feature Grid",
+    fields: [
+      { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
+      { key: "title", label: "Section Title", type: "text" },
+      { key: "highlight", label: "Highlight Text", type: "text" },
+      { key: "description", label: "Description", type: "textarea" },
+      {
+        key: "items",
+        label: "Feature Cards",
+        type: "repeater",
+        itemLabel: "Feature",
+        addRemove: true,
+        fields: [
+          { key: "icon", label: "Icon", type: "icon" },
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+        ],
+      },
+    ],
+    defaultContent: {
+      eyebrow: "Built Around Real Operations",
+      title: "Designed Around the",
+      highlight: "Way SMEs Work",
+      description:
+        "From customer enquiry to final payment, and from material purchase to production and delivery, Konnect ERP helps connect the activities that keep your business moving.",
+      items: [
+        { icon: "ShoppingCart", title: "Sales & Customer Operations", description: "Manage enquiries, quotations, orders, dispatch, invoicing, collections, and customer interactions with greater visibility." },
+        { icon: "Package", title: "Purchasing & Suppliers", description: "Control purchase requirements, supplier transactions, approvals, receipts, invoices, and material availability." },
+        { icon: "Factory", title: "Inventory & Warehousing", description: "Track stock movement, material availability, warehouse transactions, valuation, and inventory requirements." },
+        { icon: "BarChart3", title: "Production & Shop Floor", description: "Plan production, manage BOMs and materials, monitor work orders, track WIP, and improve production visibility." },
+        { icon: "Users", title: "Finance & Business Control", description: "Connect operational transactions with accounting, receivables, payables, taxation, costing, and financial reporting." },
+        { icon: "UserCog", title: "People & Administration", description: "Manage employee information, attendance, leave, payroll, and other essential workforce processes." },
+      ],
+    },
+  },
+  {
+    type: "product_outcomes",
+    name: "Image + Feature Rows",
+    fields: [
+      { key: "title", label: "Section Title", type: "text" },
+      { key: "highlight", label: "Highlight Text", type: "text" },
+      { key: "description", label: "Description", type: "textarea" },
+      { key: "image", label: "Image", type: "image" },
+      {
+        key: "items",
+        label: "Rows",
+        type: "repeater",
+        itemLabel: "Row",
+        addRemove: true,
+        fields: [
+          { key: "icon", label: "Icon", type: "icon" },
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+        ],
+      },
+    ],
+    defaultContent: {
+      title: "Replace Manual Processes with",
+      highlight: "Connected Workflows",
+      description: "Konnect ERP helps businesses reduce dependency on spreadsheets and repetitive manual activities.",
+      image: "/images/industry-jobwork.jpg",
+      items: [
+        { icon: "Eye", title: "Better Visibility", description: "Get timely information on sales, purchases, inventory, production, finance, and business performance." },
+        { icon: "Zap", title: "Better Productivity", description: "Automate repetitive workflows and reduce time spent coordinating information between departments." },
+        { icon: "Shield", title: "Better Control", description: "Bring approvals, transactions, responsibilities, and business data into a structured system." },
+        { icon: "TrendingUp", title: "Better Decisions", description: "Use dashboards, reports, and business information to identify issues and act faster." },
+      ],
+    },
+  },
+  {
+    type: "product_adapt",
+    name: "Flexible Deployment",
+    fields: [
+      { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
+      { key: "title", label: "Section Title", type: "text" },
+      { key: "paragraph1", label: "Paragraph 1", type: "textarea" },
+      { key: "paragraph2", label: "Paragraph 2", type: "textarea" },
+      { key: "cardBadge", label: "Card Badge", type: "text" },
+      { key: "cardTitle", label: "Card Title", type: "text" },
+      { key: "cardDescription", label: "Card Description", type: "textarea" },
+      { key: "cardImage", label: "Card Background Image", type: "image" },
+      { key: "ctaText", label: "Card Link Text", type: "text" },
+      {
+        key: "options",
+        label: "Deployment Options",
+        type: "repeater",
+        itemLabel: "Option",
+        addRemove: true,
+        fields: [
+          { key: "icon", label: "Icon", type: "icon" },
+          { key: "label", label: "Label", type: "text" },
+        ],
+      },
+    ],
+    defaultContent: {
+      eyebrow: "Flexible by Design",
+      title: "ERP That Can Adapt as Your Business Changes",
+      paragraph1:
+        "Every SME operates differently. Konnect ERP supports configurable business processes, reports, print formats, notifications, and workflows so the system can align with your operating requirements.",
+      paragraph2:
+        "Deploy it in the environment that suits your organization with Cloud or On-Premise options, while providing access to business information through web and mobile interfaces.",
+      cardBadge: "Flexible Deployment",
+      cardTitle: "Deploy Your Way",
+      cardDescription: "Run Konnect ERP however it suits your business — in the cloud, on your own servers, or accessed on the move.",
+      cardImage: "/images/hero-meeting.jpg",
+      ctaText: "Talk to an Expert",
+      options: [
+        { icon: "Cloud", label: "Cloud Hosting" },
+        { icon: "Server", label: "On-Premise" },
+        { icon: "Monitor", label: "Web Access" },
+        { icon: "Smartphone", label: "Mobile Access" },
+      ],
+    },
+  },
+  {
+    type: "product_industries",
+    name: "Who It's For (Background Photo)",
+    fields: [
+      { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
+      { key: "title", label: "Section Title", type: "text" },
+      { key: "intro", label: "Intro Line", type: "text" },
+      { key: "backgroundImage", label: "Background Image", type: "image" },
+      { key: "items", label: "Industries", type: "list", itemLabel: "Industry" },
+    ],
+    defaultContent: {
+      eyebrow: "Who It's For",
+      title: "Built for Businesses That Are Ready to Move Beyond Spreadsheets",
+      intro: "Konnect ERP is suitable for growing:",
+      backgroundImage: "/images/industry-manufacturing.jpg",
+      items: ["Manufacturing companies", "Engineering businesses", "Trading businesses", "Job work companies", "Industrial businesses", "SMEs with multiple operational functions"],
+    },
+  },
+  {
+    type: "product_gains",
+    name: "Gains Grid",
+    fields: [
+      { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
+      { key: "title", label: "Section Title", type: "text" },
+      {
+        key: "items",
+        label: "Gain Cards",
+        type: "repeater",
+        itemLabel: "Gain",
+        addRemove: true,
+        fields: [
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+        ],
+      },
+    ],
+    defaultContent: {
+      eyebrow: "The Payoff",
+      title: "What Your Business Gains",
+      items: [
+        { title: "Less Manual Work", description: "Automate routine tasks and cut down time spent on repetitive data entry." },
+        { title: "Better Process Visibility", description: "See what's happening across departments in real time, not after the fact." },
+        { title: "Improved Inventory Control", description: "Track stock levels, movement, and valuation accurately at all times." },
+        { title: "Faster Business Reporting", description: "Generate reports on demand instead of compiling data manually." },
+        { title: "Greater Operational Discipline", description: "Standardized workflows and approvals keep every transaction accountable." },
+        { title: "Better Cost Control", description: "Understand true costs across production, purchasing, and operations." },
+        { title: "Scalable Business Management", description: "Add users, locations, and processes as you grow — without adding chaos." },
+      ],
+    },
+  },
+  {
+    type: "product_cta",
+    name: "Final CTA (Photo Card)",
+    fields: [
+      { key: "title", label: "Section Title", type: "text" },
+      { key: "highlight", label: "Highlight Text", type: "text" },
+      { key: "description", label: "Description", type: "textarea" },
+      { key: "buttonText", label: "Button Text", type: "text" },
+      { key: "backgroundImage", label: "Background Image", type: "image" },
+    ],
+    defaultContent: {
+      title: "Make Your Next Stage of",
+      highlight: "Growth Easier to Manage",
+      description: "Move from disconnected processes to a more organized, visible, and scalable way of running your business.",
+      buttonText: "Talk to Our ERP Experts",
+      backgroundImage: "/images/industry-trading.jpg",
     },
   },
 ];

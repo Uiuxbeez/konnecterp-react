@@ -4,10 +4,13 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
+import ProductPage from "@/pages/products/ProductPage";
 import { AuthProvider } from "@/admin/lib/AuthContext";
 import { RequireAuth } from "@/admin/lib/RequireAuth";
 import AdminLogin from "@/admin/pages/Login";
 import PageBuilder from "@/admin/pages/PageBuilder";
+import PagesList from "@/admin/pages/PagesList";
+import NewPage from "@/admin/pages/NewPage";
 
 const queryClient = new QueryClient();
 
@@ -15,7 +18,18 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/products/:slug" component={ProductPage} />
       <Route path="/admin/login" component={AdminLogin} />
+      <Route path="/admin/pages/new">
+        <RequireAuth>
+          <NewPage />
+        </RequireAuth>
+      </Route>
+      <Route path="/admin/pages">
+        <RequireAuth>
+          <PagesList />
+        </RequireAuth>
+      </Route>
       <Route path="/admin/page-builder">
         <RequireAuth>
           <PageBuilder />
