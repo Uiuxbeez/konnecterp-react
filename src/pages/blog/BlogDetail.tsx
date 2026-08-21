@@ -60,7 +60,7 @@ function RelatedSlider({ posts, isDarkMode }: { posts: BlogListItem[]; isDarkMod
           </button>
         </div>
       </div>
-      <div ref={trackRef} className="flex gap-5 overflow-x-auto pb-2 snap-x snap-mandatory scroll-smooth -mx-1 px-1">
+      <div ref={trackRef} className="hide-scrollbar flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth -mx-1 px-1">
         {posts.map((post) => (
           <BlogCard key={post.id} post={post} isDarkMode={isDarkMode} className="w-[280px] shrink-0 snap-start" />
         ))}
