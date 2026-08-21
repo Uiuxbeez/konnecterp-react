@@ -27,6 +27,32 @@ export interface PageTemplateInfo {
   description: string;
 }
 
+export interface AdminBlogPost {
+  id: number;
+  slug: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  featuredImage: string;
+  tags: string[];
+  author: string;
+  status: "draft" | "published";
+  publishedAt: string;
+  updatedAt: string;
+}
+
+export type BlogPostInput = {
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  featuredImage: string;
+  tags: string[];
+  author: string;
+  status: "draft" | "published";
+  publishedAt: string;
+};
+
 class ApiError extends Error {
   constructor(public status: number, message: string) {
     super(message);
@@ -64,6 +90,14 @@ export const adminApi = {
   createPage: (data: { title: string; slug: string; template: string }) =>
     request<AdminPage>("/api/admin/pages", { method: "POST", body: JSON.stringify(data) }),
   deletePage: (slug: string) => request<void>(`/api/admin/pages/${slug}`, { method: "DELETE" }),
+
+  listBlogPosts: () => request<{ posts: AdminBlogPost[] }>("/api/admin/blog-posts"),
+  getBlogPost: (id: number) => request<AdminBlogPost>(`/api/admin/blog-posts/${id}`),
+  createBlogPost: (data: BlogPostInput) =>
+    request<AdminBlogPost>("/api/admin/blog-posts", { method: "POST", body: JSON.stringify(data) }),
+  updateBlogPost: (id: number, data: Partial<BlogPostInput>) =>
+    request<AdminBlogPost>(`/api/admin/blog-posts/${id}`, { method: "PATCH", body: JSON.stringify(data) }),
+  deleteBlogPost: (id: number) => request<void>(`/api/admin/blog-posts/${id}`, { method: "DELETE" }),
 
   upload: async (file: File): Promise<{ url: string }> => {
     const form = new FormData();

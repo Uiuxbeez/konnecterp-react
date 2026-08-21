@@ -1,4 +1,5 @@
 import { pgTable, serial, text, integer, jsonb, boolean, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 
 export const pages = pgTable("pages", {
   id: serial("id").primaryKey(),
@@ -25,3 +26,21 @@ export const sections = pgTable("sections", {
   publishedContent: jsonb("published_content"),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
+
+export const blogPosts = pgTable("blog_posts", {
+  id: serial("id").primaryKey(),
+  slug: text("slug").notNull(),
+  title: text("title").notNull(),
+  excerpt: text("excerpt").notNull(),
+  // Paragraphs separated by blank lines — rendered as <p> tags, same simplicity
+  // level as the rest of the page-builder's textarea fields (no rich-text editor).
+  content: text("content").notNull(),
+  featuredImage: text("featured_image").notNull().default(""),
+  tags: jsonb("tags").notNull().default(sql`'[]'::jsonb`),
+  author: text("author").notNull().default("KonnectERP Team"),
+  status: text("status").notNull().default("draft"), // "draft" | "published"
+  publishedAt: timestamp("published_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+}, (table) => ({
+  slugIdx: uniqueIndex("blog_posts_slug_idx").on(table.slug),
+}));

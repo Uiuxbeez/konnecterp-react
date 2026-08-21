@@ -32,6 +32,29 @@ export const PAGE_TEMPLATES: Record<string, PageTemplateDef> = {
     ],
     pathPrefix: "/products",
   },
+  industry: {
+    key: "industry",
+    name: "Industry Page",
+    description:
+      "Hero with a dashboard-over-photo visual, a 4-step process flow, and a split challenges/benefits band, closing with a photo CTA — the layout used for industry-specific pages like Manufacturing ERP. New pages are created under /industries/.",
+    sectionTypes: ["industry_hero", "industry_flow", "industry_challenges_benefits", "product_cta"],
+    pathPrefix: "/industries",
+  },
+  methodology: {
+    key: "methodology",
+    name: "Methodology Page",
+    description:
+      "Hero, a circular 4-phase Agile cycle infographic, a 6-stage implementation board, and a packages CTA — the layout used for Implementation Methodology. New pages are created under /resources/.",
+    sectionTypes: ["product_hero", "methodology_cycle", "methodology_stages", "methodology_packages"],
+    pathPrefix: "/resources",
+  },
+  brochure: {
+    key: "brochure",
+    name: "Brochure Page",
+    description: "Hero, a feature grid explaining what's inside, and a premium download CTA card — the layout used for Product Brochure. New pages are created under /resources/.",
+    sectionTypes: ["product_hero", "brochure_features", "brochure_cta"],
+    pathPrefix: "/resources",
+  },
 };
 
 export function pagePath(template: string, slug: string): string {

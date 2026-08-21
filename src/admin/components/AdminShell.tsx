@@ -10,6 +10,7 @@ import {
   Users,
   Settings,
   LogOut,
+  Newspaper,
 } from "lucide-react";
 import { useAuth } from "../lib/AuthContext";
 import { cn } from "@/lib/utils";
@@ -18,6 +19,7 @@ const NAV_ITEMS = [
   { label: "Dashboard", icon: LayoutDashboard, href: null },
   { label: "Pages", icon: Files, href: "/admin/pages" },
   { label: "Page Builder", icon: LayoutGrid, href: "/admin/page-builder" },
+  { label: "Blog", icon: Newspaper, href: "/admin/blog" },
   { label: "Media Library", icon: ImageIcon, href: null },
   { label: "Forms", icon: FileStack, href: null },
   { label: "Menus", icon: MenuIcon, href: null },

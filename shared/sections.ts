@@ -16,7 +16,9 @@ export const ICON_OPTIONS = [
   "Users", "Building2", "Activity", "BarChart3", "Package", "Factory", "Shield",
   "ShoppingCart", "Layers", "FileText", "Truck", "CreditCard", "Briefcase",
   "TrendingUp", "Handshake", "HardHat", "UserCog", "Eye", "Zap", "Cloud",
-  "Server", "Monitor", "Smartphone", "CheckCircle2",
+  "Server", "Monitor", "Smartphone", "CheckCircle2", "ClipboardList",
+  "AlertTriangle", "DollarSign", "Settings", "ShieldCheck", "PackageCheck",
+  "ClipboardCheck", "Calculator",
 ] as const;
 
 export type SectionType =
@@ -36,7 +38,15 @@ export type SectionType =
   | "product_adapt"
   | "product_industries"
   | "product_gains"
-  | "product_cta";
+  | "product_cta"
+  | "industry_hero"
+  | "industry_flow"
+  | "industry_challenges_benefits"
+  | "methodology_cycle"
+  | "methodology_stages"
+  | "methodology_packages"
+  | "brochure_features"
+  | "brochure_cta";
 
 export interface SectionMeta {
   type: SectionType;
@@ -615,6 +625,302 @@ export const SECTION_DEFS: SectionMeta[] = [
       description: "Move from disconnected processes to a more organized, visible, and scalable way of running your business.",
       buttonText: "Talk to Our ERP Experts",
       backgroundImage: "/images/industry-trading.jpg",
+    },
+  },
+
+  // ── Industry template sections (used by /industries/:slug pages) ─────────
+  {
+    type: "industry_hero",
+    name: "Hero Banner",
+    fields: [
+      { key: "badge", label: "Badge Text", type: "text" },
+      { key: "headingLine1", label: "Heading Line 1", type: "text" },
+      { key: "headingLine2Plain", label: "Heading Line 2 — Plain Part", type: "text" },
+      { key: "headingLine2Highlight", label: "Heading Line 2 — Highlighted Part", type: "text" },
+      { key: "headingLine3Plain", label: "Heading Line 3 — Plain Part", type: "text" },
+      { key: "headingLine3Highlight", label: "Heading Line 3 — Highlighted Part", type: "text" },
+      { key: "description", label: "Description", type: "textarea" },
+      { key: "primaryButtonText", label: "Primary Button Text", type: "text" },
+      { key: "secondaryButtonText", label: "Secondary Button Text", type: "text" },
+      { key: "backgroundImage", label: "Background Image", type: "image" },
+    ],
+    defaultContent: {
+      badge: "ERP for Manufacturing Industry",
+      headingLine1: "Manufacturing ERP",
+      headingLine2Plain: "Engineered for",
+      headingLine2Highlight: "Efficiency.",
+      headingLine3Plain: "Built for",
+      headingLine3Highlight: "Growth.",
+      description:
+        "Konnect ERP is a manufacturing ERP software designed to manage production planning, procurement, inventory, quality, costing, sales, and finance across make-to-stock, make-to-order, engineer-to-order, job work, and project manufacturing businesses.",
+      primaryButtonText: "Request a Demo",
+      secondaryButtonText: "Explore Features",
+      backgroundImage: "/images/industry-manufacturing.jpg",
+    },
+  },
+  {
+    type: "industry_flow",
+    name: "Process Flow",
+    fields: [
+      { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
+      { key: "title", label: "Section Title", type: "text" },
+      { key: "highlight", label: "Highlight Text", type: "text" },
+      { key: "description", label: "Description", type: "textarea" },
+      {
+        key: "steps",
+        label: "Flow Steps",
+        type: "repeater",
+        itemLabel: "Step",
+        addRemove: true,
+        fields: [
+          { key: "icon", label: "Icon", type: "icon" },
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+        ],
+      },
+    ],
+    defaultContent: {
+      eyebrow: "Business Transactions",
+      title: "End-to-End",
+      highlight: "Manufacturing Flow",
+      description: "Konnect ERP connects every stage of your manufacturing business from procurement to profitability.",
+      steps: [
+        { icon: "ShoppingCart", title: "Procure-to-Pay", description: "Manage purchasing, suppliers, material requirements, inventory, and vendor transactions." },
+        { icon: "FileText", title: "Order-to-Cash", description: "Connect customer orders with production, inventory, dispatch, invoicing, and collections." },
+        { icon: "Settings", title: "Plan-to-Produce", description: "Manage MRP, production planning, capacity, work orders, shop floor operations, WIP, and production costing." },
+        { icon: "BarChart3", title: "Record-to-Report", description: "Connect manufacturing costs, inventory valuation, finance, reporting, and business analytics." },
+      ],
+    },
+  },
+  {
+    type: "industry_challenges_benefits",
+    name: "Challenges & Benefits",
+    fields: [
+      { key: "backgroundImage", label: "Background Image", type: "image" },
+      { key: "centerIcon", label: "Center Icon", type: "icon" },
+      { key: "challengesEyebrow", label: "Challenges Eyebrow", type: "text" },
+      { key: "challengesTitle", label: "Challenges Title", type: "text" },
+      { key: "challengesDescription", label: "Challenges Description", type: "textarea" },
+      {
+        key: "challenges",
+        label: "Challenges",
+        type: "repeater",
+        itemLabel: "Challenge",
+        addRemove: true,
+        fields: [
+          { key: "icon", label: "Icon", type: "icon" },
+          { key: "text", label: "Text", type: "text" },
+        ],
+      },
+      { key: "benefitsEyebrow", label: "Benefits Eyebrow", type: "text" },
+      { key: "benefitsTitle", label: "Benefits Title", type: "text" },
+      {
+        key: "benefits",
+        label: "Benefits",
+        type: "repeater",
+        itemLabel: "Benefit",
+        addRemove: true,
+        fields: [
+          { key: "icon", label: "Icon", type: "icon" },
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+        ],
+      },
+    ],
+    defaultContent: {
+      backgroundImage: "/images/industry-manufacturing.jpg",
+      centerIcon: "Factory",
+      challengesEyebrow: "Manufacturing Challenges We Solve",
+      challengesTitle: "Overcome Manufacturing Roadblocks",
+      challengesDescription: "Konnect ERP helps you tackle everyday manufacturing challenges with greater visibility and control.",
+      challenges: [
+        { icon: "ClipboardList", text: "Production planning delays" },
+        { icon: "AlertTriangle", text: "Material shortages and excess inventory" },
+        { icon: "Eye", text: "Limited shop floor visibility" },
+        { icon: "Activity", text: "WIP tracking gaps" },
+        { icon: "Shield", text: "Quality and rejection issues" },
+        { icon: "DollarSign", text: "Manufacturing cost control" },
+        { icon: "Truck", text: "Delivery delays" },
+      ],
+      benefitsEyebrow: "Key Business Benefits",
+      benefitsTitle: "Drive Efficiency. Increase Profitability.",
+      benefits: [
+        { icon: "ClipboardCheck", title: "Better production planning", description: "Optimize schedules and resources to improve on-time delivery." },
+        { icon: "PackageCheck", title: "Improved material availability", description: "Ensure right materials at the right time to avoid disruptions." },
+        { icon: "Eye", title: "Real-time shop floor visibility", description: "Monitor operations in real time for complete transparency." },
+        { icon: "ShieldCheck", title: "Stronger quality control", description: "Reduce defects and improve overall product quality." },
+        { icon: "Calculator", title: "Accurate production costing", description: "Track actual costs and improve costing accuracy." },
+        { icon: "Package", title: "Better inventory control", description: "Reduce inventory holding and improve turnover." },
+        { icon: "TrendingUp", title: "Improved operational profitability", description: "Make data-driven decisions and improve profit margins." },
+      ],
+    },
+  },
+
+  // ── Resources template sections (used by /resources/:slug pages) ─────────
+  {
+    type: "methodology_cycle",
+    name: "Agile Cycle (Infographic)",
+    fields: [
+      { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
+      { key: "title", label: "Section Title", type: "text" },
+      { key: "highlight", label: "Highlight Text", type: "text" },
+      { key: "description", label: "Description", type: "textarea" },
+      { key: "centerLabel", label: "Center Hub Label", type: "text" },
+      {
+        key: "steps",
+        label: "Cycle Phases (exactly 4, clockwise from top)",
+        type: "repeater",
+        itemLabel: "Phase",
+        fields: [
+          { key: "icon", label: "Icon", type: "icon" },
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+        ],
+      },
+    ],
+    defaultContent: {
+      eyebrow: "The Agile Cycle",
+      title: "Agile Development",
+      highlight: "Methodology",
+      description: "Konnect ERP is delivered through four repeating phases, refined continuously with your team's feedback.",
+      centerLabel: "Agile Methodology",
+      steps: [
+        { icon: "ClipboardList", title: "Requirement Gathering & Planning", description: "Understand your business processes and define the scope, timeline, and success criteria." },
+        { icon: "Monitor", title: "System Walk-Through", description: "Configure and demonstrate the system against your real business scenarios." },
+        { icon: "Eye", title: "Training & Review", description: "Train your team and review outcomes against the agreed plan." },
+        { icon: "CheckCircle2", title: "Delivery", description: "Go live with a system validated by your own team, ready to scale." },
+      ],
+    },
+  },
+  {
+    type: "methodology_stages",
+    name: "Implementation Stages",
+    fields: [
+      { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
+      { key: "title", label: "Section Title", type: "text" },
+      { key: "highlight", label: "Highlight Text", type: "text" },
+      { key: "description", label: "Description", type: "textarea" },
+      {
+        key: "stages",
+        label: "Stages",
+        type: "repeater",
+        itemLabel: "Stage",
+        addRemove: true,
+        fields: [
+          { key: "icon", label: "Icon", type: "icon" },
+          { key: "title", label: "Title", type: "text" },
+          { key: "items", label: "Checklist Items", type: "list", itemLabel: "Item" },
+        ],
+      },
+    ],
+    defaultContent: {
+      eyebrow: "Our Process",
+      title: "Implementation",
+      highlight: "Methodology",
+      description: "Every Konnect ERP rollout moves through six structured stages — nothing skipped, nothing left to guesswork.",
+      stages: [
+        { icon: "ClipboardList", title: "Analyse", items: ["Kick off", "User Identification", "Plan Work Package"] },
+        { icon: "Settings", title: "Configure", items: ["Study Scope", "Process Understanding", "Module Notes"] },
+        { icon: "FileText", title: "Train", items: ["Cook-Book", "Print Format", "Open Item Tracker"] },
+        { icon: "Monitor", title: "Use", items: ["Basic Training", "Live Training", "Master List"] },
+        { icon: "Eye", title: "Review", items: ["Live Entry", "GAPS", "New Requirement"] },
+        { icon: "CheckCircle2", title: "Conclude", items: ["Close Item Tracker", "Handover to Support", "Reports"] },
+      ],
+    },
+  },
+  {
+    type: "methodology_packages",
+    name: "Packages CTA",
+    fields: [
+      { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
+      { key: "title", label: "Section Title", type: "text" },
+      { key: "highlight", label: "Highlight Text", type: "text" },
+      { key: "description", label: "Description", type: "textarea" },
+      { key: "buttonText", label: "Button Text", type: "text" },
+      { key: "backgroundImage", label: "Background Image", type: "image" },
+      {
+        key: "packages",
+        label: "Package Pills",
+        type: "repeater",
+        itemLabel: "Package",
+        addRemove: true,
+        fields: [
+          { key: "icon", label: "Icon", type: "icon" },
+          { key: "text", label: "Text", type: "text" },
+        ],
+      },
+    ],
+    defaultContent: {
+      eyebrow: "Flexible Packages",
+      title: "Konnect ERP",
+      highlight: "Packages",
+      description: "Start with what you need today and add modules as your business grows — every package shares the same connected data.",
+      buttonText: "Talk to Our ERP Experts",
+      backgroundImage: "/images/industry-manufacturing.jpg",
+      packages: [
+        { icon: "ShoppingCart", text: "Sales · Purchase · Inventory" },
+        { icon: "Factory", text: "Production · Quality · Sub-Contract" },
+        { icon: "Users", text: "HR · Accounts · Plant Maintenance" },
+        { icon: "Smartphone", text: "Add-Ons — Task Management, Mobile Apps, Portals & More" },
+      ],
+    },
+  },
+  {
+    type: "brochure_features",
+    name: "What's Inside",
+    fields: [
+      { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
+      { key: "title", label: "Section Title", type: "text" },
+      { key: "highlight", label: "Highlight Text", type: "text" },
+      { key: "description", label: "Description", type: "textarea" },
+      {
+        key: "items",
+        label: "Feature Cards",
+        type: "repeater",
+        itemLabel: "Feature",
+        addRemove: true,
+        fields: [
+          { key: "icon", label: "Icon", type: "icon" },
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+        ],
+      },
+    ],
+    defaultContent: {
+      eyebrow: "What's Inside",
+      title: "Everything You Need to",
+      highlight: "Evaluate Konnect ERP",
+      description: "A complete look at how Konnect ERP fits your operations — from shop floor to the boardroom.",
+      items: [
+        { icon: "Factory", title: "Module-by-Module Breakdown", description: "Detailed coverage of manufacturing, inventory, sales, HR, and finance modules." },
+        { icon: "BarChart3", title: "Real Customer Outcomes", description: "Case studies and metrics from businesses running Konnect ERP today." },
+        { icon: "Cloud", title: "Deployment Options", description: "Cloud, on-premise, and hybrid — how each works and what it costs." },
+        { icon: "Handshake", title: "Implementation & Support", description: "What onboarding looks like and the support you can expect after go-live." },
+      ],
+    },
+  },
+  {
+    type: "brochure_cta",
+    name: "Brochure Download",
+    fields: [
+      { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
+      { key: "title", label: "Section Title", type: "text" },
+      { key: "highlight", label: "Highlight Text", type: "text" },
+      { key: "description", label: "Description", type: "textarea" },
+      { key: "features", label: "Feature Highlights", type: "list", itemLabel: "Feature" },
+      { key: "buttonText", label: "Button Text", type: "text" },
+      { key: "fileUrl", label: "Brochure File URL (leave blank to open the demo form instead)", type: "text" },
+      { key: "backgroundImage", label: "Background Image", type: "image" },
+    ],
+    defaultContent: {
+      eyebrow: "Free Download",
+      title: "Download Konnect ERP",
+      highlight: "Brochure",
+      description: "Get a complete overview of Konnect ERP's manufacturing, inventory, and finance capabilities — built for Indian SMEs and enterprises.",
+      features: ["Smart Manufacturing", "Smarter supply chain and production planning", "Automated invoice, purchase order & data entry"],
+      buttonText: "Click Here to Download",
+      fileUrl: "",
+      backgroundImage: "/images/hero-meeting.jpg",
     },
   },
 ];

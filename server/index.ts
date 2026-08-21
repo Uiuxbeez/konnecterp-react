@@ -7,6 +7,7 @@ import { authRouter } from "./routes/auth";
 import { adminSectionsRouter, publicSectionsRouter } from "./routes/sections";
 import { uploadRouter } from "./routes/upload";
 import { pagesRouter } from "./routes/pages";
+import { adminBlogRouter, publicBlogRouter } from "./routes/blog";
 
 const app = express();
 // Railway (and most PaaS hosts) inject PORT and expect the app to bind to it.
@@ -24,7 +25,9 @@ app.use("/api/auth", authRouter);
 app.use("/api/admin", adminSectionsRouter);
 app.use("/api/admin", uploadRouter);
 app.use("/api/admin", pagesRouter);
+app.use("/api/admin", adminBlogRouter);
 app.use("/api/public", publicSectionsRouter);
+app.use("/api/public", publicBlogRouter);
 
 app.get("/api/health", (_req, res) => res.json({ ok: true }));
 

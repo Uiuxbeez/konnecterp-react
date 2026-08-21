@@ -3,13 +3,20 @@ import { useInView } from "framer-motion";
 import {
   Users, Building2, Activity, BarChart3, Package, Factory, Shield, ShoppingCart, Layers,
   FileText, Truck, CreditCard, Briefcase, TrendingUp, Handshake, HardHat, HelpCircle,
+  UserCog, Eye, Zap, Cloud, Server, Monitor, Smartphone, CheckCircle2, ClipboardList,
+  AlertTriangle, DollarSign, Settings, ShieldCheck, PackageCheck, ClipboardCheck, Calculator,
   type LucideIcon,
 } from "lucide-react";
 import { TextEffect } from "@/components/ui/text-effect";
 
+// Keep in sync with ICON_OPTIONS in shared/sections.ts — every icon name a
+// section's content can reference must be imported and listed here, since
+// this map (not a dynamic lookup) is what the public site renders from.
 export const ICON_MAP: Record<string, LucideIcon> = {
   Users, Building2, Activity, BarChart3, Package, Factory, Shield, ShoppingCart, Layers,
-  FileText, Truck, CreditCard, Briefcase, TrendingUp, Handshake, HardHat,
+  FileText, Truck, CreditCard, Briefcase, TrendingUp, Handshake, HardHat, UserCog, Eye,
+  Zap, Cloud, Server, Monitor, Smartphone, CheckCircle2, ClipboardList, AlertTriangle,
+  DollarSign, Settings, ShieldCheck, PackageCheck, ClipboardCheck, Calculator,
 };
 
 export function getIcon(name: string | undefined): LucideIcon {

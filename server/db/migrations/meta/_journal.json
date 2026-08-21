@@ -15,6 +15,13 @@
       "when": 1786272948188,
       "tag": "0001_melodic_red_shift",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1787123100639,
+      "tag": "0002_friendly_stardust",
+      "breakpoints": true
     }
   ]
 }

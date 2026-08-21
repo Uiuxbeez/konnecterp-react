@@ -22,7 +22,7 @@ export const MENU_GROUPS: MenuGroup[] = [
     href: "#industries",
     description: "Tailored workflows for manufacturing, trading, distribution, and job work operations.",
     items: [
-      { label: "Discrete Manufacturing", href: "#industries" },
+      { label: "Discrete Manufacturing", href: "/industries/manufacturing-erp" },
       { label: "Process Manufacturing", href: "#industries" },
       { label: "Trading/Distribution", href: "#industries" },
       { label: "Job Work", href: "#industries" },
@@ -42,9 +42,9 @@ export const MENU_GROUPS: MenuGroup[] = [
     href: "#resources",
     description: "Brochures, implementation guidance, blog content, and answers to common questions.",
     items: [
-      { label: "Product Brochure", href: "#resources" },
-      { label: "Implementation Methodology", href: "#resources" },
-      { label: "Blog", href: "#resources" },
+      { label: "Product Brochure", href: "/resources/product-brochure" },
+      { label: "Implementation Methodology", href: "/resources/implementation-methodology" },
+      { label: "Blog", href: "/blog" },
       { label: "FAQ", href: "#resources" },
     ],
   },
