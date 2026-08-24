@@ -1,0 +1,76 @@
+import { Router } from "express";
+import { eq } from "drizzle-orm";
+import { db } from "../db/client";
+import { siteNavigation } from "../db/schema";
+import { requireAuth } from "../auth";
+import { MENU_GROUPS, type MenuGroup } from "../../src/lib/nav";
+
+const NAVIGATION_KEY = "main";
+
+export const publicNavigationRouter = Router();
+export const adminNavigationRouter = Router();
+
+function isMenuGroup(value: unknown): value is MenuGroup {
+  if (!value || typeof value !== "object") return false;
+  const group = value as Record<string, unknown>;
+  return (
+    typeof group.label === "string" &&
+    typeof group.href === "string" &&
+    (group.footerLabel === undefined || typeof group.footerLabel === "string") &&
+    (group.description === undefined || typeof group.description === "string") &&
+    Array.isArray(group.items) &&
+    group.items.every((item) => {
+      if (!item || typeof item !== "object") return false;
+      const child = item as Record<string, unknown>;
+      return typeof child.label === "string" && typeof child.href === "string";
+    })
+  );
+}
+
+function normalizeNavigation(value: unknown): MenuGroup[] | null {
+  if (!Array.isArray(value) || !value.every(isMenuGroup)) return null;
+  return value.map((group) => ({
+    label: group.label.trim(),
+    footerLabel: group.footerLabel?.trim() || undefined,
+    href: group.href.trim() || "#",
+    description: group.description?.trim() || undefined,
+    items: group.items.map((item) => ({
+      label: item.label.trim(),
+      href: item.href.trim() || "#",
+    })),
+  }));
+}
+
+async function readNavigation() {
+  const [row] = await db.select().from(siteNavigation).where(eq(siteNavigation.key, NAVIGATION_KEY));
+  return normalizeNavigation(row?.menu) ?? MENU_GROUPS;
+}
+
+publicNavigationRouter.get("/navigation", async (_req, res) => {
+  res.json({ navigation: await readNavigation() });
+});
+
+adminNavigationRouter.use(requireAuth);
+
+adminNavigationRouter.get("/navigation", async (_req, res) => {
+  res.json({ navigation: await readNavigation() });
+});
+
+adminNavigationRouter.patch("/navigation", async (req, res) => {
+  const navigation = normalizeNavigation(req.body?.navigation);
+  if (!navigation) {
+    res.status(400).json({ error: "Invalid navigation payload" });
+    return;
+  }
+
+  const [row] = await db
+    .insert(siteNavigation)
+    .values({ key: NAVIGATION_KEY, menu: navigation, updatedAt: new Date() })
+    .onConflictDoUpdate({
+      target: siteNavigation.key,
+      set: { menu: navigation, updatedAt: new Date() },
+    })
+    .returning();
+
+  res.json({ navigation: normalizeNavigation(row.menu) ?? navigation });
+});

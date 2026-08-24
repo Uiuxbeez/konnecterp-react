@@ -17,6 +17,7 @@ import PagesList from "@/admin/pages/PagesList";
 import NewPage from "@/admin/pages/NewPage";
 import BlogPostsList from "@/admin/pages/BlogPostsList";
 import BlogPostEditor from "@/admin/pages/BlogPostEditor";
+import MenuBuilder from "@/admin/pages/MenuBuilder";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +54,11 @@ function Router() {
       <Route path="/admin/pages">
         <RequireAuth>
           <PagesList />
+        </RequireAuth>
+      </Route>
+      <Route path="/admin/menus">
+        <RequireAuth>
+          <MenuBuilder />
         </RequireAuth>
       </Route>
       <Route path="/admin/page-builder">

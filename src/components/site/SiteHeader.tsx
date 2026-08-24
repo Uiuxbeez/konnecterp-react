@@ -2,7 +2,8 @@ import React from 'react';
 import { motion, AnimatePresence, type MotionValue } from 'framer-motion';
 import { ChevronRight, Menu, X, Monitor, Moon, Sun, Handshake } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { MENU_GROUPS } from '@/lib/nav';
+import { getMenuColumnClass, getMenuColumns, MEGA_MENU_THRESHOLD } from '@/lib/nav';
+import { useNavigation } from '@/lib/useNavigation';
 import type { ThemeMode } from '@/hooks/useSiteChrome';
 
 export interface SiteHeaderProps {
@@ -42,6 +43,7 @@ export function SiteHeader({
   overDarkBackground = false,
 }: SiteHeaderProps) {
   const chromeDark = isDarkMode || overDarkBackground;
+  const navigation = useNavigation();
 
   return (
     <>
@@ -75,26 +77,40 @@ export function SiteHeader({
             <a href="/" className={`text-sm font-medium ${chromeDark ? 'text-white hover:text-white/80' : 'text-[#0B1F4A]'}`}>
               Home
             </a>
-            {MENU_GROUPS.map((group) => (
-              <div key={group.label} className="relative group cursor-pointer py-8">
-                <a href={group.href} className={`text-sm font-medium flex items-center gap-1 ${chromeDark ? 'text-white' : 'text-[#0B1F4A]'}`}>
-                  {group.label} <ChevronRight className="w-3 h-3 group-hover:rotate-90 transition-transform" />
-                </a>
-                <div className="absolute top-full left-1/2 -translate-x-1/2 min-w-[290px] bg-card border border-border rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 p-4">
-                  <div className="mb-3 border-b border-border/70 pb-3">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">{group.footerLabel ?? group.label}</p>
-                    {group.description && <p className="mt-1 text-sm text-muted-foreground">{group.description}</p>}
-                  </div>
-                  <div className="space-y-1">
-                    {group.items.map((item) => (
-                      <a key={item.label} href={item.href} className="block rounded-lg px-3 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors">
-                        {item.label}
-                      </a>
-                    ))}
+            {navigation.map((group) => {
+              const menuColumns = getMenuColumns(group.items);
+              const isMegaMenu = group.items.length > MEGA_MENU_THRESHOLD;
+              const columnClass = getMenuColumnClass(menuColumns.length);
+
+              return (
+                <div key={group.label} className="relative group cursor-pointer py-8">
+                  <a href={group.href} className={`text-sm font-medium flex items-center gap-1 ${chromeDark ? 'text-white' : 'text-[#0B1F4A]'}`}>
+                    {group.label} <ChevronRight className="w-3 h-3 group-hover:rotate-90 transition-transform" />
+                  </a>
+                  <div
+                    className={`absolute top-full left-1/2 -translate-x-1/2 bg-card border border-border rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 p-4 ${
+                      isMegaMenu ? "w-[min(920px,calc(100vw-2rem))]" : "min-w-[290px]"
+                    }`}
+                  >
+                    <div className="mb-3 border-b border-border/70 pb-3">
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">{group.footerLabel ?? group.label}</p>
+                      {group.description && <p className="mt-1 text-sm text-muted-foreground">{group.description}</p>}
+                    </div>
+                    <div className={isMegaMenu ? `grid gap-3 ${columnClass}` : "space-y-1"}>
+                      {menuColumns.map((column, columnIndex) => (
+                        <div key={`${group.label}-${columnIndex}`} className="space-y-1">
+                          {column.map((item) => (
+                            <a key={item.label} href={item.href} className="block rounded-lg px-3 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors">
+                              {item.label}
+                            </a>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </nav>
 
           <div className="hidden lg:flex items-center gap-4">
@@ -156,7 +172,7 @@ export function SiteHeader({
               >
                 Home
               </a>
-              {MENU_GROUPS.map((group) => (
+              {navigation.map((group) => (
                 <div key={group.label} className="border-b border-border pb-3">
                   <a href={group.href} className="block text-lg font-medium text-foreground py-2" onClick={() => setIsMobileMenuOpen(false)}>
                     {group.label}

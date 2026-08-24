@@ -22,6 +22,13 @@
       "when": 1787123100639,
       "tag": "0002_friendly_stardust",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1787587200000,
+      "tag": "0003_site_navigation",
+      "breakpoints": true
     }
   ]
 }

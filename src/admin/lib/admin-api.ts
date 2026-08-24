@@ -1,4 +1,5 @@
 import { apiUrl } from "@/lib/api-base";
+import type { MenuGroup } from "@/lib/nav";
 
 export interface AdminSection {
   id: number;
@@ -90,6 +91,10 @@ export const adminApi = {
   createPage: (data: { title: string; slug: string; template: string }) =>
     request<AdminPage>("/api/admin/pages", { method: "POST", body: JSON.stringify(data) }),
   deletePage: (slug: string) => request<void>(`/api/admin/pages/${slug}`, { method: "DELETE" }),
+
+  getNavigation: () => request<{ navigation: MenuGroup[] }>("/api/admin/navigation"),
+  updateNavigation: (navigation: MenuGroup[]) =>
+    request<{ navigation: MenuGroup[] }>("/api/admin/navigation", { method: "PATCH", body: JSON.stringify({ navigation }) }),
 
   listBlogPosts: () => request<{ posts: AdminBlogPost[] }>("/api/admin/blog-posts"),
   getBlogPost: (id: number) => request<AdminBlogPost>(`/api/admin/blog-posts/${id}`),

@@ -44,3 +44,12 @@ export const blogPosts = pgTable("blog_posts", {
 }, (table) => ({
   slugIdx: uniqueIndex("blog_posts_slug_idx").on(table.slug),
 }));
+
+export const siteNavigation = pgTable("site_navigation", {
+  id: serial("id").primaryKey(),
+  key: text("key").notNull(),
+  menu: jsonb("menu").notNull(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+}, (table) => ({
+  keyIdx: uniqueIndex("site_navigation_key_idx").on(table.key),
+}));

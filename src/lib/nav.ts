@@ -3,8 +3,17 @@ export type MenuGroup = {
   footerLabel?: string;
   href: string;
   description?: string;
-  items: { label: string; href: string }[];
+  items: MenuItem[];
 };
+
+export type MenuItem = {
+  label: string;
+  href: string;
+};
+
+export const MEGA_MENU_THRESHOLD = 6;
+export const MENU_COLUMN_SIZE = 6;
+export const MAX_MENU_COLUMNS = 4;
 
 export const MENU_GROUPS: MenuGroup[] = [
   {
@@ -60,3 +69,18 @@ export const MENU_GROUPS: MenuGroup[] = [
     ],
   },
 ];
+
+export function getMenuColumns(items: MenuItem[]): MenuItem[][] {
+  const columns: MenuItem[][] = [];
+  for (let i = 0; i < items.length; i += MENU_COLUMN_SIZE) {
+    columns.push(items.slice(i, i + MENU_COLUMN_SIZE));
+  }
+  return columns;
+}
+
+export function getMenuColumnClass(columnCount: number): string {
+  if (columnCount >= 4) return "grid-cols-4";
+  if (columnCount === 3) return "grid-cols-3";
+  if (columnCount === 2) return "grid-cols-2";
+  return "grid-cols-1";
+}

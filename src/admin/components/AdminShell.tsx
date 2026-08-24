@@ -22,7 +22,7 @@ const NAV_ITEMS = [
   { label: "Blog", icon: Newspaper, href: "/admin/blog" },
   { label: "Media Library", icon: ImageIcon, href: null },
   { label: "Forms", icon: FileStack, href: null },
-  { label: "Menus", icon: MenuIcon, href: null },
+  { label: "Menus", icon: MenuIcon, href: "/admin/menus" },
   { label: "Users", icon: Users, href: null },
   { label: "Settings", icon: Settings, href: null },
 ];

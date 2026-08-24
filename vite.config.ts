@@ -5,6 +5,8 @@ import { defineConfig } from "vite";
   import { fileURLToPath } from "url";
 
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  const API_PORT = process.env.API_PORT ?? 5001;
+  const API_TARGET = `http://127.0.0.1:${API_PORT}`;
 
   export default defineConfig({
     plugins: [react(), tailwindcss()],
@@ -21,16 +23,17 @@ import { defineConfig } from "vite";
     },
     server: {
       port: 5000,
+      strictPort: true,
       host: "0.0.0.0",
       allowedHosts: true,
       open: false,
       proxy: {
         "/api": {
-          target: `http://localhost:${process.env.API_PORT ?? 5001}`,
+          target: API_TARGET,
           changeOrigin: true,
         },
         "/uploads": {
-          target: `http://localhost:${process.env.API_PORT ?? 5001}`,
+          target: API_TARGET,
           changeOrigin: true,
         },
       },
@@ -40,4 +43,3 @@ import { defineConfig } from "vite";
       host: "0.0.0.0",
     },
   });
-  

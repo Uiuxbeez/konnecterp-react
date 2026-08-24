@@ -1,4 +1,4 @@
-import { MENU_GROUPS } from "@/lib/nav";
+import { useNavigation } from "@/lib/useNavigation";
 
 export interface FooterContent {
   tagline: string;
@@ -6,6 +6,8 @@ export interface FooterContent {
 }
 
 export function FooterSection({ content }: { content: FooterContent }) {
+  const navigation = useNavigation();
+
   return (
     <footer className="bg-[#0B204B] relative overflow-hidden">
       <div className="relative z-10 container mx-auto px-8 pt-14 pb-0 max-w-8xl">
@@ -36,7 +38,7 @@ export function FooterSection({ content }: { content: FooterContent }) {
             </div>
           </div>
 
-          {MENU_GROUPS.map((group) => (
+          {navigation.map((group) => (
             <div key={group.label}>
               <h4 className="text-white font-bold text-xs tracking-[0.16em] uppercase mb-5">{group.footerLabel ?? group.label}</h4>
               <ul className="space-y-3">
