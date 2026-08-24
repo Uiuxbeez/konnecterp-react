@@ -7,6 +7,9 @@ import Home from "@/pages/Home";
 import ProductPage from "@/pages/products/ProductPage";
 import IndustryPage from "@/pages/industries/IndustryPage";
 import ResourcePage from "@/pages/resources/ResourcePage";
+import AboutUs from "@/pages/AboutUs";
+import ContactUs from "@/pages/ContactUs";
+import Career from "@/pages/Career";
 import BlogList from "@/pages/blog/BlogList";
 import BlogDetail from "@/pages/blog/BlogDetail";
 import { AuthProvider } from "@/admin/lib/AuthContext";
@@ -28,6 +31,9 @@ function Router() {
       <Route path="/products/:slug" component={ProductPage} />
       <Route path="/industries/:slug" component={IndustryPage} />
       <Route path="/resources/:slug" component={ResourcePage} />
+      <Route path="/about-us" component={AboutUs} />
+      <Route path="/contact" component={ContactUs} />
+      <Route path="/career" component={Career} />
       <Route path="/blog" component={BlogList} />
       <Route path="/blog/:slug" component={BlogDetail} />
       <Route path="/admin/login" component={AdminLogin} />

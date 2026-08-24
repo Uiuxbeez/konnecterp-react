@@ -5,6 +5,8 @@ export interface FooterContent {
   copyright: string;
 }
 
+const FOOTER_MENU_LIMIT = 3;
+
 export function FooterSection({ content }: { content: FooterContent }) {
   const navigation = useNavigation();
 
@@ -42,7 +44,7 @@ export function FooterSection({ content }: { content: FooterContent }) {
             <div key={group.label}>
               <h4 className="text-white font-bold text-xs tracking-[0.16em] uppercase mb-5">{group.footerLabel ?? group.label}</h4>
               <ul className="space-y-3">
-                {group.items.map((item) => (
+                {group.items.slice(0, FOOTER_MENU_LIMIT).map((item) => (
                   <li key={item.label}><a href={item.href} className="text-slate-400 text-sm hover:text-white transition-colors">{item.label}</a></li>
                 ))}
               </ul>

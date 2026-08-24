@@ -6,6 +6,11 @@ import { requireAuth } from "../auth";
 import { MENU_GROUPS, type MenuGroup } from "../../src/lib/nav";
 
 const NAVIGATION_KEY = "main";
+const LEGACY_HREFS: Record<string, string> = {
+  "#about-us": "/about-us",
+  "#career": "/career",
+  "#contact": "/contact",
+};
 
 export const publicNavigationRouter = Router();
 export const adminNavigationRouter = Router();
@@ -27,16 +32,21 @@ function isMenuGroup(value: unknown): value is MenuGroup {
   );
 }
 
+function normalizeHref(href: string) {
+  const cleanHref = href.trim();
+  return (LEGACY_HREFS[cleanHref] ?? cleanHref) || "#";
+}
+
 function normalizeNavigation(value: unknown): MenuGroup[] | null {
   if (!Array.isArray(value) || !value.every(isMenuGroup)) return null;
   return value.map((group) => ({
     label: group.label.trim(),
     footerLabel: group.footerLabel?.trim() || undefined,
-    href: group.href.trim() || "#",
+    href: normalizeHref(group.href),
     description: group.description?.trim() || undefined,
     items: group.items.map((item) => ({
       label: item.label.trim(),
-      href: item.href.trim() || "#",
+      href: normalizeHref(item.href),
     })),
   }));
 }

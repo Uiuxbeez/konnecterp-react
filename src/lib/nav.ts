@@ -60,12 +60,12 @@ export const MENU_GROUPS: MenuGroup[] = [
   {
     label: "About Us",
     footerLabel: "Company",
-    href: "#about-us",
+    href: "/about-us",
     description: "Learn more about the company, opportunities, and how to get in touch.",
     items: [
-      { label: "About Us", href: "#about-us" },
-      { label: "Career", href: "#career" },
-      { label: "Contact Us", href: "#contact" },
+      { label: "About Us", href: "/about-us" },
+      { label: "Career", href: "/career" },
+      { label: "Contact Us", href: "/contact" },
     ],
   },
 ];

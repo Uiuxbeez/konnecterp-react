@@ -20,6 +20,7 @@ import { getMenuColumnClass, getMenuColumns, MEGA_MENU_THRESHOLD, MENU_GROUPS, t
 import { cn } from "@/lib/utils";
 import { AdminShell } from "../components/AdminShell";
 import { adminApi, type AdminPage } from "../lib/admin-api";
+import { withStaticPages } from "../lib/static-pages";
 
 type SaveStatus = "idle" | "saving" | "saved" | "error";
 
@@ -65,7 +66,7 @@ export default function MenuBuilder() {
     Promise.all([adminApi.getNavigation(), adminApi.listPages()])
       .then(([navigationRes, pagesRes]) => {
         setMenuGroups(navigationRes.navigation.length ? navigationRes.navigation : MENU_GROUPS);
-        setPages(pagesRes.pages);
+        setPages(withStaticPages(pagesRes.pages));
       })
       .catch((err) => {
         setError(err instanceof Error ? err.message : "Failed to load menu data");

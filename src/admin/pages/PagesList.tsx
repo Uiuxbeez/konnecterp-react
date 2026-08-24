@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { AdminShell } from "../components/AdminShell";
 import { adminApi, type AdminPage } from "../lib/admin-api";
+import { withStaticPages } from "../lib/static-pages";
 
 export default function PagesList() {
   const [pages, setPages] = useState<AdminPage[] | null>(null);
@@ -14,7 +15,7 @@ export default function PagesList() {
   const load = () => {
     adminApi
       .listPages()
-      .then((res) => setPages(res.pages))
+      .then((res) => setPages(withStaticPages(res.pages)))
       .catch((err) => setError(err instanceof Error ? err.message : "Failed to load pages"));
   };
 
@@ -70,7 +71,10 @@ export default function PagesList() {
                   </tr>
                 </thead>
                 <tbody>
-                  {pages.map((p) => (
+                  {pages.map((p) => {
+                    const isStatic = p.template === "static";
+
+                    return (
                     <tr key={p.slug} className="border-b border-slate-50 last:border-0">
                       <td className="px-5 py-3.5 font-medium text-slate-800">{p.title}</td>
                       <td className="px-5 py-3.5">
@@ -79,15 +83,21 @@ export default function PagesList() {
                         </a>
                       </td>
                       <td className="px-5 py-3.5 text-slate-500 capitalize">{p.template}</td>
-                      <td className="px-5 py-3.5 text-slate-400">{new Date(p.updatedAt).toLocaleDateString()}</td>
+                      <td className="px-5 py-3.5 text-slate-400">{isStatic ? "Static" : new Date(p.updatedAt).toLocaleDateString()}</td>
                       <td className="px-5 py-3.5">
                         <div className="flex items-center justify-end gap-1">
-                          <Link href={`/admin/page-builder?slug=${p.slug}`}>
-                            <Button variant="ghost" size="icon" title="Edit">
+                          {isStatic ? (
+                            <Button variant="ghost" size="icon" title="Static page" disabled>
                               <Pencil className="h-3.5 w-3.5" />
                             </Button>
-                          </Link>
-                          {p.template !== "home" && (
+                          ) : (
+                            <Link href={`/admin/page-builder?slug=${p.slug}`}>
+                              <Button variant="ghost" size="icon" title="Edit">
+                                <Pencil className="h-3.5 w-3.5" />
+                              </Button>
+                            </Link>
+                          )}
+                          {p.template !== "home" && !isStatic && (
                             <Button
                               variant="ghost"
                               size="icon"
@@ -101,7 +111,8 @@ export default function PagesList() {
                         </div>
                       </td>
                     </tr>
-                  ))}
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
