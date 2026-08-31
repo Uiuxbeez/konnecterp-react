@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { db } from "../db/client";
 import { siteNavigation } from "../db/schema";
 import { requireAuth } from "../auth";
-import { MENU_GROUPS, type MenuGroup } from "../../src/lib/nav";
+import { getVisibleNavigation, MENU_GROUPS, type MenuGroup } from "../../src/lib/nav";
 
 const NAVIGATION_KEY = "main";
 const LEGACY_HREFS: Record<string, string> = {
@@ -23,11 +23,16 @@ function isMenuGroup(value: unknown): value is MenuGroup {
     typeof group.href === "string" &&
     (group.footerLabel === undefined || typeof group.footerLabel === "string") &&
     (group.description === undefined || typeof group.description === "string") &&
+    (group.visible === undefined || typeof group.visible === "boolean") &&
     Array.isArray(group.items) &&
     group.items.every((item) => {
       if (!item || typeof item !== "object") return false;
       const child = item as Record<string, unknown>;
-      return typeof child.label === "string" && typeof child.href === "string";
+      return (
+        typeof child.label === "string" &&
+        typeof child.href === "string" &&
+        (child.visible === undefined || typeof child.visible === "boolean")
+      );
     })
   );
 }
@@ -44,9 +49,11 @@ function normalizeNavigation(value: unknown): MenuGroup[] | null {
     footerLabel: group.footerLabel?.trim() || undefined,
     href: normalizeHref(group.href),
     description: group.description?.trim() || undefined,
+    visible: group.visible !== false,
     items: group.items.map((item) => ({
       label: item.label.trim(),
       href: normalizeHref(item.href),
+      visible: item.visible !== false,
     })),
   }));
 }
@@ -57,7 +64,7 @@ async function readNavigation() {
 }
 
 publicNavigationRouter.get("/navigation", async (_req, res) => {
-  res.json({ navigation: await readNavigation() });
+  res.json({ navigation: getVisibleNavigation(await readNavigation()) });
 });
 
 adminNavigationRouter.use(requireAuth);

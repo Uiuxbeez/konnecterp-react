@@ -9,6 +9,8 @@ import { uploadRouter } from "./routes/upload";
 import { pagesRouter } from "./routes/pages";
 import { adminBlogRouter, publicBlogRouter } from "./routes/blog";
 import { adminNavigationRouter, publicNavigationRouter } from "./routes/navigation";
+import { adminFormsRouter, publicFormsRouter } from "./routes/forms";
+import { adminSettingsRouter, publicSettingsRouter } from "./routes/settings";
 
 const app = express();
 // Railway (and most PaaS hosts) inject PORT and expect the app to bind to it.
@@ -28,9 +30,13 @@ app.use("/api/admin", uploadRouter);
 app.use("/api/admin", pagesRouter);
 app.use("/api/admin", adminBlogRouter);
 app.use("/api/admin", adminNavigationRouter);
+app.use("/api/admin", adminFormsRouter);
+app.use("/api/admin", adminSettingsRouter);
 app.use("/api/public", publicSectionsRouter);
 app.use("/api/public", publicBlogRouter);
 app.use("/api/public", publicNavigationRouter);
+app.use("/api/public", publicFormsRouter);
+app.use("/api/public", publicSettingsRouter);
 
 app.get("/api/health", (_req, res) => res.json({ ok: true }));
 

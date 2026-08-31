@@ -13,6 +13,7 @@ import { IndustryFlow, type IndustryFlowContent } from '@/industry-sections/Indu
 import { IndustryChallengesBenefits, type IndustryChallengesBenefitsContent } from '@/industry-sections/IndustryChallengesBenefits';
 import { ProductCta, type ProductCtaContent } from '@/product-sections/ProductCta';
 import type { SectionCtx } from '@/sections/shared';
+import { runCmsButtonAction } from '@/lib/cms-button-actions';
 import NotFound from '@/pages/not-found';
 
 function renderIndustrySection(section: PageSection, ctx: SectionCtx, byType: (t: SectionType) => Record<string, unknown>) {
@@ -40,7 +41,7 @@ function renderIndustrySection(section: PageSection, ctx: SectionCtx, byType: (t
 export default function IndustryPage() {
   const { slug } = useParams<{ slug: string }>();
   const chrome = useSiteChrome();
-  const { isDarkMode, openDemo } = chrome;
+  const { isDarkMode } = chrome;
 
   const { sections, page, notFound, byType } = usePageSections(slug ?? '');
   const { byType: byHomeType } = usePageSections('home');
@@ -51,11 +52,22 @@ export default function IndustryPage() {
 
   useDocumentMeta(`${pageTitle} | KonnectERP`, heroContent.description);
 
-  const sectionCtx: SectionCtx = { isDarkMode, openDemo, openVideo: chrome.openVideo };
+  const sectionCtx: SectionCtx = { isDarkMode, openDemo: chrome.openDemo, openVideo: chrome.openVideo };
   const bodySections = sections.filter((s) => s.type !== 'industry_hero');
 
   const scrollToFlow = () => {
     document.getElementById('flow')?.scrollIntoView({ behavior: 'smooth' });
+  };
+  const handlePrimaryButtonClick = () => {
+    runCmsButtonAction(heroContent.primaryButtonAction, heroContent.primaryButtonHref, sectionCtx, 'demo_modal');
+  };
+  const handleSecondaryButtonClick = () => {
+    if (!heroContent.secondaryButtonAction && !heroContent.secondaryButtonHref) {
+      scrollToFlow();
+      return;
+    }
+
+    runCmsButtonAction(heroContent.secondaryButtonAction, heroContent.secondaryButtonHref, sectionCtx, 'link');
   };
 
   if (notFound) {
@@ -84,8 +96,8 @@ export default function IndustryPage() {
       <IndustryHero
         content={heroContent}
         breadcrumb={[{ label: 'Home', href: '/' }, { label: 'Industries', href: '/#industries' }, { label: pageTitle }]}
-        onPrimaryClick={openDemo}
-        onSecondaryClick={scrollToFlow}
+        onPrimaryClick={handlePrimaryButtonClick}
+        onSecondaryClick={handleSecondaryButtonClick}
       />
 
       {bodySections.map((section) => renderIndustrySection(section, sectionCtx, byType))}

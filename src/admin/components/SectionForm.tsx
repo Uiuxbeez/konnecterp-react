@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ImageField } from "./ImageField";
 import { IconPicker, AdminIcon } from "./IconPicker";
 
@@ -36,8 +38,41 @@ function FieldRenderer({
           onChange={(e) => onChange(e.target.value === "" ? 0 : Number(e.target.value))}
         />
       );
+    case "boolean":
+      return (
+        <div className="flex items-center justify-between rounded-md border border-slate-200 px-3 py-2">
+          <span className="text-sm text-slate-600">{field.helpText ?? "Enable this option"}</span>
+          <Switch checked={value !== false} onCheckedChange={onChange} />
+        </div>
+      );
+    case "select":
+      return (
+        <Select value={String(value ?? "")} onValueChange={onChange}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select option" />
+          </SelectTrigger>
+          <SelectContent>
+            {field.options.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      );
     case "image":
       return <ImageField value={value ?? ""} onChange={onChange} />;
+    case "file":
+      return (
+        <ImageField
+          value={value ?? ""}
+          onChange={onChange}
+          accept={field.accept ?? "application/pdf"}
+          buttonText={field.buttonText ?? "Upload File"}
+          emptyText="No file selected"
+          preview="file"
+        />
+      );
     case "icon":
       return <IconPicker value={value ?? ""} onChange={onChange} />;
     case "list": {

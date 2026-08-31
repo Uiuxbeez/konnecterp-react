@@ -3,12 +3,14 @@ export type MenuGroup = {
   footerLabel?: string;
   href: string;
   description?: string;
+  visible?: boolean;
   items: MenuItem[];
 };
 
 export type MenuItem = {
   label: string;
   href: string;
+  visible?: boolean;
 };
 
 export const MEGA_MENU_THRESHOLD = 6;
@@ -83,4 +85,17 @@ export function getMenuColumnClass(columnCount: number): string {
   if (columnCount === 3) return "grid-cols-3";
   if (columnCount === 2) return "grid-cols-2";
   return "grid-cols-1";
+}
+
+export function isMenuVisible(menu: { visible?: boolean }) {
+  return menu.visible !== false;
+}
+
+export function getVisibleNavigation(groups: MenuGroup[]): MenuGroup[] {
+  return groups
+    .filter(isMenuVisible)
+    .map((group) => ({
+      ...group,
+      items: group.items.filter(isMenuVisible),
+    }));
 }

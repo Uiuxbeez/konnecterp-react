@@ -13,6 +13,7 @@ export function PageHero({
   subhead,
   description,
   primaryButtonText,
+  showPrimaryButton = true,
   onPrimaryClick,
 }: {
   breadcrumb: BreadcrumbItem[];
@@ -22,6 +23,7 @@ export function PageHero({
   subhead: string;
   description: string;
   primaryButtonText: string;
+  showPrimaryButton?: boolean;
   onPrimaryClick: () => void;
 }) {
   // Always dark-styled — a fixed, professional inner-page hero band, independent
@@ -79,14 +81,16 @@ export function PageHero({
               {description}
             </motion.p>
 
-            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
-              <button
-                onClick={onPrimaryClick}
-                className="inline-flex items-center gap-2 h-11 px-6 text-sm font-semibold rounded-md transition-colors shadow-lg bg-[#F97316] hover:bg-[#ea6c0a] text-white shadow-orange-500/30"
-              >
-                {primaryButtonText} <ArrowRight className="w-4 h-4" />
-              </button>
-            </motion.div>
+            {showPrimaryButton && (
+              <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
+                <button
+                  onClick={onPrimaryClick}
+                  className="inline-flex items-center gap-2 h-11 px-6 text-sm font-semibold rounded-md transition-colors shadow-lg bg-[#F97316] hover:bg-[#ea6c0a] text-white shadow-orange-500/30"
+                >
+                  {primaryButtonText} <ArrowRight className="w-4 h-4" />
+                </button>
+              </motion.div>
+            )}
           </div>
 
           <motion.div

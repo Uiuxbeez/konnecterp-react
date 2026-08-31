@@ -7,10 +7,19 @@ export type FieldDef =
   | { key: string; label: string; type: "text" }
   | { key: string; label: string; type: "textarea" }
   | { key: string; label: string; type: "image" }
+  | { key: string; label: string; type: "file"; accept?: string; buttonText?: string }
   | { key: string; label: string; type: "icon" }
   | { key: string; label: string; type: "number" }
+  | { key: string; label: string; type: "boolean"; helpText?: string }
+  | { key: string; label: string; type: "select"; options: { label: string; value: string }[]; helpText?: string }
   | { key: string; label: string; type: "list"; itemLabel?: string }
   | { key: string; label: string; type: "repeater"; itemLabel: string; addRemove?: boolean; fields: FieldDef[] };
+
+const BUTTON_ACTION_OPTIONS = [
+  { label: "Open demo popup", value: "demo_modal" },
+  { label: "Open video popup", value: "video_modal" },
+  { label: "Link to page or URL", value: "link" },
+];
 
 export const ICON_OPTIONS = [
   "Users", "Building2", "Activity", "BarChart3", "Package", "Factory", "Shield",
@@ -18,7 +27,10 @@ export const ICON_OPTIONS = [
   "TrendingUp", "Handshake", "HardHat", "UserCog", "Eye", "Zap", "Cloud",
   "Server", "Monitor", "Smartphone", "CheckCircle2", "ClipboardList",
   "AlertTriangle", "DollarSign", "Settings", "ShieldCheck", "PackageCheck",
-  "ClipboardCheck", "Calculator",
+  "ClipboardCheck", "Calculator", "MapPin", "Mail", "Phone", "Headphones", "HelpCircle",
+  "Bell", "Fingerprint", "Gauge", "GitBranch", "LockKeyhole", "Sparkles", "Database",
+  "FileSignature", "Facebook", "Twitter", "Instagram", "MessageCircle", "Linkedin",
+  "PackageSearch", "BriefcaseBusiness", "GraduationCap",
 ] as const;
 
 export type SectionType =
@@ -46,7 +58,18 @@ export type SectionType =
   | "methodology_stages"
   | "methodology_packages"
   | "brochure_features"
-  | "brochure_cta";
+  | "brochure_cta"
+  | "about_company"
+  | "about_strengths"
+  | "about_leadership"
+  | "about_products"
+  | "contact_details"
+  | "contact_support_cta"
+  | "career_roles"
+  | "case_studies_grid"
+  | "testimonial_collage"
+  | "testimonial_cards"
+  | "faq_accordion";
 
 export interface SectionMeta {
   type: SectionType;
@@ -65,7 +88,13 @@ export const SECTION_DEFS: SectionMeta[] = [
       { key: "highlight", label: "Highlight Text", type: "text" },
       { key: "description", label: "Description", type: "textarea" },
       { key: "primaryButtonText", label: "Primary Button Text", type: "text" },
+      { key: "primaryButtonVisible", label: "Show Primary Button", type: "boolean" },
+      { key: "primaryButtonAction", label: "Primary Button Action", type: "select", options: BUTTON_ACTION_OPTIONS },
+      { key: "primaryButtonHref", label: "Primary Button Link URL / Page Path", type: "text" },
       { key: "secondaryButtonText", label: "Secondary Button Text", type: "text" },
+      { key: "secondaryButtonVisible", label: "Show Secondary Button", type: "boolean" },
+      { key: "secondaryButtonAction", label: "Secondary Button Action", type: "select", options: BUTTON_ACTION_OPTIONS },
+      { key: "secondaryButtonHref", label: "Secondary Button Link URL / Page Path", type: "text" },
       { key: "backgroundImage", label: "Background Image", type: "image" },
       { key: "checklist", label: "Checklist Items", type: "list", itemLabel: "Item" },
     ],
@@ -76,7 +105,13 @@ export const SECTION_DEFS: SectionMeta[] = [
       description:
         "Seamlessly connect Procure-to-Pay, Plan-to-Produce, Asset-to-Performance, and Project-to-Profit on a single platform. Konnect ERP delivers end-to-end operational clarity with pre-defined industry templates and native Indian compliance from day one.",
       primaryButtonText: "Schedule Demo",
+      primaryButtonVisible: true,
+      primaryButtonAction: "demo_modal",
+      primaryButtonHref: "",
       secondaryButtonText: "Watch Platform Overview",
+      secondaryButtonVisible: true,
+      secondaryButtonAction: "video_modal",
+      secondaryButtonHref: "",
       backgroundImage: "/images/hero-meeting.jpg",
       checklist: ["Pre-Build Industry Specific ERP", "Faster Deployment", "Transparent Pricing"],
     },
@@ -146,6 +181,9 @@ export const SECTION_DEFS: SectionMeta[] = [
       { key: "title", label: "Section Title", type: "text" },
       { key: "highlight", label: "Highlight Text", type: "text" },
       { key: "description", label: "Description", type: "textarea" },
+      { key: "cardButtonVisible", label: "Show Card Arrow Button", type: "boolean" },
+      { key: "cardButtonAction", label: "Card Arrow Button Action", type: "select", options: BUTTON_ACTION_OPTIONS },
+      { key: "cardButtonHref", label: "Card Arrow Button Link URL / Page Path", type: "text" },
       {
         key: "cards",
         label: "Industry Cards",
@@ -161,6 +199,14 @@ export const SECTION_DEFS: SectionMeta[] = [
           { key: "highlights", label: "Highlights", type: "list", itemLabel: "Highlight" },
         ],
       },
+      { key: "primaryButtonText", label: "Primary Button Text", type: "text" },
+      { key: "primaryButtonVisible", label: "Show Primary Button", type: "boolean" },
+      { key: "primaryButtonAction", label: "Primary Button Action", type: "select", options: BUTTON_ACTION_OPTIONS },
+      { key: "primaryButtonHref", label: "Primary Button Link URL / Page Path", type: "text" },
+      { key: "secondaryButtonText", label: "Secondary Button Text", type: "text" },
+      { key: "secondaryButtonVisible", label: "Show Secondary Button", type: "boolean" },
+      { key: "secondaryButtonAction", label: "Secondary Button Action", type: "select", options: BUTTON_ACTION_OPTIONS },
+      { key: "secondaryButtonHref", label: "Secondary Button Link URL / Page Path", type: "text" },
     ],
     defaultContent: {
       eyebrow: "Industry Solutions",
@@ -168,6 +214,17 @@ export const SECTION_DEFS: SectionMeta[] = [
       highlight: "Unified Control",
       description:
         "Deploy the exact solution your business requires today - from core inventory to full end-to-end production. Every module shares the same real-time data, eliminating workarounds and data silos.",
+      cardButtonVisible: true,
+      cardButtonAction: "demo_modal",
+      cardButtonHref: "",
+      primaryButtonText: "Explore More",
+      primaryButtonVisible: true,
+      primaryButtonAction: "link",
+      primaryButtonHref: "/products",
+      secondaryButtonText: "Talk to an Expert",
+      secondaryButtonVisible: true,
+      secondaryButtonAction: "demo_modal",
+      secondaryButtonHref: "",
       cards: [
         {
           tag: "Process Manufacturing",
@@ -243,6 +300,9 @@ export const SECTION_DEFS: SectionMeta[] = [
       { key: "featuredImage", label: "Featured Image", type: "image" },
       { key: "featuredTitle", label: "Featured Card Title", type: "text" },
       { key: "featuredDescription", label: "Featured Card Description", type: "textarea" },
+      { key: "featuredButtonVisible", label: "Show Featured Arrow Button", type: "boolean" },
+      { key: "featuredButtonAction", label: "Featured Arrow Button Action", type: "select", options: BUTTON_ACTION_OPTIONS },
+      { key: "featuredButtonHref", label: "Featured Arrow Button Link URL / Page Path", type: "text" },
       {
         key: "features",
         label: "Feature Cards",
@@ -264,6 +324,9 @@ export const SECTION_DEFS: SectionMeta[] = [
       featuredImage: "/images/gst-compliance-person.jpg",
       featuredTitle: "GST Returns & Filing",
       featuredDescription: "Auto-populated GSTR-1, GSTR-3B, and reconciliation reports. No manual data entry.",
+      featuredButtonVisible: true,
+      featuredButtonAction: "demo_modal",
+      featuredButtonHref: "",
       features: [
         { icon: "FileText", title: "E-Invoicing (IRP)", description: "Direct integration with the Invoice Registration Portal. IRN and QR code generation in seconds." },
         { icon: "Truck", title: "E-Way Bill Generation", description: "Auto-generate and cancel E-Way Bills from within dispatch workflows. No portal switching." },
@@ -281,6 +344,9 @@ export const SECTION_DEFS: SectionMeta[] = [
       { key: "title", label: "Section Title", type: "text" },
       { key: "highlight", label: "Highlight Text", type: "text" },
       { key: "description", label: "Description", type: "textarea" },
+      { key: "rowButtonVisible", label: "Show Row Arrow Buttons", type: "boolean" },
+      { key: "rowButtonAction", label: "Row Arrow Button Action", type: "select", options: BUTTON_ACTION_OPTIONS },
+      { key: "rowButtonHref", label: "Row Arrow Button Link URL / Page Path", type: "text" },
       {
         key: "rows",
         label: "Industry Rows",
@@ -300,6 +366,9 @@ export const SECTION_DEFS: SectionMeta[] = [
       title: "Deep Industry Knowledge.",
       highlight: "Not Generic Templates.",
       description: "KonnectERP ships with pre-configured workflows for 20+ Indian industry verticals. Less setup. Faster go-live.",
+      rowButtonVisible: true,
+      rowButtonAction: "demo_modal",
+      rowButtonHref: "",
       rows: [
         {
           tag: "Manufacturing",
@@ -409,12 +478,16 @@ export const SECTION_DEFS: SectionMeta[] = [
     type: "product_hero",
     name: "Hero Banner",
     fields: [
+      { key: "breadcrumbLabel", label: "Breadcrumb Label", type: "text" },
       { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
       { key: "title", label: "Section Title", type: "text" },
       { key: "highlight", label: "Highlight Text", type: "text" },
       { key: "subhead", label: "Subhead", type: "text" },
       { key: "description", label: "Description", type: "textarea" },
       { key: "primaryButtonText", label: "Primary Button Text", type: "text" },
+      { key: "primaryButtonVisible", label: "Show Primary Button", type: "boolean" },
+      { key: "primaryButtonAction", label: "Primary Button Action", type: "select", options: BUTTON_ACTION_OPTIONS },
+      { key: "primaryButtonHref", label: "Primary Button Link URL / Page Path", type: "text" },
     ],
     defaultContent: {
       eyebrow: "01 · ERP for SMEs",
@@ -424,6 +497,9 @@ export const SECTION_DEFS: SectionMeta[] = [
       description:
         "Growing businesses often rely on spreadsheets, disconnected applications, and manual coordination to manage day-to-day operations. As business volume increases, these systems make it harder to control inventory, track orders, monitor production, and understand profitability.",
       primaryButtonText: "Talk to Our ERP Experts",
+      primaryButtonVisible: true,
+      primaryButtonAction: "demo_modal",
+      primaryButtonHref: "",
     },
   },
   {
@@ -527,6 +603,9 @@ export const SECTION_DEFS: SectionMeta[] = [
       { key: "cardDescription", label: "Card Description", type: "textarea" },
       { key: "cardImage", label: "Card Background Image", type: "image" },
       { key: "ctaText", label: "Card Link Text", type: "text" },
+      { key: "ctaVisible", label: "Show Card Link", type: "boolean" },
+      { key: "ctaAction", label: "Card Link Action", type: "select", options: BUTTON_ACTION_OPTIONS },
+      { key: "ctaHref", label: "Card Link URL / Page Path", type: "text" },
       {
         key: "options",
         label: "Deployment Options",
@@ -551,6 +630,9 @@ export const SECTION_DEFS: SectionMeta[] = [
       cardDescription: "Run Konnect ERP however it suits your business — in the cloud, on your own servers, or accessed on the move.",
       cardImage: "/images/hero-meeting.jpg",
       ctaText: "Talk to an Expert",
+      ctaVisible: true,
+      ctaAction: "demo_modal",
+      ctaHref: "",
       options: [
         { icon: "Cloud", label: "Cloud Hosting" },
         { icon: "Server", label: "On-Premise" },
@@ -617,6 +699,9 @@ export const SECTION_DEFS: SectionMeta[] = [
       { key: "highlight", label: "Highlight Text", type: "text" },
       { key: "description", label: "Description", type: "textarea" },
       { key: "buttonText", label: "Button Text", type: "text" },
+      { key: "buttonVisible", label: "Show Button", type: "boolean" },
+      { key: "buttonAction", label: "Button Action", type: "select", options: BUTTON_ACTION_OPTIONS },
+      { key: "buttonHref", label: "Button Link URL / Page Path", type: "text" },
       { key: "backgroundImage", label: "Background Image", type: "image" },
     ],
     defaultContent: {
@@ -624,6 +709,9 @@ export const SECTION_DEFS: SectionMeta[] = [
       highlight: "Growth Easier to Manage",
       description: "Move from disconnected processes to a more organized, visible, and scalable way of running your business.",
       buttonText: "Talk to Our ERP Experts",
+      buttonVisible: true,
+      buttonAction: "demo_modal",
+      buttonHref: "",
       backgroundImage: "/images/industry-trading.jpg",
     },
   },
@@ -641,7 +729,13 @@ export const SECTION_DEFS: SectionMeta[] = [
       { key: "headingLine3Highlight", label: "Heading Line 3 — Highlighted Part", type: "text" },
       { key: "description", label: "Description", type: "textarea" },
       { key: "primaryButtonText", label: "Primary Button Text", type: "text" },
+      { key: "primaryButtonVisible", label: "Show Primary Button", type: "boolean" },
+      { key: "primaryButtonAction", label: "Primary Button Action", type: "select", options: BUTTON_ACTION_OPTIONS },
+      { key: "primaryButtonHref", label: "Primary Button Link URL / Page Path", type: "text" },
       { key: "secondaryButtonText", label: "Secondary Button Text", type: "text" },
+      { key: "secondaryButtonVisible", label: "Show Secondary Button", type: "boolean" },
+      { key: "secondaryButtonAction", label: "Secondary Button Action", type: "select", options: BUTTON_ACTION_OPTIONS },
+      { key: "secondaryButtonHref", label: "Secondary Button Link URL / Page Path", type: "text" },
       { key: "backgroundImage", label: "Background Image", type: "image" },
     ],
     defaultContent: {
@@ -654,7 +748,13 @@ export const SECTION_DEFS: SectionMeta[] = [
       description:
         "Konnect ERP is a manufacturing ERP software designed to manage production planning, procurement, inventory, quality, costing, sales, and finance across make-to-stock, make-to-order, engineer-to-order, job work, and project manufacturing businesses.",
       primaryButtonText: "Request a Demo",
+      primaryButtonVisible: true,
+      primaryButtonAction: "demo_modal",
+      primaryButtonHref: "",
       secondaryButtonText: "Explore Features",
+      secondaryButtonVisible: true,
+      secondaryButtonAction: "link",
+      secondaryButtonHref: "#flow",
       backgroundImage: "/images/industry-manufacturing.jpg",
     },
   },
@@ -837,6 +937,9 @@ export const SECTION_DEFS: SectionMeta[] = [
       { key: "highlight", label: "Highlight Text", type: "text" },
       { key: "description", label: "Description", type: "textarea" },
       { key: "buttonText", label: "Button Text", type: "text" },
+      { key: "buttonVisible", label: "Show Button", type: "boolean" },
+      { key: "buttonAction", label: "Button Action", type: "select", options: BUTTON_ACTION_OPTIONS },
+      { key: "buttonHref", label: "Button Link URL / Page Path", type: "text" },
       { key: "backgroundImage", label: "Background Image", type: "image" },
       {
         key: "packages",
@@ -856,6 +959,9 @@ export const SECTION_DEFS: SectionMeta[] = [
       highlight: "Packages",
       description: "Start with what you need today and add modules as your business grows — every package shares the same connected data.",
       buttonText: "Talk to Our ERP Experts",
+      buttonVisible: true,
+      buttonAction: "demo_modal",
+      buttonHref: "",
       backgroundImage: "/images/industry-manufacturing.jpg",
       packages: [
         { icon: "ShoppingCart", text: "Sales · Purchase · Inventory" },
@@ -909,6 +1015,9 @@ export const SECTION_DEFS: SectionMeta[] = [
       { key: "description", label: "Description", type: "textarea" },
       { key: "features", label: "Feature Highlights", type: "list", itemLabel: "Feature" },
       { key: "buttonText", label: "Button Text", type: "text" },
+      { key: "buttonVisible", label: "Show Button", type: "boolean" },
+      { key: "buttonAction", label: "Button Action", type: "select", options: BUTTON_ACTION_OPTIONS },
+      { key: "buttonHref", label: "Button Link URL / Page Path", type: "text" },
       { key: "fileUrl", label: "Brochure File URL (leave blank to open the demo form instead)", type: "text" },
       { key: "backgroundImage", label: "Background Image", type: "image" },
     ],
@@ -919,8 +1028,561 @@ export const SECTION_DEFS: SectionMeta[] = [
       description: "Get a complete overview of Konnect ERP's manufacturing, inventory, and finance capabilities — built for Indian SMEs and enterprises.",
       features: ["Smart Manufacturing", "Smarter supply chain and production planning", "Automated invoice, purchase order & data entry"],
       buttonText: "Click Here to Download",
+      buttonVisible: true,
+      buttonAction: "link",
+      buttonHref: "",
       fileUrl: "",
       backgroundImage: "/images/hero-meeting.jpg",
+    },
+  },
+
+  // Core root pages: these mirror the existing static About, Contact, and Career content.
+  {
+    type: "about_company",
+    name: "Company Overview",
+    fields: [
+      { key: "image", label: "Team Image", type: "image" },
+      { key: "imageAlt", label: "Image Alt Text", type: "text" },
+      {
+        key: "stats",
+        label: "Orange Stat Cards",
+        type: "repeater",
+        itemLabel: "Stat",
+        fields: [
+          { key: "value", label: "Value", type: "text" },
+          { key: "label", label: "Label", type: "text" },
+        ],
+      },
+      { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
+      { key: "title", label: "Section Title", type: "text" },
+      { key: "paragraphs", label: "Paragraphs", type: "list", itemLabel: "Paragraph" },
+      {
+        key: "values",
+        label: "Mission / Vision Cards",
+        type: "repeater",
+        itemLabel: "Card",
+        fields: [
+          { key: "title", label: "Title", type: "text" },
+          { key: "text", label: "Text", type: "textarea" },
+        ],
+      },
+    ],
+    defaultContent: {
+      image: "/images/hero-meeting.jpg",
+      imageAlt: "KonnectERP team planning implementation",
+      stats: [
+        { value: "2014", label: "Founded" },
+        { value: "50+", label: "Team" },
+        { value: "200+", label: "Years exp." },
+      ],
+      eyebrow: "About Us",
+      title: "Cloud ERP shaped by real implementation work.",
+      paragraphs: [
+        "Konnect Analytics (KA) serves clients across India with business intelligence, enterprise resource planning, and consulting solutions. We are a pioneer in delivering next-generation enterprise solutions on cloud.",
+        "KonnectERP is purpose-built for Indian enterprises to manage core business functions with simplicity, compliance, and control. It simplifies complex operations with practical, scalable tools for finance, inventory, sales, HR, GST, and other statutory needs.",
+      ],
+      values: [
+        { title: "Mission", text: "To make every service of the organization work with accuracy, speed, and transparency so management can take timely decisions for productivity and growth." },
+        { title: "Vision", text: "To deliver exceptional enterprise solutions of global standards through continuous innovation and user-friendly design." },
+      ],
+    },
+  },
+  {
+    type: "about_strengths",
+    name: "Platform Strength",
+    fields: [
+      { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
+      { key: "title", label: "Section Title", type: "text" },
+      {
+        key: "items",
+        label: "Strength Items",
+        type: "repeater",
+        itemLabel: "Strength",
+        addRemove: true,
+        fields: [
+          { key: "icon", label: "Icon", type: "icon" },
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+        ],
+      },
+    ],
+    defaultContent: {
+      eyebrow: "Platform Strength",
+      title: "User and role based access control",
+      items: [
+        { icon: "Fingerprint", title: "User & role based access control", description: "Granular permissions and hierarchy approvals for every department." },
+        { icon: "BarChart3", title: "Real-time dashboards and reports", description: "Business intelligence at your fingertips with live operational insight." },
+        { icon: "GitBranch", title: "Multi-branch and multi-location operations", description: "Centralized control for distributed teams, plants, warehouses, and branches." },
+        { icon: "ShieldCheck", title: "GST compliance", description: "Automated and compliant workflows aligned to Indian tax requirements." },
+        { icon: "Bell", title: "Transaction email and SMS alerts", description: "Instant notifications for all key business transactions." },
+        { icon: "FileSignature", title: "E-invoicing, e-way bill and e-signature", description: "Automated digital workflows for legal and compliance needs." },
+        { icon: "Gauge", title: "GPS tracking and bio-metrics integration", description: "Track teams and connect biometric attendance data with ERP workflows." },
+        { icon: "LockKeyhole", title: "Data security and AWS hosting", description: "Hosted on Amazon with layered security and dependable availability." },
+        { icon: "Sparkles", title: "Frequent upgrades at no extra cost", description: "Stay current with new features, improvements, and platform refinements." },
+        { icon: "Database", title: "150 reports, 400+ transactions, 20+ industries", description: "Comprehensive coverage for daily business operations and analysis." },
+        { icon: "PackageCheck", title: "Quickest onboarding for all needs", description: "A complete ERP solution covering core business functions quickly." },
+        { icon: "FileText", title: "Digital document management", description: "Manage, store, and track organizational documents digitally." },
+        { icon: "Users", title: "Hierarchy level approvals", description: "Approval flows that follow your organization structure and workflow rules." },
+      ],
+    },
+  },
+  {
+    type: "about_leadership",
+    name: "Leadership Team",
+    fields: [
+      { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
+      { key: "title", label: "Section Title", type: "text" },
+      {
+        key: "leaders",
+        label: "Leaders",
+        type: "repeater",
+        itemLabel: "Leader",
+        addRemove: true,
+        fields: [
+          { key: "name", label: "Name", type: "text" },
+          { key: "role", label: "Role", type: "text" },
+          { key: "initials", label: "Initials", type: "text" },
+        ],
+      },
+    ],
+    defaultContent: {
+      eyebrow: "People",
+      title: "Our Leadership Team",
+      leaders: [
+        { name: "Mr. Saravanan KB", role: "CEO", initials: "SK" },
+        { name: "Ms. Prathina", role: "CFO", initials: "MP" },
+        { name: "Mr. Gowtham", role: "CTO", initials: "MG" },
+        { name: "Mr. Gnanaprakash", role: "COO", initials: "MG" },
+      ],
+    },
+  },
+  {
+    type: "about_products",
+    name: "Our Products",
+    fields: [
+      { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
+      { key: "title", label: "Section Title", type: "text" },
+      {
+        key: "products",
+        label: "Products",
+        type: "repeater",
+        itemLabel: "Product",
+        addRemove: true,
+        fields: [
+          { key: "label", label: "Label", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+        ],
+      },
+      { key: "panelIcon", label: "Panel Icon", type: "icon" },
+      { key: "panelTitle", label: "Panel Title", type: "textarea" },
+      { key: "panelDescription", label: "Panel Description", type: "textarea" },
+      { key: "backgroundImage", label: "Panel Background Image", type: "image" },
+      { key: "presence", label: "City Presence", type: "list", itemLabel: "City" },
+    ],
+    defaultContent: {
+      eyebrow: "What We Build",
+      title: "Our Products",
+      products: [
+        { label: "Core 1", description: "CRM/Sales, Purchase, Inventory, QC, Sub-Contracting, Simple Production" },
+        { label: "Core 2", description: "CRM/Sales, Purchase, Inventory, QC, Sub-Contracting, Production Planning and Control" },
+        { label: "Trade", description: "CRM/Sales, Purchase, Inventory, QC" },
+        { label: "Portals", description: "Service Portal, Vendor Portal, DMS Portal" },
+        { label: "Mobile App", description: "Director, Sales, Service, Shop Floor Mobile App" },
+        { label: "Add-on Modules", description: "Accounting, HR, Service Management, Project Management, Plant Maintenance, Asset Management, Business Intelligence Dashboards" },
+      ],
+      panelIcon: "Cloud",
+      panelTitle: "Cloud ERP with modular depth for every growth stage.",
+      panelDescription: "Start with core ERP, then add portals, mobile apps, dashboards, and specialist modules as your operations mature.",
+      backgroundImage: "/images/globe-wireframe.svg",
+      presence: ["Pune", "Coimbatore", "Chennai", "Bangalore"],
+    },
+  },
+  {
+    type: "contact_details",
+    name: "Contact Details",
+    fields: [
+      { key: "pillLabel", label: "Pill Label", type: "text" },
+      { key: "pillText", label: "Pill Text", type: "text" },
+      { key: "title", label: "Section Title", type: "textarea" },
+      { key: "description", label: "Description", type: "textarea" },
+      { key: "companyName", label: "Company Name", type: "text" },
+      { key: "addressLines", label: "Address Lines", type: "list", itemLabel: "Line" },
+      { key: "landmark", label: "Landmark", type: "text" },
+      { key: "email", label: "Email", type: "text" },
+      { key: "phone", label: "Phone", type: "text" },
+      {
+        key: "socialLinks",
+        label: "Social Links",
+        type: "repeater",
+        itemLabel: "Social Link",
+        addRemove: true,
+        fields: [
+          { key: "label", label: "Label", type: "text" },
+          { key: "icon", label: "Icon", type: "icon" },
+          { key: "href", label: "URL", type: "text" },
+        ],
+      },
+      {
+        key: "branches",
+        label: "Branches",
+        type: "repeater",
+        itemLabel: "Branch",
+        addRemove: true,
+        fields: [
+          { key: "city", label: "City", type: "text" },
+          { key: "phones", label: "Phone Numbers", type: "list", itemLabel: "Phone" },
+        ],
+      },
+      { key: "mapTitle", label: "Map Title", type: "text" },
+      { key: "mapSrc", label: "Google Map Embed URL", type: "text" },
+    ],
+    defaultContent: {
+      pillLabel: "Contact",
+      pillText: "Answers, simplified",
+      title: "Let's Talk.\nWe're All Ears.",
+      description: "Whether you have a burning question, a big idea, or just want to say hi, we are ready.",
+      companyName: "Konnect Analytics India Pvt Ltd",
+      addressLines: [
+        "No. 37, Ground Floor,",
+        "PRIKOS TOWERS, Palanisamy Colony,",
+        "Kalapatti Main Road, Indira Nagar,",
+        "Civil Aerodrome Post, Coimbatore, Tamil Nadu - 641014",
+      ],
+      landmark: "Near Zone Connect",
+      email: "sales@konnectbi.com",
+      phone: "+91 9843111651, +91 7303336060",
+      socialLinks: [
+        { label: "Facebook", icon: "Facebook", href: "#" },
+        { label: "Twitter", icon: "Twitter", href: "#" },
+        { label: "Instagram", icon: "Instagram", href: "#" },
+        { label: "WhatsApp", icon: "MessageCircle", href: "#" },
+        { label: "LinkedIn", icon: "Linkedin", href: "#" },
+      ],
+      branches: [
+        { city: "Chennai", phones: ["+91 9080601291", "+91 7303336060"] },
+        { city: "Bengaluru", phones: ["+91 9585511152", "+91 7303336060"] },
+        { city: "Nashik", phones: ["+91 9345955482", "+91 7303336060"] },
+        { city: "Mumbai", phones: ["+91 9345955482", "+91 7303336060"] },
+      ],
+      mapTitle: "Konnect Analytics India Pvt Ltd map",
+      mapSrc: "https://www.google.com/maps?q=Konnect%20Analytics%20India%20Pvt%20Ltd%20Coimbatore&output=embed",
+    },
+  },
+  {
+    type: "contact_support_cta",
+    name: "Support CTA",
+    fields: [
+      { key: "backgroundImage", label: "Background Image", type: "image" },
+      { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
+      { key: "title", label: "Section Title", type: "text" },
+      { key: "highlight", label: "Highlight Text", type: "text" },
+      { key: "description", label: "Description", type: "textarea" },
+      {
+        key: "pills",
+        label: "Pills",
+        type: "repeater",
+        itemLabel: "Pill",
+        addRemove: true,
+        fields: [
+          { key: "icon", label: "Icon", type: "icon" },
+          { key: "label", label: "Label", type: "text" },
+        ],
+      },
+      { key: "primaryButtonText", label: "Primary Button Text", type: "text" },
+      { key: "primaryButtonHref", label: "Primary Button Link", type: "text" },
+      { key: "secondaryButtonText", label: "Secondary Button Text", type: "text" },
+      { key: "secondaryButtonHref", label: "Secondary Button Link", type: "text" },
+    ],
+    defaultContent: {
+      backgroundImage: "/images/hero-meeting.jpg",
+      eyebrow: "Need clarity?",
+      title: "Still wondering about",
+      highlight: "something?",
+      description: "Check our FAQs or talk to our support team directly. We are here for you.",
+      pills: [
+        { icon: "HelpCircle", label: "FAQs" },
+        { icon: "Headphones", label: "Support Team" },
+        { icon: "PackageSearch", label: "Products" },
+      ],
+      primaryButtonText: "Check Our FAQs",
+      primaryButtonHref: "/#resources",
+      secondaryButtonText: "Visit Our Products",
+      secondaryButtonHref: "/#products",
+    },
+  },
+  {
+    type: "career_roles",
+    name: "Career Roles",
+    fields: [
+      { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
+      { key: "title", label: "Section Title", type: "text" },
+      { key: "cardEyebrow", label: "Side Card Eyebrow", type: "text" },
+      { key: "cardTitle", label: "Side Card Title", type: "textarea" },
+      { key: "cardDescription", label: "Side Card Description", type: "textarea" },
+      { key: "backgroundImage", label: "Side Card Image", type: "image" },
+      {
+        key: "stats",
+        label: "Side Card Stats",
+        type: "repeater",
+        itemLabel: "Stat",
+        fields: [
+          { key: "icon", label: "Icon", type: "icon" },
+          { key: "value", label: "Value", type: "text" },
+          { key: "label", label: "Label", type: "text" },
+        ],
+      },
+      { key: "footerTitle", label: "Side Card Footer Title", type: "text" },
+      { key: "footerDescription", label: "Side Card Footer Description", type: "textarea" },
+      {
+        key: "jobs",
+        label: "Jobs",
+        type: "repeater",
+        itemLabel: "Job",
+        addRemove: true,
+        fields: [
+          { key: "title", label: "Title", type: "text" },
+          { key: "location", label: "Location", type: "text" },
+          { key: "type", label: "Type", type: "text" },
+          { key: "summary", label: "Summary", type: "textarea" },
+          { key: "responsibilities", label: "Responsibilities", type: "list", itemLabel: "Responsibility" },
+          { key: "requirements", label: "Requirements", type: "list", itemLabel: "Requirement" },
+          { key: "applyText", label: "Apply Button Text", type: "text" },
+          { key: "applyHref", label: "Apply Link", type: "text" },
+        ],
+      },
+    ],
+    defaultContent: {
+      eyebrow: "Open Positions",
+      title: "Submit Your Information",
+      cardEyebrow: "Life at Konnect",
+      cardTitle: "Work where ERP becomes practical business impact.",
+      cardDescription: "Build, support, and implement cloud ERP with teams who understand operations, finance, compliance, inventory, and customer success.",
+      backgroundImage: "/images/hero-meeting.jpg",
+      stats: [
+        { icon: "Users", value: "50+", label: "Team members" },
+        { icon: "Building2", value: "4", label: "City presence" },
+        { icon: "BriefcaseBusiness", value: "7", label: "Open roles" },
+        { icon: "GraduationCap", value: "ERP", label: "Product learning" },
+      ],
+      footerTitle: "Send your profile for the role that fits you best.",
+      footerDescription: "Our team will review your details and connect for the next steps.",
+      jobs: [
+        { title: "Customer Success Manager (CSM)", location: "Coimbatore / Hybrid", type: "Full-time", summary: "Own customer onboarding, adoption, renewals, and success outcomes for ERP implementation accounts.", responsibilities: [], requirements: [], applyText: "Apply Now", applyHref: "mailto:sales@konnectbi.com" },
+        { title: "Marketing Associate", location: "Coimbatore", type: "Full-time", summary: "Support campaigns, content, events, lead generation, and partner marketing for KonnectERP.", responsibilities: [], requirements: [], applyText: "Apply Now", applyHref: "mailto:sales@konnectbi.com" },
+        { title: "Customer Support Associate", location: "Coimbatore", type: "Full-time", summary: "Handle customer queries, coordinate issue resolution, and help users get more from the platform.", responsibilities: [], requirements: [], applyText: "Apply Now", applyHref: "mailto:sales@konnectbi.com" },
+        {
+          title: "SENIOR BUSINESS ANALYST",
+          location: "Pune or Mumbai",
+          type: "Full-time",
+          summary: "As a Business Analyst, you will be responsible for analyzing business processes, identifying areas for improvement, and developing solutions for our product-based ERP company. You will work closely with cross-functional teams to gather requirements, document processes, and manage project timelines.",
+          responsibilities: [
+            "Collaborate with stakeholders to understand their business needs and translate them into functional requirements",
+            "Conduct gap analysis to identify areas for improvement in our ERP system",
+            "Develop and maintain process documentation and standard operating procedures",
+            "Work closely with development teams to ensure the product meets requirements and specifications",
+            "Analyze data to identify trends and insights that will help improve business processes",
+            "Manage project timelines and deliverables to ensure timely completion of projects",
+            "Provide end-user training and support to ensure adoption and effective use of the product",
+            "Collaborate with the QA team to develop and execute test plans",
+            "Conduct user acceptance testing and provide feedback to development teams",
+          ],
+          requirements: [
+            "6 to 10 years of experience in business analysis or related field",
+            "Experience with ERP systems, preferably in a product-based company",
+            "Strong analytical and problem-solving skills",
+            "Excellent communication and interpersonal skills",
+            "Ability to manage multiple projects and priorities in a fast-paced environment",
+            "Knowledge of Agile methodology is a plus",
+          ],
+          applyText: "Apply Now",
+          applyHref: "mailto:sales@konnectbi.com",
+        },
+        { title: "ERP Technical Support", location: "Coimbatore", type: "Full-time", summary: "Support ERP configurations, technical tickets, integrations, and issue diagnosis for live customers.", responsibilities: [], requirements: [], applyText: "Apply Now", applyHref: "mailto:sales@konnectbi.com" },
+        { title: "BDE/Sales Executive", location: "Chennai / Bengaluru", type: "Full-time", summary: "Build pipeline, qualify ERP opportunities, conduct demos, and coordinate with presales teams.", responsibilities: [], requirements: [], applyText: "Apply Now", applyHref: "mailto:sales@konnectbi.com" },
+        { title: "COE (SME)", location: "Remote / Hybrid", type: "Full-time", summary: "Bring domain expertise to ERP templates, customer workshops, and best-practice process design.", responsibilities: [], requirements: [], applyText: "Apply Now", applyHref: "mailto:sales@konnectbi.com" },
+      ],
+    },
+  },
+  {
+    type: "case_studies_grid",
+    name: "Case Study Cards",
+    fields: [
+      { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
+      { key: "title", label: "Section Title", type: "text" },
+      { key: "highlight", label: "Highlight Text", type: "text" },
+      { key: "description", label: "Description", type: "textarea" },
+      {
+        key: "cards",
+        label: "Case Study Cards",
+        type: "repeater",
+        itemLabel: "Case Study",
+        addRemove: true,
+        fields: [
+          { key: "logo", label: "Client Logo", type: "image" },
+          { key: "clientName", label: "Client Name", type: "text" },
+          { key: "title", label: "Card Title", type: "text" },
+          { key: "description", label: "Short Description", type: "textarea" },
+          { key: "pdfUrl", label: "PDF File", type: "file", accept: "application/pdf", buttonText: "Upload PDF" },
+        ],
+      },
+    ],
+    defaultContent: {
+      eyebrow: "Customer Success",
+      title: "Case Studies",
+      highlight: "Built From Real Outcomes",
+      description: "Explore how businesses use KonnectERP to simplify operations, improve visibility, and scale with confidence.",
+      cards: [
+        {
+          logo: "/images/brands/brand-1.avif",
+          clientName: "Manufacturing Client",
+          title: "Manufacturing operations unified on one ERP",
+          description: "A growing manufacturer connected inventory, production, purchase, sales, and finance workflows with KonnectERP.",
+          pdfUrl: "",
+        },
+        {
+          logo: "/images/brands/brand-2.jpg",
+          clientName: "Trading Client",
+          title: "Trading visibility across branches",
+          description: "A multi-branch trading business improved stock accuracy, order processing, and management reporting.",
+          pdfUrl: "",
+        },
+        {
+          logo: "/images/brands/brand-3.png",
+          clientName: "Distribution Client",
+          title: "Distribution control with real-time data",
+          description: "A distribution team replaced disconnected reports with live operational dashboards and structured workflows.",
+          pdfUrl: "",
+        },
+      ],
+    },
+  },
+  {
+    type: "testimonial_collage",
+    name: "User Photo Collage",
+    fields: [
+      { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
+      { key: "title", label: "Section Title", type: "text" },
+      { key: "highlight", label: "Highlight Text", type: "text" },
+      { key: "description", label: "Description", type: "textarea" },
+      {
+        key: "photos",
+        label: "User Photo Collage",
+        type: "repeater",
+        itemLabel: "Photo",
+        addRemove: true,
+        fields: [
+          { key: "image", label: "Photo", type: "image" },
+          { key: "alt", label: "Alt Text", type: "text" },
+          { key: "name", label: "Name", type: "text" },
+          { key: "role", label: "Role / Company", type: "text" },
+        ],
+      },
+    ],
+    defaultContent: {
+      eyebrow: "Client Testimonials",
+      title: "Real feedback from",
+      highlight: "KonnectERP users",
+      description: "Hear directly from businesses using KonnectERP to save time, simplify documentation, and improve daily operations.",
+      photos: [
+        { image: "/images/hero-meeting.jpg", alt: "KonnectERP customer meeting", name: "Customer Team", role: "ERP Users" },
+        { image: "/images/industry-manufacturing.jpg", alt: "Manufacturing customer", name: "Manufacturing", role: "Operations" },
+        { image: "/images/industry-trading.jpg", alt: "Trading customer", name: "Trading", role: "Sales & Inventory" },
+        { image: "/images/industry-construction.jpg", alt: "Project customer", name: "Projects", role: "Planning Team" },
+      ],
+    },
+  },
+  {
+    type: "testimonial_cards",
+    name: "Testimonial Cards",
+    fields: [
+      { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
+      { key: "title", label: "Section Title", type: "text" },
+      { key: "highlight", label: "Highlight Text", type: "text" },
+      { key: "description", label: "Description", type: "textarea" },
+      {
+        key: "cards",
+        label: "Testimonials",
+        type: "repeater",
+        itemLabel: "Testimonial",
+        addRemove: true,
+        fields: [
+          { key: "photo", label: "User Photo", type: "image" },
+          { key: "name", label: "Name", type: "text" },
+          { key: "company", label: "Company", type: "text" },
+          { key: "designation", label: "Designation", type: "text" },
+          { key: "testimonial", label: "Testimonial", type: "textarea" },
+        ],
+      },
+    ],
+    defaultContent: {
+      eyebrow: "Customer Voice",
+      title: "Testimonials",
+      highlight: "from our users",
+      description: "Add and manage customer testimonials from the backend. Each card supports a photo, name, company, designation, and testimonial text.",
+      cards: [
+        {
+          photo: "",
+          name: "A. KOLAPPAN",
+          company: "AK Engineering",
+          designation: "Machinery Manufacturer and Exporter",
+          testimonial:
+            "We are machinery manufacturer and exporters since 2000, we are using Konnect ERP software for the last 3 years, it saves our time, to prepare PO, Sales Quote, Invoice and data search etc.",
+        },
+      ],
+    },
+  },
+  {
+    type: "faq_accordion",
+    name: "FAQ Accordion",
+    fields: [
+      { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
+      { key: "title", label: "Section Title", type: "text" },
+      { key: "highlight", label: "Highlight Text", type: "text" },
+      { key: "description", label: "Description", type: "textarea" },
+      {
+        key: "items",
+        label: "FAQ Items",
+        type: "repeater",
+        itemLabel: "FAQ",
+        addRemove: true,
+        fields: [
+          { key: "question", label: "Question", type: "text" },
+          { key: "answer", label: "Answer", type: "textarea" },
+        ],
+      },
+    ],
+    defaultContent: {
+      eyebrow: "FAQ",
+      title: "Frequently Asked",
+      highlight: "Questions",
+      description: "Quick answers about KonnectERP, implementation, customization, support, and demos.",
+      items: [
+        {
+          question: "What is KonnectERP?",
+          answer:
+            "KonnectERP is a cloud ERP platform that connects purchase, sales, inventory, production, finance, HR, service, and reporting workflows in one system.",
+        },
+        {
+          question: "Can KonnectERP be customized for our industry?",
+          answer:
+            "Yes. KonnectERP supports industry-specific modules and workflows, so the implementation can match your business processes instead of forcing a generic setup.",
+        },
+        {
+          question: "How long does implementation usually take?",
+          answer:
+            "Implementation timelines depend on modules, data migration, approval flows, and integrations. The team can assess your current process and share a practical rollout plan after discovery.",
+        },
+        {
+          question: "Do you provide training and support?",
+          answer:
+            "Yes. KonnectERP includes onboarding, user training, and support so teams can adopt the platform confidently after go-live.",
+        },
+        {
+          question: "How can I request a demo?",
+          answer:
+            "Use the Request Demo option on the website or contact the KonnectERP team with your requirements. A product specialist can walk you through the right modules for your business.",
+        },
+      ],
     },
   },
 ];

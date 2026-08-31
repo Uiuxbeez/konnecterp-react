@@ -2,11 +2,13 @@ import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { StickyWhatsapp } from "@/components/site/StickyWhatsapp";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import ProductPage from "@/pages/products/ProductPage";
 import IndustryPage from "@/pages/industries/IndustryPage";
 import ResourcePage from "@/pages/resources/ResourcePage";
+import StandardPage from "@/pages/StandardPage";
 import AboutUs from "@/pages/AboutUs";
 import ContactUs from "@/pages/ContactUs";
 import Career from "@/pages/Career";
@@ -21,6 +23,9 @@ import NewPage from "@/admin/pages/NewPage";
 import BlogPostsList from "@/admin/pages/BlogPostsList";
 import BlogPostEditor from "@/admin/pages/BlogPostEditor";
 import MenuBuilder from "@/admin/pages/MenuBuilder";
+import FormsBuilder from "@/admin/pages/FormsBuilder";
+import LeadsList from "@/admin/pages/LeadsList";
+import SettingsPage from "@/admin/pages/SettingsPage";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +57,16 @@ function Router() {
           <BlogPostsList />
         </RequireAuth>
       </Route>
+      <Route path="/admin/forms">
+        <RequireAuth>
+          <FormsBuilder />
+        </RequireAuth>
+      </Route>
+      <Route path="/admin/leads">
+        <RequireAuth>
+          <LeadsList />
+        </RequireAuth>
+      </Route>
       <Route path="/admin/pages/new">
         <RequireAuth>
           <NewPage />
@@ -67,6 +82,11 @@ function Router() {
           <MenuBuilder />
         </RequireAuth>
       </Route>
+      <Route path="/admin/settings">
+        <RequireAuth>
+          <SettingsPage />
+        </RequireAuth>
+      </Route>
       <Route path="/admin/page-builder">
         <RequireAuth>
           <PageBuilder />
@@ -77,6 +97,7 @@ function Router() {
           <PageBuilder />
         </RequireAuth>
       </Route>
+      <Route path="/:slug" component={StandardPage} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -89,6 +110,7 @@ function App() {
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
           <AuthProvider>
             <Router />
+            <StickyWhatsapp />
           </AuthProvider>
         </WouterRouter>
         <Toaster />

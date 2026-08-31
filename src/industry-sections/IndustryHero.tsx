@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { isCmsButtonVisible, type CmsButtonAction } from '@/lib/cms-button-actions';
 import { Breadcrumb, type BreadcrumbItem } from '@/components/site/Breadcrumb';
 import { MiniDashboardMock } from '@/components/site/MiniDashboardMock';
 
@@ -12,7 +13,13 @@ export interface IndustryHeroContent {
   headingLine3Highlight: string;
   description: string;
   primaryButtonText: string;
+  primaryButtonVisible?: boolean;
+  primaryButtonAction?: CmsButtonAction;
+  primaryButtonHref?: string;
   secondaryButtonText: string;
+  secondaryButtonVisible?: boolean;
+  secondaryButtonAction?: CmsButtonAction;
+  secondaryButtonHref?: string;
   backgroundImage: string;
 }
 
@@ -27,6 +34,9 @@ export function IndustryHero({
   onPrimaryClick: () => void;
   onSecondaryClick: () => void;
 }) {
+  const showPrimaryButton = isCmsButtonVisible(content.primaryButtonVisible);
+  const showSecondaryButton = isCmsButtonVisible(content.secondaryButtonVisible);
+
   return (
     <section className="relative overflow-hidden pt-32 pb-20 md:pt-40 md:pb-24 bg-[#080E1D]">
       <img src={content.backgroundImage} alt="" className="absolute inset-0 w-full h-full object-cover" />
@@ -72,20 +82,26 @@ export function IndustryHero({
               {content.description}
             </motion.p>
 
-            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="flex flex-wrap gap-3">
-              <button
-                onClick={onPrimaryClick}
-                className="inline-flex items-center gap-2 h-11 px-6 text-sm font-semibold rounded-md transition-colors shadow-lg bg-[#F97316] hover:bg-[#ea6c0a] text-white shadow-orange-500/30"
-              >
-                {content.primaryButtonText} <ArrowRight className="w-4 h-4" />
-              </button>
-              <button
-                onClick={onSecondaryClick}
-                className="inline-flex items-center gap-2 h-11 px-6 text-sm font-semibold rounded-md border border-white/25 text-white hover:bg-white/10 transition-colors"
-              >
-                {content.secondaryButtonText} <ArrowRight className="w-4 h-4" />
-              </button>
-            </motion.div>
+            {(showPrimaryButton || showSecondaryButton) && (
+              <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="flex flex-wrap gap-3">
+                {showPrimaryButton && (
+                  <button
+                    onClick={onPrimaryClick}
+                    className="inline-flex items-center gap-2 h-11 px-6 text-sm font-semibold rounded-md transition-colors shadow-lg bg-[#F97316] hover:bg-[#ea6c0a] text-white shadow-orange-500/30"
+                  >
+                    {content.primaryButtonText} <ArrowRight className="w-4 h-4" />
+                  </button>
+                )}
+                {showSecondaryButton && (
+                  <button
+                    onClick={onSecondaryClick}
+                    className="inline-flex items-center gap-2 h-11 px-6 text-sm font-semibold rounded-md border border-white/25 text-white hover:bg-white/10 transition-colors"
+                  >
+                    {content.secondaryButtonText} <ArrowRight className="w-4 h-4" />
+                  </button>
+                )}
+              </motion.div>
+            )}
           </div>
 
           <motion.div

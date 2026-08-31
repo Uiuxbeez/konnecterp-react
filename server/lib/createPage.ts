@@ -1,11 +1,19 @@
 import { db } from "../db/client";
 import { pages, sections } from "../db/schema";
+import { eq } from "drizzle-orm";
 import { PAGE_TEMPLATES } from "../../shared/templates";
 import { SECTION_DEFS_BY_TYPE, type SectionType } from "../../shared/sections";
 
 export class UnknownTemplateError extends Error {}
 
-export async function createPageFromTemplate(opts: { slug: string; title: string; template: string }) {
+type SectionContentOverrides = Partial<Record<SectionType, Record<string, unknown>>>;
+
+export async function createPageFromTemplate(opts: {
+  slug: string;
+  title: string;
+  template: string;
+  sectionContent?: SectionContentOverrides;
+}) {
   const def = PAGE_TEMPLATES[opts.template];
   if (!def) throw new UnknownTemplateError(`Unknown template "${opts.template}"`);
 
@@ -19,11 +27,209 @@ export async function createPageFromTemplate(opts: { slug: string; title: string
       name: meta.name,
       position: i,
       enabled: true,
-      content: meta.defaultContent,
-      publishedContent: meta.defaultContent,
+      content: { ...meta.defaultContent, ...(opts.sectionContent?.[type] ?? {}) },
+      publishedContent: { ...meta.defaultContent, ...(opts.sectionContent?.[type] ?? {}) },
     };
   });
   if (rows.length > 0) await db.insert(sections).values(rows);
 
   return page;
+}
+
+const CORE_BUILDER_PAGES: Array<{
+  slug: string;
+  title: string;
+  template: string;
+  sectionContent?: SectionContentOverrides;
+}> = [
+  {
+    slug: "about-us",
+    title: "About Us",
+    template: "about",
+    sectionContent: {
+      product_hero: {
+        breadcrumbLabel: "About Us",
+        eyebrow: "Our Company",
+        title: "Built for Indian business.",
+        highlight: "Proven by ERP experts.",
+        subhead: "Konnect Analytics brings cloud ERP, business intelligence, and consulting depth together for growing enterprises.",
+        description:
+          "Founded in 2014, our 50+ member team combines 200+ years of collective ERP experience to help Indian businesses simplify operations, compliance, finance, sales, inventory, HR, and reporting.",
+        primaryButtonText: "Talk to Us",
+        primaryButtonVisible: true,
+        primaryButtonAction: "demo_modal",
+        primaryButtonHref: "",
+        secondaryButtonText: "",
+        secondaryButtonVisible: false,
+      },
+    },
+  },
+  {
+    slug: "contact",
+    title: "Contact Us",
+    template: "contact",
+    sectionContent: {
+      product_hero: {
+        breadcrumbLabel: "Contact",
+        eyebrow: "Contact",
+        title: "Let's talk.",
+        highlight: "We're all ears.",
+        subhead: "Whether you have a question, a product idea, or want to see KonnectERP in action, our team is ready.",
+        description:
+          "Reach our Coimbatore office, connect with regional teams, or request a guided conversation about the right ERP setup for your business.",
+        primaryButtonText: "Request Demo",
+        primaryButtonVisible: true,
+        primaryButtonAction: "demo_modal",
+        primaryButtonHref: "",
+        secondaryButtonText: "",
+        secondaryButtonVisible: false,
+      },
+    },
+  },
+  {
+    slug: "career",
+    title: "Career",
+    template: "career",
+    sectionContent: {
+      product_hero: {
+        breadcrumbLabel: "Careers",
+        eyebrow: "Careers",
+        title: "Build meaningful ERP.",
+        highlight: "Grow with Konnect.",
+        subhead: "Join a product and consulting team solving real business operations for Indian enterprises.",
+        description:
+          "We are looking for people who like practical systems, customer clarity, and steady execution across ERP, support, marketing, sales, and business analysis.",
+        primaryButtonText: "Explore Roles",
+        primaryButtonVisible: true,
+        primaryButtonAction: "link",
+        primaryButtonHref: "#open-roles",
+        secondaryButtonText: "",
+        secondaryButtonVisible: false,
+      },
+    },
+  },
+  {
+    slug: "case-studies",
+    title: "Case Studies",
+    template: "case_studies",
+    sectionContent: {
+      product_hero: {
+        breadcrumbLabel: "Case Studies",
+        eyebrow: "Customer Stories",
+        title: "Case Studies",
+        highlight: "Real ERP Results",
+        subhead: "Explore client stories, logos, and downloadable case study documents.",
+        description:
+          "See how KonnectERP helps businesses connect teams, simplify operations, and make decisions with real-time data.",
+        primaryButtonText: "Explore Case Studies",
+        primaryButtonVisible: true,
+        primaryButtonAction: "link",
+        primaryButtonHref: "#case-studies-list",
+        secondaryButtonText: "",
+        secondaryButtonVisible: false,
+      },
+    },
+  },
+  {
+    slug: "testimonials",
+    title: "Testimonials",
+    template: "testimonials",
+    sectionContent: {
+      product_hero: {
+        breadcrumbLabel: "Testimonials",
+        eyebrow: "Client Testimonials",
+        title: "Testimonials",
+        highlight: "Real Customer Voices",
+        subhead: "Read what KonnectERP users say about saving time and simplifying everyday operations.",
+        description:
+          "Customer feedback from businesses using KonnectERP for purchase orders, sales quotes, invoicing, data search, and operational control.",
+        primaryButtonText: "View Testimonials",
+        primaryButtonVisible: true,
+        primaryButtonAction: "link",
+        primaryButtonHref: "#testimonial-cards",
+        secondaryButtonText: "",
+        secondaryButtonVisible: false,
+      },
+    },
+  },
+  {
+    slug: "faq",
+    title: "FAQ",
+    template: "faq",
+    sectionContent: {
+      product_hero: {
+        breadcrumbLabel: "FAQ",
+        eyebrow: "Help Center",
+        title: "Frequently Asked",
+        highlight: "Questions",
+        subhead: "Find quick answers about KonnectERP features, implementation, support, and demos.",
+        description:
+          "Browse common questions from businesses evaluating or implementing KonnectERP.",
+        primaryButtonText: "Request Demo",
+        primaryButtonVisible: true,
+        primaryButtonAction: "demo_modal",
+        primaryButtonHref: "",
+        secondaryButtonText: "",
+        secondaryButtonVisible: false,
+      },
+    },
+  },
+];
+
+async function seedSectionsForPage(pageId: number, template: string, sectionContent?: SectionContentOverrides) {
+  const def = PAGE_TEMPLATES[template];
+  if (!def) throw new UnknownTemplateError(`Unknown template "${template}"`);
+
+  const rows = def.sectionTypes.map((type: SectionType, i: number) => {
+    const meta = SECTION_DEFS_BY_TYPE[type];
+    const content = { ...meta.defaultContent, ...(sectionContent?.[type] ?? {}) };
+    return {
+      pageId,
+      type,
+      name: meta.name,
+      position: i,
+      enabled: true,
+      content,
+      publishedContent: content,
+    };
+  });
+
+  await db.delete(sections).where(eq(sections.pageId, pageId));
+  if (rows.length > 0) await db.insert(sections).values(rows);
+}
+
+export async function ensureCoreBuilderPages() {
+  for (const corePage of CORE_BUILDER_PAGES) {
+    const [existing] = await db.select().from(pages).where(eq(pages.slug, corePage.slug));
+    if (!existing) {
+      await createPageFromTemplate(corePage);
+      continue;
+    }
+
+    const rows = await db.select().from(sections).where(eq(sections.pageId, existing.id));
+    const expectedTypes = PAGE_TEMPLATES[corePage.template]?.sectionTypes ?? [];
+    const currentTypes = rows.map((row) => row.type);
+    const hasStaleTestimonialsHero =
+      corePage.slug === "testimonials" &&
+      rows.some((row) => {
+        if (row.type !== "product_hero" || typeof row.content !== "object" || row.content === null || Array.isArray(row.content)) {
+          return false;
+        }
+
+        const content = row.content as Record<string, unknown>;
+        return content.title === "ERP Software Built for" || content.eyebrow === "01 · ERP for SMEs";
+      });
+    const needsRepair =
+      existing.template !== corePage.template ||
+      expectedTypes.some((type) => !currentTypes.includes(type)) ||
+      hasStaleTestimonialsHero;
+
+    if (!needsRepair) continue;
+
+    await db
+      .update(pages)
+      .set({ title: corePage.title, template: corePage.template, updatedAt: new Date() })
+      .where(eq(pages.id, existing.id));
+    await seedSectionsForPage(existing.id, corePage.template, corePage.sectionContent);
+  }
 }

@@ -36,7 +36,7 @@ export function EditSectionPanel({
 
         <TabsContent value="content" className="min-h-0 flex-1 overflow-y-auto px-6 py-4">
           {def ? (
-            <SectionForm fields={def.fields} content={section.content} onChange={onContentChange} />
+            <SectionForm fields={def.fields} content={{ ...def.defaultContent, ...section.content }} onChange={onContentChange} />
           ) : (
             <p className="text-sm text-slate-500">Unknown section type.</p>
           )}

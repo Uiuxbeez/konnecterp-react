@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import {
   ArrowDown,
   ArrowUp,
+  Eye,
+  EyeOff,
   Link2,
   ListTree,
   Menu as MenuIcon,
@@ -16,11 +18,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
-import { getMenuColumnClass, getMenuColumns, MEGA_MENU_THRESHOLD, MENU_GROUPS, type MenuGroup, type MenuItem } from "@/lib/nav";
+import { getMenuColumnClass, getMenuColumns, isMenuVisible, MEGA_MENU_THRESHOLD, MENU_GROUPS, type MenuGroup, type MenuItem } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import { AdminShell } from "../components/AdminShell";
 import { adminApi, type AdminPage } from "../lib/admin-api";
-import { withStaticPages } from "../lib/static-pages";
 
 type SaveStatus = "idle" | "saving" | "saved" | "error";
 
@@ -46,8 +47,9 @@ function cleanNavigation(groups: MenuGroup[]) {
       href: group.href.trim() || "#",
       footerLabel: group.footerLabel?.trim() || undefined,
       description: group.description?.trim() || undefined,
+      visible: group.visible !== false,
       items: group.items
-        .map((item) => ({ label: item.label.trim(), href: item.href.trim() || "#" }))
+        .map((item) => ({ label: item.label.trim(), href: item.href.trim() || "#", visible: item.visible !== false }))
         .filter((item) => item.label),
     }))
     .filter((group) => group.label);
@@ -66,7 +68,7 @@ export default function MenuBuilder() {
     Promise.all([adminApi.getNavigation(), adminApi.listPages()])
       .then(([navigationRes, pagesRes]) => {
         setMenuGroups(navigationRes.navigation.length ? navigationRes.navigation : MENU_GROUPS);
-        setPages(withStaticPages(pagesRes.pages));
+        setPages(pagesRes.pages);
       })
       .catch((err) => {
         setError(err instanceof Error ? err.message : "Failed to load menu data");
@@ -102,7 +104,7 @@ export default function MenuBuilder() {
   };
 
   const addMainMenu = () => {
-    setMenuGroups((prev) => [...prev, { label: "New Menu", href: "#", description: "", items: [] }]);
+    setMenuGroups((prev) => [...prev, { label: "New Menu", href: "#", description: "", visible: true, items: [] }]);
     setSelectedIndex(menuGroups.length);
     setSaveStatus("idle");
   };
@@ -116,7 +118,7 @@ export default function MenuBuilder() {
 
   const addSubmenu = () => {
     if (!selected || !draftItem.label.trim()) return;
-    updateGroup(selectedIndex, { items: [...selected.items, { label: draftItem.label.trim(), href: draftItem.href.trim() || "#" }] });
+    updateGroup(selectedIndex, { items: [...selected.items, { label: draftItem.label.trim(), href: draftItem.href.trim() || "#", visible: true }] });
     setDraftItem({ label: "", href: "" });
   };
 
@@ -189,6 +191,7 @@ export default function MenuBuilder() {
               {menuGroups.map((group, index) => {
                 const active = index === selectedIndex;
                 const mega = group.items.length > MEGA_MENU_THRESHOLD;
+                const visible = isMenuVisible(group);
 
                 return (
                   <button
@@ -197,7 +200,8 @@ export default function MenuBuilder() {
                     onClick={() => setSelectedIndex(index)}
                     className={cn(
                       "mb-1 w-full rounded-lg border px-3 py-3 text-left transition-colors",
-                      active ? "border-primary bg-primary/5" : "border-transparent hover:bg-slate-50"
+                      active ? "border-primary bg-primary/5" : "border-transparent hover:bg-slate-50",
+                      !visible && "opacity-55"
                     )}
                   >
                     <div className="flex items-start gap-2.5">
@@ -208,6 +212,11 @@ export default function MenuBuilder() {
                         <span className="block truncate text-sm font-semibold text-slate-800">{group.label || "Untitled"}</span>
                         <span className="mt-1 flex flex-wrap items-center gap-1.5">
                           <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-slate-500">main</span>
+                          {!visible && (
+                            <span className="rounded bg-amber-50 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-amber-700">
+                              hidden
+                            </span>
+                          )}
                           {group.items.length > 0 && (
                             <span className="rounded bg-blue-50 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-blue-600">
                               {mega ? "mega menu" : "dropdown"}
@@ -245,6 +254,15 @@ export default function MenuBuilder() {
                     </div>
 
                     <div className="flex items-center gap-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => updateGroup(selectedIndex, { visible: !isMenuVisible(selected) })}
+                      >
+                        {isMenuVisible(selected) ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                        {isMenuVisible(selected) ? "Hide" : "Show"}
+                      </Button>
                       <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-500">
                         <PanelTop className="h-3.5 w-3.5" />
                         {menuGroups.length} main menus
@@ -330,8 +348,9 @@ export default function MenuBuilder() {
                           <div className="space-y-2">
                             {column.map((item, itemIndex) => {
                               const absoluteIndex = columnIndex * 6 + itemIndex;
+                              const visible = isMenuVisible(item);
                               return (
-                                <div key={`${item.label}-${absoluteIndex}`} className="rounded-md bg-white p-2.5 shadow-sm shadow-slate-200/50">
+                                <div key={`${item.label}-${absoluteIndex}`} className={cn("rounded-md bg-white p-2.5 shadow-sm shadow-slate-200/50", !visible && "opacity-55")}>
                                   <div className="mb-2 flex items-center gap-2">
                                     <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-slate-100 text-[10px] font-bold text-slate-500">
                                       {absoluteIndex + 1}
@@ -339,7 +358,15 @@ export default function MenuBuilder() {
                                     <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-slate-500">
                                       {getLinkType(item.href)}
                                     </span>
+                                    {!visible && (
+                                      <span className="rounded bg-amber-50 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-amber-700">
+                                        hidden
+                                      </span>
+                                    )}
                                     <div className="ml-auto flex items-center gap-1">
+                                      <IconButton title={visible ? "Hide submenu" : "Show submenu"} onClick={() => updateItem(absoluteIndex, { visible: !visible })}>
+                                        {visible ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                                      </IconButton>
                                       <IconButton title="Move up" disabled={absoluteIndex === 0} onClick={() => moveItem(absoluteIndex, -1)}>
                                         <ArrowUp className="h-3.5 w-3.5" />
                                       </IconButton>

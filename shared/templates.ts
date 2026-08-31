@@ -32,6 +32,62 @@ export const PAGE_TEMPLATES: Record<string, PageTemplateDef> = {
     ],
     pathPrefix: "/products",
   },
+  about: {
+    key: "about",
+    name: "About Page",
+    description:
+      "Editable root About page using the current company overview, platform strengths, leadership, and product sections.",
+    sectionTypes: ["product_hero", "about_company", "about_strengths", "about_leadership", "about_products", "footer"],
+    pathPrefix: "",
+  },
+  contact: {
+    key: "contact",
+    name: "Contact Page",
+    description:
+      "Editable root Contact page using the current contact details, branch list, map, and support CTA sections.",
+    sectionTypes: ["product_hero", "contact_details", "contact_support_cta", "footer"],
+    pathPrefix: "",
+  },
+  career: {
+    key: "career",
+    name: "Career Page",
+    description:
+      "Editable root Career page using the current open roles layout and career side panel.",
+    sectionTypes: ["product_hero", "career_roles", "footer"],
+    pathPrefix: "",
+  },
+  case_studies: {
+    key: "case_studies",
+    name: "Case Studies Page",
+    description:
+      "Editable root Case Studies page with hero, client logos, and a grid of case study PDF cards.",
+    sectionTypes: ["product_hero", "trusted_companies", "case_studies_grid", "footer"],
+    pathPrefix: "",
+  },
+  testimonials: {
+    key: "testimonials",
+    name: "Testimonials Page",
+    description:
+      "Editable root Testimonials page with a standard inner hero, body photo collage, and dynamic testimonial card grid.",
+    sectionTypes: ["product_hero", "testimonial_collage", "testimonial_cards", "footer"],
+    pathPrefix: "",
+  },
+  faq: {
+    key: "faq",
+    name: "FAQ Page",
+    description:
+      "Editable root FAQ page with a standard inner hero and an accordion section for common questions.",
+    sectionTypes: ["product_hero", "faq_accordion", "footer"],
+    pathPrefix: "",
+  },
+  standard: {
+    key: "standard",
+    name: "Standard Page",
+    description:
+      "A general builder-managed page under the site root. Use this for About, Contact, Careers, and future content pages that need editable sections and light/dark mode support.",
+    sectionTypes: ["product_hero", "product_intro", "product_operations", "product_outcomes", "product_cta"],
+    pathPrefix: "",
+  },
   industry: {
     key: "industry",
     name: "Industry Page",

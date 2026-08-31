@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { isCmsButtonVisible, runCmsButtonAction, type CmsButtonAction } from '@/lib/cms-button-actions';
 import type { SectionCtx } from '@/sections/shared';
 
 export interface ProductCtaContent {
@@ -7,6 +8,9 @@ export interface ProductCtaContent {
   highlight: string;
   description: string;
   buttonText: string;
+  buttonVisible?: boolean;
+  buttonAction?: CmsButtonAction;
+  buttonHref?: string;
   backgroundImage: string;
 }
 
@@ -16,7 +20,7 @@ const fadeInUp = {
 };
 
 export function ProductCta({ content, ctx }: { content: ProductCtaContent; ctx: SectionCtx }) {
-  const { isDarkMode, openDemo } = ctx;
+  const { isDarkMode } = ctx;
   return (
     <section className={`py-20 md:py-28 ${isDarkMode ? 'bg-[#0B1220]' : 'bg-slate-50'}`}>
       <div className="container mx-auto px-4 max-w-6xl">
@@ -36,12 +40,14 @@ export function ProductCta({ content, ctx }: { content: ProductCtaContent; ctx: 
               {content.title} <span className="text-[#F97316]">{content.highlight}</span>
             </h2>
             <p className="text-lg mb-9 max-w-xl mx-auto text-slate-300">{content.description}</p>
-            <button
-              onClick={openDemo}
-              className="inline-flex items-center gap-2 h-12 px-8 text-sm font-bold rounded-md transition-colors shadow-lg bg-[#F97316] hover:bg-[#EA580C] text-white shadow-orange-900/30"
-            >
-              {content.buttonText} <ArrowRight className="w-4 h-4" />
-            </button>
+            {isCmsButtonVisible(content.buttonVisible) && (
+              <button
+                onClick={() => runCmsButtonAction(content.buttonAction, content.buttonHref, ctx, "demo_modal")}
+                className="inline-flex items-center gap-2 h-12 px-8 text-sm font-bold rounded-md transition-colors shadow-lg bg-[#F97316] hover:bg-[#EA580C] text-white shadow-orange-900/30"
+              >
+                {content.buttonText} <ArrowRight className="w-4 h-4" />
+              </button>
+            )}
           </div>
         </motion.div>
       </div>

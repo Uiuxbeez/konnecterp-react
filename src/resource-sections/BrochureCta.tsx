@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { CheckCircle2, Download } from 'lucide-react';
+import { isCmsButtonVisible, runCmsButtonAction, type CmsButtonAction } from '@/lib/cms-button-actions';
 import type { SectionCtx } from '@/sections/shared';
 
 export interface BrochureCtaContent {
@@ -9,6 +10,9 @@ export interface BrochureCtaContent {
   description: string;
   features: string[];
   buttonText: string;
+  buttonVisible?: boolean;
+  buttonAction?: CmsButtonAction;
+  buttonHref?: string;
   fileUrl: string;
   backgroundImage: string;
 }
@@ -19,8 +23,9 @@ const fadeInUp = {
 };
 
 export function BrochureCta({ content, ctx }: { content: BrochureCtaContent; ctx: SectionCtx }) {
-  const { openDemo } = ctx;
   const hasFile = Boolean(content.fileUrl?.trim());
+  const buttonHref = content.buttonHref?.trim() || content.fileUrl;
+  const shouldRenderLink = isCmsButtonVisible(content.buttonVisible) && Boolean(buttonHref.trim()) && (content.buttonAction === "link" || (!content.buttonAction && hasFile));
 
   return (
     <section className="py-20 md:py-28 bg-white">
@@ -51,23 +56,30 @@ export function BrochureCta({ content, ctx }: { content: BrochureCtaContent; ctx
               ))}
             </div>
 
-            {hasFile ? (
+            {shouldRenderLink ? (
               <a
-                href={content.fileUrl}
+                href={buttonHref}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 h-12 px-8 text-sm font-bold rounded-md transition-colors shadow-lg bg-[#F97316] hover:bg-[#EA580C] text-white shadow-orange-900/30"
               >
                 {content.buttonText} <Download className="w-4 h-4" />
               </a>
-            ) : (
+            ) : isCmsButtonVisible(content.buttonVisible) ? (
               <button
-                onClick={openDemo}
+                onClick={() => {
+                  if (!content.buttonAction && hasFile) {
+                    window.location.href = content.fileUrl;
+                    return;
+                  }
+
+                  runCmsButtonAction(content.buttonAction, buttonHref, ctx, hasFile ? "link" : "demo_modal");
+                }}
                 className="inline-flex items-center gap-2 h-12 px-8 text-sm font-bold rounded-md transition-colors shadow-lg bg-[#F97316] hover:bg-[#EA580C] text-white shadow-orange-900/30"
               >
                 {content.buttonText} <Download className="w-4 h-4" />
               </button>
-            )}
+            ) : null}
           </div>
         </motion.div>
       </div>

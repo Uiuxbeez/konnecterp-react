@@ -1,5 +1,6 @@
 import { apiUrl } from "@/lib/api-base";
 import type { MenuGroup } from "@/lib/nav";
+import type { SiteSettings } from "@shared/site-settings";
 
 export interface AdminSection {
   id: number;
@@ -54,6 +55,44 @@ export type BlogPostInput = {
   publishedAt: string;
 };
 
+export interface AdminFormField {
+  id: string;
+  label: string;
+  type: "text" | "email" | "tel" | "textarea" | "select";
+  placeholder?: string;
+  required?: boolean;
+  options?: string[];
+}
+
+export interface AdminForm {
+  id: number;
+  slug: string;
+  name: string;
+  fields: AdminFormField[];
+  settings: {
+    title: string;
+    shortDescription: string;
+    submitButtonText: string;
+    successTitle: string;
+    successMessage: string;
+    antiSpamEnabled: boolean;
+  };
+}
+
+export interface AdminLead {
+  id: number;
+  formId: number | null;
+  formSlug: string;
+  formName: string;
+  name: string;
+  email: string;
+  phone: string;
+  company: string;
+  data: Record<string, unknown>;
+  source: string;
+  createdAt: string;
+}
+
 class ApiError extends Error {
   constructor(public status: number, message: string) {
     super(message);
@@ -96,6 +135,10 @@ export const adminApi = {
   updateNavigation: (navigation: MenuGroup[]) =>
     request<{ navigation: MenuGroup[] }>("/api/admin/navigation", { method: "PATCH", body: JSON.stringify({ navigation }) }),
 
+  getSettings: () => request<{ settings: SiteSettings }>("/api/admin/settings"),
+  updateSettings: (settings: SiteSettings) =>
+    request<{ settings: SiteSettings }>("/api/admin/settings", { method: "PATCH", body: JSON.stringify({ settings }) }),
+
   listBlogPosts: () => request<{ posts: AdminBlogPost[] }>("/api/admin/blog-posts"),
   getBlogPost: (id: number) => request<AdminBlogPost>(`/api/admin/blog-posts/${id}`),
   createBlogPost: (data: BlogPostInput) =>
@@ -103,6 +146,31 @@ export const adminApi = {
   updateBlogPost: (id: number, data: Partial<BlogPostInput>) =>
     request<AdminBlogPost>(`/api/admin/blog-posts/${id}`, { method: "PATCH", body: JSON.stringify(data) }),
   deleteBlogPost: (id: number) => request<void>(`/api/admin/blog-posts/${id}`, { method: "DELETE" }),
+
+  listForms: () => request<{ forms: AdminForm[] }>("/api/admin/forms"),
+  createForm: (data: {
+    slug: string;
+    name: string;
+    title: string;
+    shortDescription: string;
+    submitButtonText: string;
+    successTitle: string;
+    successMessage: string;
+    antiSpamEnabled: boolean;
+    fields: AdminFormField[];
+  }) => request<AdminForm>("/api/admin/forms", { method: "POST", body: JSON.stringify(data) }),
+  updateForm: (id: number, data: Partial<{
+    name: string;
+    title: string;
+    shortDescription: string;
+    submitButtonText: string;
+    successTitle: string;
+    successMessage: string;
+    antiSpamEnabled: boolean;
+    fields: AdminFormField[];
+  }>) => request<AdminForm>(`/api/admin/forms/${id}`, { method: "PATCH", body: JSON.stringify(data) }),
+  deleteForm: (id: number) => request<void>(`/api/admin/forms/${id}`, { method: "DELETE" }),
+  listLeads: () => request<{ leads: AdminLead[] }>("/api/admin/leads"),
 
   upload: async (file: File): Promise<{ url: string }> => {
     const form = new FormData();

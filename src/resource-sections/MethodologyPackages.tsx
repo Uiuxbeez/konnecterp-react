@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { isCmsButtonVisible, runCmsButtonAction, type CmsButtonAction } from '@/lib/cms-button-actions';
 import { getIcon, type SectionCtx } from '@/sections/shared';
 
 export interface MethodologyPackagesContent {
@@ -8,6 +9,9 @@ export interface MethodologyPackagesContent {
   highlight: string;
   description: string;
   buttonText: string;
+  buttonVisible?: boolean;
+  buttonAction?: CmsButtonAction;
+  buttonHref?: string;
   backgroundImage: string;
   packages: { icon: string; text: string }[];
 }
@@ -18,7 +22,6 @@ const fadeInUp = {
 };
 
 export function MethodologyPackages({ content, ctx }: { content: MethodologyPackagesContent; ctx: SectionCtx }) {
-  const { openDemo } = ctx;
   return (
     <section className="py-20 md:py-28 bg-white">
       <div className="container mx-auto px-4 max-w-6xl">
@@ -55,12 +58,14 @@ export function MethodologyPackages({ content, ctx }: { content: MethodologyPack
               })}
             </div>
 
-            <button
-              onClick={openDemo}
-              className="inline-flex items-center gap-2 h-12 px-8 text-sm font-bold rounded-md transition-colors shadow-lg bg-[#F97316] hover:bg-[#EA580C] text-white shadow-orange-900/30"
-            >
-              {content.buttonText} <ArrowRight className="w-4 h-4" />
-            </button>
+            {isCmsButtonVisible(content.buttonVisible) && (
+              <button
+                onClick={() => runCmsButtonAction(content.buttonAction, content.buttonHref, ctx, "demo_modal")}
+                className="inline-flex items-center gap-2 h-12 px-8 text-sm font-bold rounded-md transition-colors shadow-lg bg-[#F97316] hover:bg-[#EA580C] text-white shadow-orange-900/30"
+              >
+                {content.buttonText} <ArrowRight className="w-4 h-4" />
+              </button>
+            )}
           </div>
         </motion.div>
       </div>

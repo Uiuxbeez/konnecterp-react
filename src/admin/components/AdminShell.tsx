@@ -6,6 +6,7 @@ import {
   Files,
   Image as ImageIcon,
   FileStack,
+  Inbox,
   Menu as MenuIcon,
   Users,
   Settings,
@@ -21,10 +22,11 @@ const NAV_ITEMS = [
   { label: "Page Builder", icon: LayoutGrid, href: "/admin/page-builder" },
   { label: "Blog", icon: Newspaper, href: "/admin/blog" },
   { label: "Media Library", icon: ImageIcon, href: null },
-  { label: "Forms", icon: FileStack, href: null },
+  { label: "Forms", icon: FileStack, href: "/admin/forms" },
+  { label: "Leads", icon: Inbox, href: "/admin/leads" },
   { label: "Menus", icon: MenuIcon, href: "/admin/menus" },
   { label: "Users", icon: Users, href: null },
-  { label: "Settings", icon: Settings, href: null },
+  { label: "Settings", icon: Settings, href: "/admin/settings" },
 ];
 
 export function AdminShell({ children }: { children: React.ReactNode }) {

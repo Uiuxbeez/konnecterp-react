@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, BarChart3 } from "lucide-react";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
+import { isCmsButtonVisible, runCmsButtonAction, type CmsButtonAction } from "@/lib/cms-button-actions";
 import { InViewTextEffect, getIcon, type SectionCtx } from "./shared";
 
 export interface GstFeature {
@@ -17,11 +18,14 @@ export interface GstComplianceContent {
   featuredImage: string;
   featuredTitle: string;
   featuredDescription: string;
+  featuredButtonVisible?: boolean;
+  featuredButtonAction?: CmsButtonAction;
+  featuredButtonHref?: string;
   features: GstFeature[];
 }
 
 export function GstCompliance({ content, ctx }: { content: GstComplianceContent; ctx: SectionCtx }) {
-  const { isDarkMode, openDemo } = ctx;
+  const { isDarkMode } = ctx;
   const [firstRow, secondRow] = [content.features.slice(0, 2), content.features.slice(2)];
 
   return (
@@ -47,9 +51,14 @@ export function GstCompliance({ content, ctx }: { content: GstComplianceContent;
               <div className="relative flex-1 min-h-[180px]">
                 <img src={content.featuredImage} alt={content.featuredTitle} className="absolute inset-0 w-full h-full object-cover" />
                 <div className={`absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t to-transparent ${isDarkMode ? "from-[#101a30]" : "from-slate-50"}`} />
-                <button onClick={openDemo} className="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#F97316] flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
-                  <ArrowRight className="w-4 h-4 text-white" />
-                </button>
+                {isCmsButtonVisible(content.featuredButtonVisible) && (
+                  <button
+                    onClick={() => runCmsButtonAction(content.featuredButtonAction, content.featuredButtonHref, ctx, "demo_modal")}
+                    className="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#F97316] flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+                  >
+                    <ArrowRight className="w-4 h-4 text-white" />
+                  </button>
+                )}
                 <div className="absolute -bottom-6 left-6 w-12 h-12 rounded-xl bg-white shadow-lg flex items-center justify-center">
                   <BarChart3 className="w-5 h-5 text-[#0B1F4A]" />
                 </div>

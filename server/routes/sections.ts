@@ -4,11 +4,15 @@ import { db } from "../db/client";
 import { pages, sections } from "../db/schema";
 import { requireAuth } from "../auth";
 import { pagePath } from "../../shared/templates";
+import { ensureCoreBuilderPages } from "../lib/createPage";
 
 export const adminSectionsRouter = Router();
 export const publicSectionsRouter = Router();
 
 async function getPageBySlug(slug: string) {
+  if (slug === "about-us" || slug === "contact" || slug === "career" || slug === "case-studies" || slug === "testimonials" || slug === "faq") {
+    await ensureCoreBuilderPages();
+  }
   const [page] = await db.select().from(pages).where(eq(pages.slug, slug));
   return page ?? null;
 }

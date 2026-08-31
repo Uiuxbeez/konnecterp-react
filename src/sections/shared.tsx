@@ -5,6 +5,9 @@ import {
   FileText, Truck, CreditCard, Briefcase, TrendingUp, Handshake, HardHat, HelpCircle,
   UserCog, Eye, Zap, Cloud, Server, Monitor, Smartphone, CheckCircle2, ClipboardList,
   AlertTriangle, DollarSign, Settings, ShieldCheck, PackageCheck, ClipboardCheck, Calculator,
+  MapPin, Mail, Phone, Headphones, Bell, Fingerprint, Gauge, GitBranch, LockKeyhole,
+  Sparkles, Database, FileSignature, Facebook, Twitter, Instagram, MessageCircle, Linkedin,
+  PackageSearch, BriefcaseBusiness, GraduationCap,
   type LucideIcon,
 } from "lucide-react";
 import { TextEffect } from "@/components/ui/text-effect";
@@ -17,6 +20,9 @@ export const ICON_MAP: Record<string, LucideIcon> = {
   FileText, Truck, CreditCard, Briefcase, TrendingUp, Handshake, HardHat, UserCog, Eye,
   Zap, Cloud, Server, Monitor, Smartphone, CheckCircle2, ClipboardList, AlertTriangle,
   DollarSign, Settings, ShieldCheck, PackageCheck, ClipboardCheck, Calculator,
+  MapPin, Mail, Phone, Headphones, HelpCircle, Bell, Fingerprint, Gauge, GitBranch,
+  LockKeyhole, Sparkles, Database, FileSignature, Facebook, Twitter, Instagram,
+  MessageCircle, Linkedin, PackageSearch, BriefcaseBusiness, GraduationCap,
 };
 
 export function getIcon(name: string | undefined): LucideIcon {

@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { db } from "../db/client";
 import { pages } from "../db/schema";
 import { requireAuth } from "../auth";
-import { createPageFromTemplate, UnknownTemplateError } from "../lib/createPage";
+import { createPageFromTemplate, ensureCoreBuilderPages, UnknownTemplateError } from "../lib/createPage";
 import { PAGE_TEMPLATES, pagePath } from "../../shared/templates";
 
 export const pagesRouter = Router();
@@ -12,6 +12,7 @@ pagesRouter.use(requireAuth);
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 pagesRouter.get("/pages", async (_req, res) => {
+  await ensureCoreBuilderPages();
   const rows = await db.select().from(pages).orderBy(pages.id);
   res.json({
     pages: rows.map((p) => ({ ...p, path: pagePath(p.template, p.slug) })),

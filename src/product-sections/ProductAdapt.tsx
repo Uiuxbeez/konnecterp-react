@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { isCmsButtonVisible, runCmsButtonAction, type CmsButtonAction } from '@/lib/cms-button-actions';
 import { getIcon, type SectionCtx } from '@/sections/shared';
 
 export interface ProductAdaptContent {
@@ -12,6 +13,9 @@ export interface ProductAdaptContent {
   cardDescription: string;
   cardImage: string;
   ctaText: string;
+  ctaVisible?: boolean;
+  ctaAction?: CmsButtonAction;
+  ctaHref?: string;
   options: { icon: string; label: string }[];
 }
 
@@ -21,7 +25,7 @@ const fadeInUp = {
 };
 
 export function ProductAdapt({ content, ctx }: { content: ProductAdaptContent; ctx: SectionCtx }) {
-  const { isDarkMode, openDemo } = ctx;
+  const { isDarkMode } = ctx;
   return (
     <section className={`py-24 relative overflow-hidden ${isDarkMode ? 'bg-[#0B1220]' : 'bg-slate-50'}`}>
       <div className="container mx-auto px-4 max-w-8xl relative z-10">
@@ -56,9 +60,14 @@ export function ProductAdapt({ content, ctx }: { content: ProductAdaptContent; c
                   })}
                 </div>
 
-                <button onClick={openDemo} className="inline-flex items-center gap-2 self-start text-sm font-semibold text-white hover:text-[#F97316] transition-colors">
-                  {content.ctaText} <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+                {isCmsButtonVisible(content.ctaVisible) && (
+                  <button
+                    onClick={() => runCmsButtonAction(content.ctaAction, content.ctaHref, ctx, "demo_modal")}
+                    className="inline-flex items-center gap-2 self-start text-sm font-semibold text-white hover:text-[#F97316] transition-colors"
+                  >
+                    {content.ctaText} <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                )}
               </div>
             </div>
           </motion.div>

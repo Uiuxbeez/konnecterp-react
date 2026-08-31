@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AdminShell } from "../components/AdminShell";
 import { adminApi, ApiError, type PageTemplateInfo } from "../lib/admin-api";
+import { PAGE_TEMPLATES } from "@shared/templates";
 
 function slugify(value: string) {
   return value
@@ -30,7 +31,9 @@ export default function NewPage() {
   }, []);
 
   const template = templates?.find((t) => t.key === selectedTemplate) ?? null;
-  const pathPreview = selectedTemplate === "product" ? `/products/${slug || "your-page-slug"}` : `/${slug || "your-page-slug"}`;
+  const selectedTemplateDef = selectedTemplate ? PAGE_TEMPLATES[selectedTemplate] : null;
+  const previewSlug = slug || "your-page-slug";
+  const pathPreview = selectedTemplateDef?.pathPrefix ? `${selectedTemplateDef.pathPrefix}/${previewSlug}` : `/${previewSlug}`;
 
   const handleTitleChange = (value: string) => {
     setTitle(value);

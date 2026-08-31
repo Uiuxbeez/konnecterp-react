@@ -17,6 +17,7 @@ import { ProductIndustries, type ProductIndustriesContent } from '@/product-sect
 import { ProductGains, type ProductGainsContent } from '@/product-sections/ProductGains';
 import { ProductCta, type ProductCtaContent } from '@/product-sections/ProductCta';
 import type { SectionCtx } from '@/sections/shared';
+import { isCmsButtonVisible, runCmsButtonAction, type CmsButtonAction } from '@/lib/cms-button-actions';
 import NotFound from '@/pages/not-found';
 
 interface ProductHeroContent {
@@ -26,6 +27,9 @@ interface ProductHeroContent {
   subhead: string;
   description: string;
   primaryButtonText: string;
+  primaryButtonVisible?: boolean;
+  primaryButtonAction?: CmsButtonAction;
+  primaryButtonHref?: string;
 }
 
 function renderProductSection(section: PageSection, ctx: SectionCtx, byType: (t: SectionType) => Record<string, unknown>) {
@@ -52,7 +56,7 @@ function renderProductSection(section: PageSection, ctx: SectionCtx, byType: (t:
 export default function ProductPage() {
   const { slug } = useParams<{ slug: string }>();
   const chrome = useSiteChrome();
-  const { isDarkMode, openDemo } = chrome;
+  const { isDarkMode } = chrome;
 
   const { sections, page, notFound, byType } = usePageSections(slug ?? '');
   const { byType: byHomeType } = usePageSections('home');
@@ -63,8 +67,11 @@ export default function ProductPage() {
 
   useDocumentMeta(`${pageTitle} | KonnectERP`, heroContent.description);
 
-  const sectionCtx: SectionCtx = { isDarkMode, openDemo, openVideo: chrome.openVideo };
+  const sectionCtx: SectionCtx = { isDarkMode, openDemo: chrome.openDemo, openVideo: chrome.openVideo };
   const bodySections = sections.filter((s) => s.type !== 'product_hero');
+  const handlePrimaryButtonClick = () => {
+    runCmsButtonAction(heroContent.primaryButtonAction, heroContent.primaryButtonHref, sectionCtx, 'demo_modal');
+  };
 
   if (notFound) {
     return <NotFound />;
@@ -101,7 +108,8 @@ export default function ProductPage() {
         subhead={heroContent.subhead}
         description={heroContent.description}
         primaryButtonText={heroContent.primaryButtonText}
-        onPrimaryClick={openDemo}
+        showPrimaryButton={isCmsButtonVisible(heroContent.primaryButtonVisible)}
+        onPrimaryClick={handlePrimaryButtonClick}
       />
 
       {bodySections.map((section) => renderProductSection(section, sectionCtx, byType))}

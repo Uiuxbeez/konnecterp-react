@@ -53,3 +53,44 @@ export const siteNavigation = pgTable("site_navigation", {
 }, (table) => ({
   keyIdx: uniqueIndex("site_navigation_key_idx").on(table.key),
 }));
+
+export const siteSettings = pgTable("site_settings", {
+  id: serial("id").primaryKey(),
+  key: text("key").notNull(),
+  value: jsonb("value").notNull(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+}, (table) => ({
+  keyIdx: uniqueIndex("site_settings_key_idx").on(table.key),
+}));
+
+export const forms = pgTable("forms", {
+  id: serial("id").primaryKey(),
+  slug: text("slug").notNull(),
+  name: text("name").notNull(),
+  title: text("title").notNull(),
+  shortDescription: text("short_description").notNull().default(""),
+  submitButtonText: text("submit_button_text").notNull().default("Submit"),
+  successTitle: text("success_title").notNull().default("Thank you"),
+  successMessage: text("success_message").notNull().default("We have received your submission."),
+  antiSpamEnabled: boolean("anti_spam_enabled").notNull().default(true),
+  fields: jsonb("fields").notNull().default(sql`'[]'::jsonb`),
+  status: text("status").notNull().default("active"),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+}, (table) => ({
+  slugIdx: uniqueIndex("forms_slug_idx").on(table.slug),
+}));
+
+export const leads = pgTable("leads", {
+  id: serial("id").primaryKey(),
+  formId: integer("form_id").references(() => forms.id, { onDelete: "set null" }),
+  formSlug: text("form_slug").notNull(),
+  formName: text("form_name").notNull(),
+  name: text("name").notNull().default(""),
+  email: text("email").notNull().default(""),
+  phone: text("phone").notNull().default(""),
+  company: text("company").notNull().default(""),
+  data: jsonb("data").notNull(),
+  source: text("source").notNull().default("website"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});

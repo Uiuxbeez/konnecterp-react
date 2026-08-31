@@ -1,0 +1,165 @@
+import React, { useEffect, useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import { ArrowRight, CheckCircle2, ChevronDown } from "lucide-react";
+import { apiUrl } from "@/lib/api-base";
+import { DEFAULT_DEMO_FORM, type FormDefinitionContent, type FormFieldDef } from "@shared/forms";
+
+type PublicFormData = FormDefinitionContent & {
+  id?: number;
+  slug: string;
+  name: string;
+};
+
+function makeCaptcha() {
+  return { a: Math.floor(Math.random() * 7) + 2, b: Math.floor(Math.random() * 6) + 3 };
+}
+
+export function PublicForm({ slug, source = "website", onSuccess }: { slug: string; source?: string; onSuccess?: (values: Record<string, string>) => void }) {
+  const [definition, setDefinition] = useState<PublicFormData>({
+    slug,
+    name: "Demo Request",
+    ...DEFAULT_DEMO_FORM,
+  });
+  const [values, setValues] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [captcha, setCaptcha] = useState(makeCaptcha);
+  const [captchaAnswer, setCaptchaAnswer] = useState("");
+  const [website, setWebsite] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    fetch(apiUrl(`/api/public/forms/${slug}`))
+      .then((res) => (res.ok ? res.json() : Promise.reject()))
+      .then((data) => setDefinition(data.form))
+      .catch(() => {});
+  }, [slug]);
+
+  const initialValues = useMemo(() => {
+    const next: Record<string, string> = {};
+    definition.fields.forEach((field) => { next[field.id] = ""; });
+    return next;
+  }, [definition.fields]);
+
+  useEffect(() => {
+    setValues(initialValues);
+    setErrors({});
+    setCaptcha(makeCaptcha());
+    setCaptchaAnswer("");
+    setSubmitted(false);
+  }, [initialValues]);
+
+  const setField = (id: string, value: string) => setValues((prev) => ({ ...prev, [id]: value }));
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setErrors({});
+    try {
+      const res = await fetch(apiUrl(`/api/public/forms/${slug}/submit`), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          values,
+          website,
+          captchaA: captcha.a,
+          captchaB: captcha.b,
+          captchaAnswer,
+          source,
+        }),
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setErrors(body.errors ?? { form: body.error ?? "Submission failed" });
+        setCaptcha(makeCaptcha());
+        setCaptchaAnswer("");
+        return;
+      }
+      setSubmitted(true);
+      onSuccess?.(values);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (submitted) {
+    return (
+      <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="px-8 py-10 flex flex-col items-center text-center">
+        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+          <CheckCircle2 className="h-8 w-8 text-green-500" />
+        </div>
+        <h3 className="mb-2 text-xl font-bold text-gray-900">{definition.settings.successTitle}</h3>
+        <p className="mb-6 text-sm leading-6 text-gray-500">{definition.settings.successMessage}</p>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.form initial={{ opacity: 0 }} animate={{ opacity: 1 }} onSubmit={submit} className="max-h-[64vh] space-y-4 overflow-y-auto px-8 py-6" noValidate>
+      <div>
+        <h3 className="text-xl font-bold text-gray-900">{definition.settings.title}</h3>
+        {definition.settings.shortDescription && <p className="mt-1 text-sm leading-6 text-gray-500">{definition.settings.shortDescription}</p>}
+      </div>
+
+      <input type="text" value={website} onChange={(e) => setWebsite(e.target.value)} className="hidden" tabIndex={-1} autoComplete="off" />
+
+      {definition.fields.map((field) => (
+        <FormField key={field.id} field={field} value={values[field.id] ?? ""} error={errors[field.id]} onChange={(value) => setField(field.id, value)} />
+      ))}
+
+      {definition.settings.antiSpamEnabled && (
+        <div>
+          <label className="mb-1 block text-sm font-medium text-gray-700">
+            Anti-spam check <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="number"
+            value={captchaAnswer}
+            onChange={(e) => setCaptchaAnswer(e.target.value)}
+            placeholder={`${captcha.a} + ${captcha.b} = ?`}
+            className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2.5 text-sm outline-none focus:border-[#F97316] focus:ring-2 focus:ring-[#F97316]/30"
+          />
+          {errors.form && <p className="mt-1 text-xs text-red-500">{errors.form}</p>}
+        </div>
+      )}
+
+      <button
+        type="submit"
+        disabled={loading}
+        className="mt-2 flex h-11 w-full items-center justify-center gap-2 rounded-lg text-sm font-semibold text-white transition-all disabled:opacity-70"
+        style={{ background: "linear-gradient(135deg, #F97316 0%, #0B1F4A 100%)" }}
+      >
+        {loading ? "Submitting..." : definition.settings.submitButtonText} {!loading && <ArrowRight className="h-4 w-4" />}
+      </button>
+    </motion.form>
+  );
+}
+
+function FormField({ field, value, error, onChange }: { field: FormFieldDef; value: string; error?: string; onChange: (value: string) => void }) {
+  const label = (
+    <label className="mb-1 block text-sm font-medium text-gray-700">
+      {field.label} {field.required && <span className="text-red-500">*</span>}
+    </label>
+  );
+  const className = `w-full rounded-lg border px-3 py-2.5 text-sm outline-none transition-colors focus:border-[#F97316] focus:ring-2 focus:ring-[#F97316]/30 ${error ? "border-red-400 bg-red-50" : "border-gray-200 bg-gray-50"}`;
+
+  return (
+    <div>
+      {label}
+      {field.type === "textarea" ? (
+        <textarea value={value} onChange={(e) => onChange(e.target.value)} placeholder={field.placeholder} rows={3} className={className} />
+      ) : field.type === "select" ? (
+        <div className="relative">
+          <select value={value} onChange={(e) => onChange(e.target.value)} className={`${className} appearance-none pr-8`}>
+            <option value="">{field.placeholder || `Select ${field.label}`}</option>
+            {(field.options ?? []).map((option) => <option key={option} value={option}>{option}</option>)}
+          </select>
+          <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400" />
+        </div>
+      ) : (
+        <input type={field.type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={field.placeholder} className={className} />
+      )}
+      {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+    </div>
+  );
+}

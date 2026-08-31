@@ -8,7 +8,7 @@ import { requireAuth } from "../auth";
 const UPLOAD_DIR = path.resolve(process.cwd(), "public", "uploads");
 fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
-const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/svg+xml", "image/avif", "image/gif"]);
+const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/svg+xml", "image/avif", "image/gif", "application/pdf"]);
 
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => cb(null, UPLOAD_DIR),

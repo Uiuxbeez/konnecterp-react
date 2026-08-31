@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, TrendingUp, Building2 } from "lucide-react";
+import { isCmsButtonVisible, runCmsButtonAction, type CmsButtonAction } from "@/lib/cms-button-actions";
 import { InViewTextEffect, getIcon, type SectionCtx } from "./shared";
 
 export interface IndustryCard {
@@ -20,12 +21,26 @@ export interface IndustrySolutionsContent {
   title: string;
   highlight: string;
   description: string;
+  cardButtonVisible?: boolean;
+  cardButtonAction?: CmsButtonAction;
+  cardButtonHref?: string;
   cards: IndustryCard[];
+  primaryButtonText?: string;
+  primaryButtonVisible?: boolean;
+  primaryButtonAction?: CmsButtonAction;
+  primaryButtonHref?: string;
+  secondaryButtonText?: string;
+  secondaryButtonVisible?: boolean;
+  secondaryButtonAction?: CmsButtonAction;
+  secondaryButtonHref?: string;
 }
 
 export function IndustrySolutions({ content, ctx }: { content: IndustrySolutionsContent; ctx: SectionCtx }) {
-  const { isDarkMode, openDemo } = ctx;
+  const { isDarkMode } = ctx;
   const [expanded, setExpanded] = useState(0);
+  const showCardButton = isCmsButtonVisible(content.cardButtonVisible);
+  const showPrimaryButton = isCmsButtonVisible(content.primaryButtonVisible);
+  const showSecondaryButton = isCmsButtonVisible(content.secondaryButtonVisible);
 
   return (
     <section className={`py-24 relative overflow-hidden ${isDarkMode ? "bg-[#080f1e]" : "bg-white"}`}>
@@ -113,12 +128,17 @@ export function IndustrySolutions({ content, ctx }: { content: IndustrySolutions
                             <TrendingUp className="w-3.5 h-3.5" />
                             {card.metric}
                           </div>
-                          <button
-                            onClick={(e) => { e.stopPropagation(); openDemo(); }}
-                            className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform shrink-0"
-                          >
-                            <ArrowRight className="w-4 h-4 text-gray-800" />
-                          </button>
+                          {showCardButton && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                runCmsButtonAction(content.cardButtonAction, content.cardButtonHref, ctx, "demo_modal");
+                              }}
+                              className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform shrink-0"
+                            >
+                              <ArrowRight className="w-4 h-4 text-gray-800" />
+                            </button>
+                          )}
                         </div>
                       </motion.div>
                     ) : (
@@ -140,17 +160,26 @@ export function IndustrySolutions({ content, ctx }: { content: IndustrySolutions
           })}
         </motion.div>
 
-        <div className="flex flex-col sm:flex-row gap-3 justify-center mt-10">
-          <button onClick={openDemo} className="h-11 px-6 text-sm font-semibold bg-[#F97316] hover:bg-[#EA580C] text-white rounded-md transition-colors shadow-lg shadow-orange-900/20">
-            Explore More
-          </button>
-          <button
-            onClick={openDemo}
-            className={`h-11 px-6 text-sm font-semibold rounded-md border transition-colors ${isDarkMode ? "bg-white/10 hover:bg-white/20 text-white border-white/15 backdrop-blur-sm" : "bg-white hover:bg-slate-50 text-[#0B1F4A] border-slate-300"}`}
-          >
-            Talk to an Expert
-          </button>
-        </div>
+        {(showPrimaryButton || showSecondaryButton) && (
+          <div className="flex flex-col sm:flex-row gap-3 justify-center mt-10">
+            {showPrimaryButton && (
+              <button
+                onClick={() => runCmsButtonAction(content.primaryButtonAction, content.primaryButtonHref, ctx, "link")}
+                className="h-11 px-6 text-sm font-semibold bg-[#F97316] hover:bg-[#EA580C] text-white rounded-md transition-colors shadow-lg shadow-orange-900/20"
+              >
+                {content.primaryButtonText ?? "Explore More"}
+              </button>
+            )}
+            {showSecondaryButton && (
+              <button
+                onClick={() => runCmsButtonAction(content.secondaryButtonAction, content.secondaryButtonHref, ctx, "demo_modal")}
+                className={`h-11 px-6 text-sm font-semibold rounded-md border transition-colors ${isDarkMode ? "bg-white/10 hover:bg-white/20 text-white border-white/15 backdrop-blur-sm" : "bg-white hover:bg-slate-50 text-[#0B1F4A] border-slate-300"}`}
+              >
+                {content.secondaryButtonText ?? "Talk to an Expert"}
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </section>
   );

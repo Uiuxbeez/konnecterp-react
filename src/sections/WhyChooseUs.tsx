@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight, Activity, CheckCircle2, TrendingUp } from "lucide-react";
+import { isCmsButtonVisible, runCmsButtonAction, type CmsButtonAction } from "@/lib/cms-button-actions";
 import { InViewTextEffect, type SectionCtx } from "./shared";
 
 export interface WhyChooseRow {
@@ -15,11 +16,14 @@ export interface WhyChooseUsContent {
   title: string;
   highlight: string;
   description: string;
+  rowButtonVisible?: boolean;
+  rowButtonAction?: CmsButtonAction;
+  rowButtonHref?: string;
   rows: WhyChooseRow[];
 }
 
 export function WhyChooseUs({ content, ctx }: { content: WhyChooseUsContent; ctx: SectionCtx }) {
-  const { isDarkMode, openDemo } = ctx;
+  const { isDarkMode } = ctx;
 
   return (
     <section id="benefits" className={`py-24 relative overflow-hidden ${isDarkMode ? "bg-[#06163C]" : "bg-white"}`}>
@@ -79,11 +83,16 @@ export function WhyChooseUs({ content, ctx }: { content: WhyChooseUsContent; ctx
                       ))}
                     </div>
                   </div>
-                  <div className="flex justify-end">
-                    <button onClick={openDemo} className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:scale-110 transition-transform shadow-xl shrink-0">
-                      <ArrowUpRight className="w-4 h-4 text-gray-900" />
-                    </button>
-                  </div>
+                  {isCmsButtonVisible(content.rowButtonVisible) && (
+                    <div className="flex justify-end">
+                      <button
+                        onClick={() => runCmsButtonAction(content.rowButtonAction, content.rowButtonHref, ctx, "demo_modal")}
+                        className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:scale-110 transition-transform shadow-xl shrink-0"
+                      >
+                        <ArrowUpRight className="w-4 h-4 text-gray-900" />
+                      </button>
+                    </div>
+                  )}
                 </div>
               </motion.div>
             );

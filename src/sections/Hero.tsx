@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
+import { isCmsButtonVisible, runCmsButtonAction, type CmsButtonAction } from "@/lib/cms-button-actions";
 import { InViewTextEffect, NetworkMesh, fadeInUp, staggerContainer, type SectionCtx } from "./shared";
 
 export interface HeroContent {
@@ -8,13 +9,21 @@ export interface HeroContent {
   highlight: string;
   description: string;
   primaryButtonText: string;
+  primaryButtonVisible?: boolean;
+  primaryButtonAction?: CmsButtonAction;
+  primaryButtonHref?: string;
   secondaryButtonText: string;
+  secondaryButtonVisible?: boolean;
+  secondaryButtonAction?: CmsButtonAction;
+  secondaryButtonHref?: string;
   backgroundImage: string;
   checklist: string[];
 }
 
 export function Hero({ content, ctx }: { content: HeroContent; ctx: SectionCtx }) {
-  const { isDarkMode, openDemo, openVideo } = ctx;
+  const { isDarkMode } = ctx;
+  const showPrimaryButton = isCmsButtonVisible(content.primaryButtonVisible);
+  const showSecondaryButton = isCmsButtonVisible(content.secondaryButtonVisible);
 
   return (
     <section className="relative flex flex-col overflow-hidden">
@@ -62,20 +71,26 @@ export function Hero({ content, ctx }: { content: HeroContent; ctx: SectionCtx }
           {content.description}
         </motion.p>
 
-        <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-3 justify-center">
-          <button
-            onClick={openDemo}
-            className={`h-11 px-6 text-sm font-semibold rounded-md transition-colors shadow-lg ${isDarkMode ? "bg-[#F97316] hover:bg-[#ea6c0a] text-white shadow-orange-500/30" : "bg-[#0B1F4A] hover:bg-[#162d68] text-white shadow-slate-900/30"}`}
-          >
-            {content.primaryButtonText}
-          </button>
-          <button
-            onClick={openVideo}
-            className={`h-11 px-6 text-sm font-semibold rounded-md border transition-colors backdrop-blur-sm ${isDarkMode ? "bg-white/10 hover:bg-white/20 text-white border-white/15" : "bg-transparent hover:bg-orange-50 text-[#F97316] border-[#F97316]"}`}
-          >
-            {content.secondaryButtonText}
-          </button>
-        </motion.div>
+        {(showPrimaryButton || showSecondaryButton) && (
+          <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-3 justify-center">
+            {showPrimaryButton && (
+              <button
+                onClick={() => runCmsButtonAction(content.primaryButtonAction, content.primaryButtonHref, ctx, "demo_modal")}
+                className={`h-11 px-6 text-sm font-semibold rounded-md transition-colors shadow-lg ${isDarkMode ? "bg-[#F97316] hover:bg-[#ea6c0a] text-white shadow-orange-500/30" : "bg-[#0B1F4A] hover:bg-[#162d68] text-white shadow-slate-900/30"}`}
+              >
+                {content.primaryButtonText}
+              </button>
+            )}
+            {showSecondaryButton && (
+              <button
+                onClick={() => runCmsButtonAction(content.secondaryButtonAction, content.secondaryButtonHref, ctx, "video_modal")}
+                className={`h-11 px-6 text-sm font-semibold rounded-md border transition-colors backdrop-blur-sm ${isDarkMode ? "bg-white/10 hover:bg-white/20 text-white border-white/15" : "bg-transparent hover:bg-orange-50 text-[#F97316] border-[#F97316]"}`}
+              >
+                {content.secondaryButtonText}
+              </button>
+            )}
+          </motion.div>
+        )}
 
         <motion.div variants={fadeInUp} className={`mt-5 flex flex-wrap items-center justify-center gap-5 text-xs ${isDarkMode ? "text-slate-300/70" : "text-slate-500"}`}>
           {content.checklist.map((item) => (

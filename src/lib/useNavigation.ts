@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { apiUrl } from "@/lib/api-base";
-import { MENU_GROUPS, type MenuGroup } from "@/lib/nav";
+import { getVisibleNavigation, MENU_GROUPS, type MenuGroup } from "@/lib/nav";
 
 export function useNavigation() {
-  const [navigation, setNavigation] = useState<MenuGroup[]>(MENU_GROUPS);
+  const [navigation, setNavigation] = useState<MenuGroup[]>(getVisibleNavigation(MENU_GROUPS));
 
   useEffect(() => {
     let alive = true;
@@ -11,10 +11,10 @@ export function useNavigation() {
     fetch(apiUrl("/api/public/navigation"))
       .then((res) => (res.ok ? res.json() : Promise.reject()))
       .then((body: { navigation?: MenuGroup[] }) => {
-        if (alive && Array.isArray(body.navigation)) setNavigation(body.navigation);
+        if (alive && Array.isArray(body.navigation)) setNavigation(getVisibleNavigation(body.navigation));
       })
       .catch(() => {
-        if (alive) setNavigation(MENU_GROUPS);
+        if (alive) setNavigation(getVisibleNavigation(MENU_GROUPS));
       });
 
     return () => {
