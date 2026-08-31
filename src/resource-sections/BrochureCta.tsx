@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { CheckCircle2, Download } from 'lucide-react';
+import { RichText } from '@/components/site/RichText';
 import { isCmsButtonVisible, runCmsButtonAction, type CmsButtonAction } from '@/lib/cms-button-actions';
 import type { SectionCtx } from '@/sections/shared';
 
@@ -46,7 +47,7 @@ export function BrochureCta({ content, ctx }: { content: BrochureCtaContent; ctx
             <h2 className="text-3xl md:text-5xl font-bold mb-5 tracking-tight text-white">
               {content.title} <span className="text-[#F97316]">{content.highlight}</span>
             </h2>
-            <p className="text-lg mb-9 max-w-xl mx-auto text-slate-300">{content.description}</p>
+            <p className="text-lg mb-9 max-w-xl mx-auto text-slate-300"><RichText text={content.description} /></p>
 
             <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 mb-10">
               {content.features.map((f, i) => (

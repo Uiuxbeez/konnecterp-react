@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, BarChart3 } from "lucide-react";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
+import { RichText } from "@/components/site/RichText";
 import { isCmsButtonVisible, runCmsButtonAction, type CmsButtonAction } from "@/lib/cms-button-actions";
 import { InViewTextEffect, getIcon, type SectionCtx } from "./shared";
 
@@ -41,7 +42,7 @@ export function GstCompliance({ content, ctx }: { content: GstComplianceContent;
             <br />
             <InViewTextEffect gradient="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">{content.highlight}</InViewTextEffect>
           </h2>
-          <p className={`text-lg ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}>{content.description}</p>
+          <p className={`text-lg ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}><RichText text={content.description} /></p>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.15 }} className="flex flex-col lg:flex-row gap-4">
@@ -65,7 +66,7 @@ export function GstCompliance({ content, ctx }: { content: GstComplianceContent;
               </div>
               <div className="p-6 pt-9">
                 <h3 className={`text-base font-bold mb-2 ${isDarkMode ? "text-white" : "text-[#0B1F4A]"}`}>{content.featuredTitle}</h3>
-                <p className={`text-sm leading-relaxed ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}>{content.featuredDescription}</p>
+                <p className={`text-sm leading-relaxed ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}><RichText text={content.featuredDescription} /></p>
               </div>
             </div>
           </div>
@@ -82,7 +83,7 @@ export function GstCompliance({ content, ctx }: { content: GstComplianceContent;
                         <Icon className="w-5 h-5 text-white" />
                       </div>
                       <h3 className={`text-base font-bold mb-2 ${isDarkMode ? "text-white" : "text-[#0B1F4A]"}`}>{f.title}</h3>
-                      <p className={`text-sm leading-relaxed ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}>{f.description}</p>
+                      <p className={`text-sm leading-relaxed ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}><RichText text={f.description} /></p>
                     </div>
                   </div>
                 );
@@ -99,7 +100,7 @@ export function GstCompliance({ content, ctx }: { content: GstComplianceContent;
                         <Icon className="w-5 h-5 text-white" />
                       </div>
                       <h3 className={`text-base font-bold mb-2 ${isDarkMode ? "text-white" : "text-[#0B1F4A]"}`}>{f.title}</h3>
-                      <p className={`text-sm leading-relaxed ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}>{f.description}</p>
+                      <p className={`text-sm leading-relaxed ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}><RichText text={f.description} /></p>
                     </div>
                   </div>
                 );

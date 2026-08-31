@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { RichText } from '@/components/site/RichText';
 import { isCmsButtonVisible, runCmsButtonAction, type CmsButtonAction } from '@/lib/cms-button-actions';
 import type { SectionCtx } from '@/sections/shared';
 
@@ -39,7 +40,7 @@ export function ProductCta({ content, ctx }: { content: ProductCtaContent; ctx: 
             <h2 className="text-3xl md:text-5xl font-bold mb-5 tracking-tight text-white">
               {content.title} <span className="text-[#F97316]">{content.highlight}</span>
             </h2>
-            <p className="text-lg mb-9 max-w-xl mx-auto text-slate-300">{content.description}</p>
+            <p className="text-lg mb-9 max-w-xl mx-auto text-slate-300"><RichText text={content.description} /></p>
             {isCmsButtonVisible(content.buttonVisible) && (
               <button
                 onClick={() => runCmsButtonAction(content.buttonAction, content.buttonHref, ctx, "demo_modal")}

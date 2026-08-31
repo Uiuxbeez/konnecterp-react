@@ -34,6 +34,9 @@ interface StandardHeroContent {
   primaryButtonVisible?: boolean;
   primaryButtonAction?: CmsButtonAction;
   primaryButtonHref?: string;
+  heroImage?: string;
+  heroImageCropX?: number;
+  heroImageCropY?: number;
 }
 
 function renderStandardSection(section: PageSection, ctx: SectionCtx, byType: (t: SectionType) => Record<string, unknown>) {
@@ -119,6 +122,9 @@ export default function StandardPage() {
         description={heroContent.description}
         primaryButtonText={heroContent.primaryButtonText}
         showPrimaryButton={isCmsButtonVisible(heroContent.primaryButtonVisible)}
+        heroImage={heroContent.heroImage}
+        heroImageCropX={heroContent.heroImageCropX}
+        heroImageCropY={heroContent.heroImageCropY}
         onPrimaryClick={handlePrimaryButtonClick}
       />
 

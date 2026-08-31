@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { Download, X } from "lucide-react";
 import { PublicForm } from "@/components/site/PublicForm";
+import { RichText } from "@/components/site/RichText";
 import type { SectionCtx } from "./shared";
 
 export interface CaseStudyCard {
@@ -58,7 +59,7 @@ export function CaseStudiesGrid({ content, ctx }: { content: CaseStudiesGridCont
               {content.title} <span className="text-[#F97316]">{content.highlight}</span>
             </h2>
             <p className={`mx-auto mt-5 max-w-2xl text-base leading-7 ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}>
-              {content.description}
+              <RichText text={content.description} />
             </p>
           </div>
 
@@ -76,7 +77,7 @@ export function CaseStudiesGrid({ content, ctx }: { content: CaseStudiesGridCont
                   className={`flex min-h-[290px] flex-col rounded-lg border p-6 ${isDarkMode ? "border-white/10 bg-white/[0.04]" : "border-slate-200 bg-white shadow-sm"}`}
                 >
                   <h3 className={`text-xl font-bold leading-snug ${isDarkMode ? "text-white" : "text-[#0B1F4A]"}`}>{card.title}</h3>
-                  <p className={`mt-4 flex-1 text-sm leading-7 ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}>{card.description}</p>
+                  <p className={`mt-4 flex-1 text-sm leading-7 ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}><RichText text={card.description} /></p>
 
                   <div className="mt-6 flex flex-wrap gap-2">
                     {hasPdf ? (

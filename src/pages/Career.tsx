@@ -7,6 +7,7 @@ import { DemoModal } from "@/components/site/DemoModal";
 import { VideoModal } from "@/components/site/VideoModal";
 import { ScrollToTopButton } from "@/components/site/ScrollToTopButton";
 import { FooterSection, type FooterContent } from "@/sections/FooterSection";
+import { RichText } from "@/components/site/RichText";
 import { getIcon } from "@/sections/shared";
 import { usePageSections } from "@/lib/usePageSections";
 import { useSiteChrome } from "@/hooks/useSiteChrome";
@@ -77,6 +78,9 @@ export default function Career() {
           description={(heroContent.description as string) || ""}
           primaryButtonText={(heroContent.primaryButtonText as string) || ""}
           showPrimaryButton={isCmsButtonVisible(heroContent.primaryButtonVisible)}
+          heroImage={heroContent.heroImage as string | undefined}
+          heroImageCropX={heroContent.heroImageCropX as number | undefined}
+          heroImageCropY={heroContent.heroImageCropY as number | undefined}
           onPrimaryClick={() => {
             if (heroContent.primaryButtonAction === "link" && heroContent.primaryButtonHref === "#open-roles") {
               document.getElementById("open-roles")?.scrollIntoView({ behavior: "smooth" });
@@ -117,7 +121,7 @@ export default function Career() {
                           {rolesContent.cardTitle as string}
                         </h3>
                         <p className="mt-5 max-w-md text-sm leading-7 text-slate-300">
-                          {rolesContent.cardDescription as string}
+                          <RichText text={rolesContent.cardDescription as string} />
                         </p>
                       </div>
 
@@ -136,7 +140,7 @@ export default function Career() {
 
                       <div className="rounded-lg border border-orange-400/25 bg-orange-500/15 p-4">
                         <p className="text-sm font-semibold text-white">{rolesContent.footerTitle as string}</p>
-                        <p className="mt-1 text-xs leading-5 text-orange-100">{rolesContent.footerDescription as string}</p>
+                        <p className="mt-1 text-xs leading-5 text-orange-100"><RichText text={rolesContent.footerDescription as string} /></p>
                       </div>
                     </div>
                   </div>

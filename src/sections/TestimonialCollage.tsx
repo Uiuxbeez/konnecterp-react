@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
+import { RichText } from "@/components/site/RichText";
 import type { SectionCtx } from "./shared";
 
 export interface TestimonialCollagePhoto {
@@ -34,7 +35,7 @@ export function TestimonialCollage({ content, ctx }: { content: TestimonialColla
             <br />
             <span className="text-[#F97316]">{content.highlight}</span>
           </h2>
-          <p className={`max-w-2xl text-base leading-8 ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}>{content.description}</p>
+          <p className={`max-w-2xl text-base leading-8 ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}><RichText text={content.description} /></p>
         </motion.div>
 
         <div className="relative min-h-[420px]">

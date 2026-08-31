@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { RichText } from '@/components/site/RichText';
 import { InViewTextEffect, getIcon, type SectionCtx } from '@/sections/shared';
 import { SquigglyArrow } from './SquigglyArrow';
 
@@ -26,7 +27,7 @@ export function IndustryFlow({ content, ctx }: { content: IndustryFlowContent; c
             <InViewTextEffect>{content.title}</InViewTextEffect>{' '}
             <InViewTextEffect gradient="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">{content.highlight}</InViewTextEffect>
           </h2>
-          <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>{content.description}</p>
+          <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}><RichText text={content.description} /></p>
         </motion.div>
 
         <div className="flex flex-col md:flex-row md:items-start gap-16 md:gap-0">
@@ -52,7 +53,7 @@ export function IndustryFlow({ content, ctx }: { content: IndustryFlowContent; c
                     </span>
                   </div>
                   <h3 className={`text-base font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>{step.title}</h3>
-                  <p className={`text-sm leading-relaxed max-w-[15rem] ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>{step.description}</p>
+                  <p className={`text-sm leading-relaxed max-w-[15rem] ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}><RichText text={step.description} /></p>
                 </motion.div>
 
                 {i < content.steps.length - 1 && (

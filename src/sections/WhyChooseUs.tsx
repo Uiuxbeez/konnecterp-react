@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight, Activity, CheckCircle2, TrendingUp } from "lucide-react";
+import { RichText } from "@/components/site/RichText";
 import { isCmsButtonVisible, runCmsButtonAction, type CmsButtonAction } from "@/lib/cms-button-actions";
 import { InViewTextEffect, type SectionCtx } from "./shared";
 
@@ -38,7 +39,7 @@ export function WhyChooseUs({ content, ctx }: { content: WhyChooseUsContent; ctx
             <br />
             <span className="text-[#F97316]"><InViewTextEffect>{content.highlight}</InViewTextEffect></span>
           </h2>
-          <p className={`max-w-lg mx-auto text-base leading-relaxed whitespace-pre-line ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}>{content.description}</p>
+          <p className={`max-w-lg mx-auto text-base leading-relaxed ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}><RichText text={content.description} /></p>
         </motion.div>
 
         <div className="space-y-10">
@@ -73,7 +74,7 @@ export function WhyChooseUs({ content, ctx }: { content: WhyChooseUsContent; ctx
                     </div>
                     <p className="text-[10px] font-bold tracking-[0.18em] uppercase text-slate-400 mb-2">{row.tag}</p>
                     <h3 className={`text-2xl font-bold mb-3 leading-snug ${isDarkMode ? "text-white" : "text-[#0B1F4A]"}`}>{row.title}</h3>
-                    <p className={`text-sm leading-relaxed mb-6 ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}>{row.description}</p>
+                    <p className={`text-sm leading-relaxed mb-6 ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}><RichText text={row.description} /></p>
                     <div className="grid grid-cols-2 gap-x-6 gap-y-2.5 mb-8">
                       {row.bullets.map((item) => (
                         <div key={item} className="flex items-center gap-2">

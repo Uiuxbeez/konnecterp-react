@@ -569,6 +569,9 @@ export const SECTION_DEFS: SectionMeta[] = [
       { key: "primaryButtonVisible", label: "Show Primary Button", type: "boolean" },
       { key: "primaryButtonAction", label: "Primary Button Action", type: "select", options: BUTTON_ACTION_OPTIONS },
       { key: "primaryButtonHref", label: "Primary Button Link URL / Page Path", type: "text" },
+      { key: "heroImage", label: "Right Side Image", type: "image" },
+      { key: "heroImageCropX", label: "Right Side Image Crop X", type: "number" },
+      { key: "heroImageCropY", label: "Right Side Image Crop Y", type: "number" },
     ],
     defaultContent: {
       eyebrow: "01 · ERP for SMEs",
@@ -581,6 +584,9 @@ export const SECTION_DEFS: SectionMeta[] = [
       primaryButtonVisible: true,
       primaryButtonAction: "demo_modal",
       primaryButtonHref: "",
+      heroImage: "",
+      heroImageCropX: 50,
+      heroImageCropY: 50,
     },
   },
   {
@@ -818,6 +824,9 @@ export const SECTION_DEFS: SectionMeta[] = [
       { key: "secondaryButtonAction", label: "Secondary Button Action", type: "select", options: BUTTON_ACTION_OPTIONS },
       { key: "secondaryButtonHref", label: "Secondary Button Link URL / Page Path", type: "text" },
       { key: "backgroundImage", label: "Background Image", type: "image" },
+      { key: "heroImage", label: "Right Side Image", type: "image" },
+      { key: "heroImageCropX", label: "Right Side Image Crop X", type: "number" },
+      { key: "heroImageCropY", label: "Right Side Image Crop Y", type: "number" },
     ],
     defaultContent: {
       badge: "ERP for Manufacturing Industry",
@@ -837,6 +846,9 @@ export const SECTION_DEFS: SectionMeta[] = [
       secondaryButtonAction: "link",
       secondaryButtonHref: "#flow",
       backgroundImage: "/images/industry-manufacturing.jpg",
+      heroImage: "",
+      heroImageCropX: 50,
+      heroImageCropY: 50,
     },
   },
   {

@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { RichText } from "@/components/site/RichText";
 import { InViewTextEffect, type SectionCtx } from "./shared";
 
 export interface Story {
@@ -30,7 +31,7 @@ export function CustomerStories({ content, ctx }: { content: CustomerStoriesCont
           <h2 className={`text-4xl md:text-5xl font-bold leading-tight mb-4 ${isDarkMode ? "text-white" : "text-[#0B1F4A]"}`}>
             <InViewTextEffect>{content.title}</InViewTextEffect>
           </h2>
-          <p className={`max-w-lg mx-auto text-base leading-relaxed ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}>{content.description}</p>
+          <p className={`max-w-lg mx-auto text-base leading-relaxed ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}><RichText text={content.description} /></p>
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-5">

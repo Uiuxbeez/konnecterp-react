@@ -69,11 +69,23 @@ function FieldRenderer({
       }
       return <Input value={value ?? ""} onChange={(e) => onChange(e.target.value)} />;
     case "textarea":
-      return <Textarea rows={4} value={value ?? ""} onChange={(e) => onChange(e.target.value)} />;
+      return (
+        <div className="space-y-1.5">
+          <Textarea rows={4} value={value ?? ""} onChange={(e) => onChange(e.target.value)} />
+          {field.key.toLowerCase().includes("description") && (
+            <p className="text-xs text-slate-400">
+              Links supported: [Link text](https://example.com) or &lt;a href="https://example.com"&gt;Link text&lt;/a&gt;
+            </p>
+          )}
+        </div>
+      );
     case "number":
       return (
         <Input
           type="number"
+          min={field.key.toLowerCase().includes("crop") ? 0 : undefined}
+          max={field.key.toLowerCase().includes("crop") ? 100 : undefined}
+          placeholder={field.key.toLowerCase().includes("crop") ? "0 to 100" : undefined}
           value={value ?? 0}
           onChange={(e) => onChange(e.target.value === "" ? 0 : Number(e.target.value))}
         />

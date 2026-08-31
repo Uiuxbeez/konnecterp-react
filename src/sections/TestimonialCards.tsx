@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Quote, UserRound } from "lucide-react";
+import { RichText } from "@/components/site/RichText";
 import type { SectionCtx } from "./shared";
 
 export interface TestimonialCard {
@@ -29,7 +30,7 @@ export function TestimonialCards({ content, ctx }: { content: TestimonialCardsCo
           <h2 className={`text-3xl font-bold tracking-tight md:text-5xl ${isDarkMode ? "text-white" : "text-[#0B1F4A]"}`}>
             {content.title} <span className="text-[#F97316]">{content.highlight}</span>
           </h2>
-          <p className={`mx-auto mt-5 max-w-2xl text-base leading-7 ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}>{content.description}</p>
+          <p className={`mx-auto mt-5 max-w-2xl text-base leading-7 ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}><RichText text={content.description} /></p>
         </div>
 
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -60,7 +61,7 @@ export function TestimonialCards({ content, ctx }: { content: TestimonialCardsCo
               </div>
 
               {card.designation && <p className={`mb-4 text-sm font-semibold ${isDarkMode ? "text-slate-300" : "text-slate-500"}`}>{card.designation}</p>}
-              <p className={`text-sm leading-7 ${isDarkMode ? "text-slate-300" : "text-slate-600"}`}>"{card.testimonial}"</p>
+              <p className={`text-sm leading-7 ${isDarkMode ? "text-slate-300" : "text-slate-600"}`}>"<RichText text={card.testimonial} />"</p>
             </motion.article>
           ))}
         </div>

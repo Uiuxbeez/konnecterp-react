@@ -6,6 +6,7 @@ import { DemoModal } from "@/components/site/DemoModal";
 import { VideoModal } from "@/components/site/VideoModal";
 import { ScrollToTopButton } from "@/components/site/ScrollToTopButton";
 import { FooterSection, type FooterContent } from "@/sections/FooterSection";
+import { RichText } from "@/components/site/RichText";
 import { getIcon } from "@/sections/shared";
 import { usePageSections } from "@/lib/usePageSections";
 import { useSiteChrome } from "@/hooks/useSiteChrome";
@@ -69,6 +70,9 @@ export default function ContactUs() {
           description={(heroContent.description as string) || ""}
           primaryButtonText={(heroContent.primaryButtonText as string) || ""}
           showPrimaryButton={isCmsButtonVisible(heroContent.primaryButtonVisible)}
+          heroImage={heroContent.heroImage as string | undefined}
+          heroImageCropX={heroContent.heroImageCropX as number | undefined}
+          heroImageCropY={heroContent.heroImageCropY as number | undefined}
           onPrimaryClick={() =>
             runCmsButtonAction(heroContent.primaryButtonAction, heroContent.primaryButtonHref, {
               openDemo: chrome.openDemo,
@@ -103,7 +107,7 @@ export default function ContactUs() {
                 ))}
               </h2>
               <p className="mb-6 max-w-md text-base leading-7 text-slate-600 dark:text-slate-300">
-                {contactContent.description as string}
+                <RichText text={contactContent.description as string} />
               </p>
 
               <div className="space-y-4 text-sm leading-6 text-slate-700 dark:text-slate-300">
@@ -175,7 +179,7 @@ export default function ContactUs() {
                   {supportContent.title as string} <span className="text-[#F97316]">{supportContent.highlight as string}</span>
                 </h2>
                 <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-200">
-                  {supportContent.description as string}
+                  <RichText text={supportContent.description as string} />
                 </p>
 
                 <div className="mx-auto mt-10 flex max-w-4xl flex-wrap items-center justify-center gap-3">

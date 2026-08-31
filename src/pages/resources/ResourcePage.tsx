@@ -24,6 +24,9 @@ interface ResourceHeroContent {
   subhead: string;
   description: string;
   primaryButtonText: string;
+  heroImage?: string;
+  heroImageCropX?: number;
+  heroImageCropY?: number;
 }
 
 function renderResourceSection(section: PageSection, ctx: SectionCtx, byType: (t: SectionType) => Record<string, unknown>) {
@@ -96,6 +99,9 @@ export default function ResourcePage() {
         subhead={heroContent.subhead}
         description={heroContent.description}
         primaryButtonText={heroContent.primaryButtonText}
+        heroImage={heroContent.heroImage}
+        heroImageCropX={heroContent.heroImageCropX}
+        heroImageCropY={heroContent.heroImageCropY}
         onPrimaryClick={openDemo}
       />
 

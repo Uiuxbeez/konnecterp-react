@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { RichText } from '@/components/site/RichText';
 import { isCmsButtonVisible, runCmsButtonAction, type CmsButtonAction } from '@/lib/cms-button-actions';
 import { getIcon, type SectionCtx } from '@/sections/shared';
 
@@ -33,8 +34,8 @@ export function ProductAdapt({ content, ctx }: { content: ProductAdaptContent; c
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="lg:w-[55%]">
             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">{content.eyebrow}</p>
             <h2 className={`text-3xl md:text-4xl font-bold mb-5 tracking-tight ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>{content.title}</h2>
-            <p className={`text-base leading-relaxed mb-4 ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>{content.paragraph1}</p>
-            <p className={`text-base leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>{content.paragraph2}</p>
+            <p className={`text-base leading-relaxed mb-4 ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}><RichText text={content.paragraph1} /></p>
+            <p className={`text-base leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}><RichText text={content.paragraph2} /></p>
           </motion.div>
 
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} transition={{ delay: 0.1 }} className="lg:w-[45%] w-full">
@@ -46,7 +47,7 @@ export function ProductAdapt({ content, ctx }: { content: ProductAdaptContent; c
                   {content.cardBadge}
                 </span>
                 <h3 className="text-xl font-bold text-white mb-2">{content.cardTitle}</h3>
-                <p className="text-sm text-slate-300 leading-relaxed mb-6">{content.cardDescription}</p>
+                <p className="text-sm text-slate-300 leading-relaxed mb-6"><RichText text={content.cardDescription} /></p>
 
                 <div className="grid grid-cols-2 gap-3 mt-auto mb-6">
                   {content.options.map((d, i) => {

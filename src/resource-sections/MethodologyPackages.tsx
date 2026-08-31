@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { RichText } from '@/components/site/RichText';
 import { isCmsButtonVisible, runCmsButtonAction, type CmsButtonAction } from '@/lib/cms-button-actions';
 import { getIcon, type SectionCtx } from '@/sections/shared';
 
@@ -41,7 +42,7 @@ export function MethodologyPackages({ content, ctx }: { content: MethodologyPack
             <h2 className="text-3xl md:text-5xl font-bold mb-5 tracking-tight text-white">
               {content.title} <span className="text-[#F97316]">{content.highlight}</span>
             </h2>
-            <p className="text-lg mb-10 max-w-2xl mx-auto text-slate-300">{content.description}</p>
+            <p className="text-lg mb-10 max-w-2xl mx-auto text-slate-300"><RichText text={content.description} /></p>
 
             <div className="flex flex-wrap justify-center gap-3 mb-10">
               {content.packages.map((p, i) => {

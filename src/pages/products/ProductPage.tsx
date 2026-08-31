@@ -30,6 +30,9 @@ interface ProductHeroContent {
   primaryButtonVisible?: boolean;
   primaryButtonAction?: CmsButtonAction;
   primaryButtonHref?: string;
+  heroImage?: string;
+  heroImageCropX?: number;
+  heroImageCropY?: number;
 }
 
 function renderProductSection(section: PageSection, ctx: SectionCtx, byType: (t: SectionType) => Record<string, unknown>) {
@@ -110,6 +113,9 @@ export default function ProductPage() {
         description={heroContent.description}
         primaryButtonText={heroContent.primaryButtonText}
         showPrimaryButton={isCmsButtonVisible(heroContent.primaryButtonVisible)}
+        heroImage={heroContent.heroImage}
+        heroImageCropX={heroContent.heroImageCropX}
+        heroImageCropY={heroContent.heroImageCropY}
         onPrimaryClick={handlePrimaryButtonClick}
       />
 

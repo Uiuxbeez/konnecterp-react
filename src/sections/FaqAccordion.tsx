@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { HelpCircle } from "lucide-react";
+import { RichText } from "@/components/site/RichText";
 import {
   Accordion,
   AccordionContent,
@@ -34,7 +35,7 @@ export function FaqAccordion({ content, ctx }: { content: FaqAccordionContent; c
             {content.title} <span className="text-[#F97316]">{content.highlight}</span>
           </h2>
           <p className={`mx-auto mt-5 max-w-2xl text-base leading-7 ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}>
-            {content.description}
+            <RichText text={content.description} />
           </p>
         </div>
 
@@ -63,7 +64,7 @@ export function FaqAccordion({ content, ctx }: { content: FaqAccordionContent; c
                   </span>
                 </AccordionTrigger>
                 <AccordionContent className={`pl-12 text-sm leading-7 md:pl-14 ${isDarkMode ? "text-slate-300" : "text-slate-600"}`}>
-                  {item.answer}
+                  <RichText text={item.answer} />
                 </AccordionContent>
               </AccordionItem>
             ))}

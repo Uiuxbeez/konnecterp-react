@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { RichText } from '@/components/site/RichText';
 import { getIcon } from '@/sections/shared';
 
 export interface IndustryChallengesBenefitsContent {
@@ -50,7 +51,7 @@ export function IndustryChallengesBenefits({ content }: { content: IndustryChall
               <p className="text-xs font-bold text-[#F97316] uppercase tracking-widest">{content.challengesEyebrow}</p>
               <span className="block w-10 h-0.5 bg-[#F97316] mt-2.5 mb-5" />
               <h3 className="text-2xl md:text-[28px] font-bold text-white mb-3 leading-tight">{content.challengesTitle}</h3>
-              <p className="text-sm text-slate-300 leading-relaxed mb-8 max-w-md">{content.challengesDescription}</p>
+              <p className="text-sm text-slate-300 leading-relaxed mb-8 max-w-md"><RichText text={content.challengesDescription} /></p>
 
               <ul className="space-y-3">
                 {content.challenges.map((c, i) => {
@@ -109,7 +110,7 @@ export function IndustryChallengesBenefits({ content }: { content: IndustryChall
                         <Icon className="h-4 w-4 text-emerald-600" />
                       </span>
                       <p className="text-sm font-bold text-[#0B1F4A] mb-1 leading-snug">{b.title}</p>
-                      <p className="text-xs text-slate-500 leading-relaxed">{b.description}</p>
+                      <p className="text-xs text-slate-500 leading-relaxed"><RichText text={b.description} /></p>
                     </motion.div>
                   );
                 })}

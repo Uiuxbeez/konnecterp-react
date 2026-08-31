@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import { isCmsButtonVisible, type CmsButtonAction } from '@/lib/cms-button-actions';
 import { Breadcrumb, type BreadcrumbItem } from '@/components/site/Breadcrumb';
 import { MiniDashboardMock } from '@/components/site/MiniDashboardMock';
+import { RichText } from '@/components/site/RichText';
 
 export interface IndustryHeroContent {
   badge: string;
@@ -21,6 +22,9 @@ export interface IndustryHeroContent {
   secondaryButtonAction?: CmsButtonAction;
   secondaryButtonHref?: string;
   backgroundImage: string;
+  heroImage?: string;
+  heroImageCropX?: number;
+  heroImageCropY?: number;
 }
 
 export function IndustryHero({
@@ -79,7 +83,7 @@ export function IndustryHero({
               transition={{ duration: 0.5, delay: 0.15 }}
               className="text-base text-slate-300 mb-9 leading-relaxed max-w-xl"
             >
-              {content.description}
+              <RichText text={content.description} />
             </motion.p>
 
             {(showPrimaryButton || showSecondaryButton) && (
@@ -110,9 +114,21 @@ export function IndustryHero({
             transition={{ duration: 0.6, delay: 0.25 }}
             className="hidden lg:block lg:w-[44%]"
           >
-            <div className="rounded-2xl overflow-hidden shadow-2xl border border-white/10">
-              <MiniDashboardMock />
-            </div>
+            {content.heroImage?.trim() ? (
+              <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-2xl">
+                <img
+                  src={content.heroImage}
+                  alt=""
+                  className="h-[360px] w-full object-cover"
+                  style={{ objectPosition: `${content.heroImageCropX ?? 50}% ${content.heroImageCropY ?? 50}%` }}
+                  loading="eager"
+                />
+              </div>
+            ) : (
+              <div className="rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+                <MiniDashboardMock />
+              </div>
+            )}
           </motion.div>
         </div>
       </div>

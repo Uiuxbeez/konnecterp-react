@@ -1,4 +1,5 @@
 import { CheckCircle2, Mail, Phone } from "lucide-react";
+import { RichText } from "@/components/site/RichText";
 import { InViewTextEffect, type SectionCtx } from "./shared";
 import { PublicForm } from "@/components/site/PublicForm";
 
@@ -33,7 +34,7 @@ export function ContactSection({ content, ctx }: { content: ContactContent; ctx:
               <br />
               <span className="text-[#F97316]"><InViewTextEffect>{content.highlight}</InViewTextEffect></span>
             </h2>
-            <p className={`text-base leading-relaxed mb-10 max-w-md ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}>{content.description}</p>
+            <p className={`text-base leading-relaxed mb-10 max-w-md ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}><RichText text={content.description} /></p>
 
             <div className="flex gap-4 mb-8">
               <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-bold shrink-0 mt-0.5">1</div>
@@ -70,7 +71,7 @@ export function ContactSection({ content, ctx }: { content: ContactContent; ctx:
               <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-bold shrink-0 mt-0.5">3</div>
               <div>
                 <p className={`font-bold text-sm mb-1 ${isDarkMode ? "text-white" : "text-[#0B1F4A]"}`}>{content.step3Title}</p>
-                <p className={`text-sm ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}>{content.step3Description}</p>
+                <p className={`text-sm ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}><RichText text={content.step3Description} /></p>
               </div>
             </div>
           </div>

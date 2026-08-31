@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
+import { RichText } from '@/components/site/RichText';
 import type { SectionCtx } from '@/sections/shared';
 
 export interface ProductGainsContent {
@@ -49,7 +50,7 @@ export function ProductGains({ content, ctx }: { content: ProductGainsContent; c
                   <CheckCircle2 className="w-5 h-5 text-[#F97316]" />
                 </div>
                 <h3 className={`text-base font-bold mb-1.5 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>{g.title}</h3>
-                <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>{g.description}</p>
+                <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}><RichText text={g.description} /></p>
               </div>
             </motion.div>
           ))}

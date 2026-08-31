@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
+import { RichText } from "@/components/site/RichText";
 import { isCmsButtonVisible, runCmsButtonAction, type CmsButtonAction } from "@/lib/cms-button-actions";
 import { InViewTextEffect, NetworkMesh, fadeInUp, staggerContainer, type SectionCtx } from "./shared";
 
@@ -68,7 +69,7 @@ export function Hero({ content, ctx }: { content: HeroContent; ctx: SectionCtx }
         </motion.h1>
 
         <motion.p variants={fadeInUp} className={`text-base md:text-lg mb-8 max-w-2xl leading-relaxed ${isDarkMode ? "text-slate-200/85" : "text-[#141414]/95"}`}>
-          {content.description}
+          <RichText text={content.description} />
         </motion.p>
 
         {(showPrimaryButton || showSecondaryButton) && (

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { GlowingEffect } from '@/components/ui/glowing-effect';
+import { RichText } from '@/components/site/RichText';
 import { InViewTextEffect, getIcon, type SectionCtx } from '@/sections/shared';
 
 export interface BrochureFeaturesContent {
@@ -26,7 +27,7 @@ export function BrochureFeatures({ content, ctx }: { content: BrochureFeaturesCo
             <InViewTextEffect>{content.title}</InViewTextEffect>{' '}
             <InViewTextEffect gradient="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">{content.highlight}</InViewTextEffect>
           </h2>
-          <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>{content.description}</p>
+          <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}><RichText text={content.description} /></p>
         </motion.div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -48,7 +49,7 @@ export function BrochureFeatures({ content, ctx }: { content: BrochureFeaturesCo
                     <Icon className="w-5 h-5 text-white" />
                   </div>
                   <h3 className={`text-base font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>{item.title}</h3>
-                  <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>{item.description}</p>
+                  <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}><RichText text={item.description} /></p>
                 </div>
               </motion.div>
             );

@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { BrowserFrame } from '@/components/site/BrowserFrame';
 import { MiniDashboardMock } from '@/components/site/MiniDashboardMock';
+import { RichText } from '@/components/site/RichText';
 import type { SectionCtx } from '@/sections/shared';
 
 export interface ProductIntroContent {
@@ -25,7 +26,7 @@ export function ProductIntro({ content, ctx }: { content: ProductIntroContent; c
           <h2 className={`text-3xl md:text-4xl font-bold mb-5 tracking-tight ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
             {content.title}
           </h2>
-          <p className={`text-lg leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>{content.description}</p>
+          <p className={`text-lg leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}><RichText text={content.description} /></p>
         </motion.div>
       </div>
 

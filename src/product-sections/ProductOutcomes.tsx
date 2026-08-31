@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { RichText } from '@/components/site/RichText';
 import { getIcon, type SectionCtx } from '@/sections/shared';
 
 export interface ProductOutcomesContent {
@@ -24,7 +25,7 @@ export function ProductOutcomes({ content, ctx }: { content: ProductOutcomesCont
           <h2 className={`text-3xl md:text-5xl font-bold mb-5 tracking-tight ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>
             {content.title} <span className="text-[#F97316]">{content.highlight}</span>
           </h2>
-          <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>{content.description}</p>
+          <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}><RichText text={content.description} /></p>
         </motion.div>
 
         <div className="flex flex-col lg:flex-row gap-10 items-stretch">
@@ -59,7 +60,7 @@ export function ProductOutcomes({ content, ctx }: { content: ProductOutcomesCont
                   </div>
                   <div>
                     <h3 className={`text-base font-bold mb-1.5 ${isDarkMode ? 'text-white' : 'text-[#0B1F4A]'}`}>{o.title}</h3>
-                    <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>{o.description}</p>
+                    <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}><RichText text={o.description} /></p>
                   </div>
                 </div>
               );

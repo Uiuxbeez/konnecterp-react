@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
+import { RichText } from "@/components/site/RichText";
 import { InViewTextEffect, getIcon } from "@/sections/shared";
 
 type MapDot = { x: number; y: number; label: string };
@@ -169,7 +170,7 @@ export function BuiltDifferent({ content, isDarkMode }: { content: BuiltDifferen
                       </div>
                       <div>
                         <p className={`font-semibold text-sm mb-1 ${isDarkMode ? "text-white" : "text-[#0B1F4A]"}`}>{feature.title}</p>
-                        <p className={`text-xs leading-relaxed ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}>{feature.description}</p>
+                        <p className={`text-xs leading-relaxed ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}><RichText text={feature.description} /></p>
                       </div>
                     </motion.div>
                   );

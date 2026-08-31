@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { InViewTextEffect } from '@/sections/shared';
+import { RichText } from './RichText';
 import { Breadcrumb, type BreadcrumbItem } from './Breadcrumb';
 import { BrowserFrame } from './BrowserFrame';
 import { MiniDashboardMock } from './MiniDashboardMock';
@@ -14,6 +15,9 @@ export function PageHero({
   description,
   primaryButtonText,
   showPrimaryButton = true,
+  heroImage,
+  heroImageCropX = 50,
+  heroImageCropY = 50,
   onPrimaryClick,
 }: {
   breadcrumb: BreadcrumbItem[];
@@ -24,6 +28,9 @@ export function PageHero({
   description: string;
   primaryButtonText: string;
   showPrimaryButton?: boolean;
+  heroImage?: string;
+  heroImageCropX?: number;
+  heroImageCropY?: number;
   onPrimaryClick: () => void;
 }) {
   // Always dark-styled — a fixed, professional inner-page hero band, independent
@@ -78,7 +85,7 @@ export function PageHero({
               transition={{ duration: 0.5, delay: 0.15 }}
               className="text-base text-slate-400 mb-9 leading-relaxed max-w-2xl"
             >
-              {description}
+              <RichText text={description} />
             </motion.p>
 
             {showPrimaryButton && (
@@ -101,9 +108,21 @@ export function PageHero({
           >
             <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-orange-500/10 via-transparent to-blue-500/10 blur-2xl pointer-events-none" />
             <div className="relative">
-              <BrowserFrame>
-                <MiniDashboardMock />
-              </BrowserFrame>
+              {heroImage?.trim() ? (
+                <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-2xl">
+                  <img
+                    src={heroImage}
+                    alt=""
+                    className="h-[360px] w-full object-cover"
+                    style={{ objectPosition: `${heroImageCropX}% ${heroImageCropY}%` }}
+                    loading="eager"
+                  />
+                </div>
+              ) : (
+                <BrowserFrame>
+                  <MiniDashboardMock />
+                </BrowserFrame>
+              )}
             </div>
           </motion.div>
         </div>

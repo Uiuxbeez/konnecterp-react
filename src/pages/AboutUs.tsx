@@ -6,6 +6,7 @@ import { DemoModal } from "@/components/site/DemoModal";
 import { VideoModal } from "@/components/site/VideoModal";
 import { ScrollToTopButton } from "@/components/site/ScrollToTopButton";
 import { FooterSection, type FooterContent } from "@/sections/FooterSection";
+import { RichText } from "@/components/site/RichText";
 import { getIcon } from "@/sections/shared";
 import { usePageSections } from "@/lib/usePageSections";
 import { useSiteChrome } from "@/hooks/useSiteChrome";
@@ -77,6 +78,9 @@ export default function AboutUs() {
           description={(heroContent.description as string) || ""}
           primaryButtonText={(heroContent.primaryButtonText as string) || ""}
           showPrimaryButton={isCmsButtonVisible(heroContent.primaryButtonVisible)}
+          heroImage={heroContent.heroImage as string | undefined}
+          heroImageCropX={heroContent.heroImageCropX as number | undefined}
+          heroImageCropY={heroContent.heroImageCropY as number | undefined}
           onPrimaryClick={() =>
             runCmsButtonAction(heroContent.primaryButtonAction, heroContent.primaryButtonHref, {
               openDemo: chrome.openDemo,
@@ -108,7 +112,7 @@ export default function AboutUs() {
                 {companyContent.title as string}
               </h2>
               <div className="space-y-4 text-sm leading-7 text-slate-600 dark:text-slate-300">
-                {paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+                {paragraphs.map((paragraph) => <p key={paragraph}><RichText text={paragraph} /></p>)}
               </div>
 
               <div className="mt-8 grid gap-4 md:grid-cols-2">
@@ -143,7 +147,7 @@ export default function AboutUs() {
                     </span>
                     <span>
                       <span className="block text-sm font-bold text-slate-900 dark:text-white">{item.title}</span>
-                      <span className="mt-1 block text-sm leading-6 text-slate-500 dark:text-slate-300">{item.description}</span>
+                      <span className="mt-1 block text-sm leading-6 text-slate-500 dark:text-slate-300"><RichText text={item.description} /></span>
                     </span>
                   </motion.div>
                 );
@@ -187,7 +191,7 @@ export default function AboutUs() {
                 {products.map((product) => (
                   <div key={product.label}>
                     <h3 className="text-sm font-bold text-white">{product.label}</h3>
-                    <p className="mt-1 text-sm leading-6 text-orange-400">{product.description}</p>
+                    <p className="mt-1 text-sm leading-6 text-orange-400"><RichText text={product.description} /></p>
                   </div>
                 ))}
               </div>
@@ -200,7 +204,7 @@ export default function AboutUs() {
                     <ProductPanelIcon className="mb-5 h-10 w-10 text-orange-400" />
                     <h3 className="max-w-md text-3xl font-bold leading-tight">{productsContent.panelTitle as string}</h3>
                     <p className="mt-4 max-w-lg text-sm leading-7 text-slate-400">
-                      {productsContent.panelDescription as string}
+                      <RichText text={productsContent.panelDescription as string} />
                     </p>
                   </div>
                   <div className="mt-8 flex flex-wrap gap-2">

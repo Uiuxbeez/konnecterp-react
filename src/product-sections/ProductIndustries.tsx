@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { RichText } from '@/components/site/RichText';
 import type { SectionCtx } from '@/sections/shared';
 
 export interface ProductIndustriesContent {
@@ -23,7 +24,7 @@ export function ProductIndustries({ content }: { content: ProductIndustriesConte
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
           <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">{content.eyebrow}</p>
           <h2 className="text-3xl md:text-4xl font-bold mb-5 tracking-tight text-white">{content.title}</h2>
-          <p className="text-lg mb-10 text-slate-300">{content.intro}</p>
+          <p className="text-lg mb-10 text-slate-300"><RichText text={content.intro} /></p>
         </motion.div>
 
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} transition={{ delay: 0.1 }} className="flex flex-wrap justify-center gap-3">

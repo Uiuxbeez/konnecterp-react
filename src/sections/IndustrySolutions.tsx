@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, TrendingUp, Building2 } from "lucide-react";
+import { RichText } from "@/components/site/RichText";
 import { isCmsButtonVisible, runCmsButtonAction, type CmsButtonAction } from "@/lib/cms-button-actions";
 import { InViewTextEffect, getIcon, type SectionCtx } from "./shared";
 
@@ -68,7 +69,7 @@ export function IndustrySolutions({ content, ctx }: { content: IndustrySolutions
             <br />
             <InViewTextEffect gradient="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">{content.highlight}</InViewTextEffect>
           </h2>
-          <p className={`text-lg max-w-lg mx-auto ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}>{content.description}</p>
+          <p className={`text-lg max-w-lg mx-auto ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}><RichText text={content.description} /></p>
         </motion.div>
 
         <motion.div
@@ -115,7 +116,7 @@ export function IndustrySolutions({ content, ctx }: { content: IndustrySolutions
                     {isOpen ? (
                       <motion.div key="open" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} transition={{ duration: 0.35, delay: 0.1 }}>
                         <h3 className="text-xl md:text-2xl font-bold text-white leading-snug mb-3 max-w-sm">{card.title}</h3>
-                        <p className="text-sm text-white/75 leading-relaxed mb-5 max-w-sm">{card.description}</p>
+                        <p className="text-sm text-white/75 leading-relaxed mb-5 max-w-sm"><RichText text={card.description} /></p>
                         <div className="flex flex-wrap gap-1.5 mb-6">
                           {card.highlights.slice(0, 3).map((h, i) => (
                             <span key={i} className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-white/10 text-white/80 border border-white/15 backdrop-blur-sm">

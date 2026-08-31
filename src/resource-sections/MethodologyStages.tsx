@@ -6,6 +6,7 @@ import {
   GraduationCap, Users, ListChecks, Keyboard, FilePlus2, ClipboardCheck, Headphones, BarChart3,
   type LucideIcon,
 } from 'lucide-react';
+import { RichText } from '@/components/site/RichText';
 import { InViewTextEffect, getIcon, type SectionCtx } from '@/sections/shared';
 
 export interface MethodologyStagesContent {
@@ -108,7 +109,7 @@ export function MethodologyStages({ content, ctx }: { content: MethodologyStages
             <InViewTextEffect>{content.title}</InViewTextEffect>{' '}
             <InViewTextEffect gradient="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] via-[#C084A0] to-[#818CF8]">{content.highlight}</InViewTextEffect>
           </h2>
-          <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>{content.description}</p>
+          <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}><RichText text={content.description} /></p>
         </motion.div>
 
         {/* ── Desktop: wide horizontal flowchart (ultra-wide screens only, no scroll risk) ── */}
