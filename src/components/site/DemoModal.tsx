@@ -6,7 +6,10 @@ import { apiUrl } from "@/lib/api-base";
 import { DEFAULT_DEMO_FORM } from "@shared/forms";
 
 export function DemoModal({ open, onClose, slug = "demo-request" }: { open: boolean; onClose: () => void; slug?: string }) {
-  const [headerText, setHeaderText] = useState(DEFAULT_DEMO_FORM.settings.shortDescription);
+  const [headerContent, setHeaderContent] = useState({
+    title: DEFAULT_DEMO_FORM.settings.title,
+    subtitle: DEFAULT_DEMO_FORM.settings.shortDescription,
+  });
 
   useEffect(() => {
     if (open) document.body.style.overflow = "hidden";
@@ -19,10 +22,19 @@ export function DemoModal({ open, onClose, slug = "demo-request" }: { open: bool
     fetch(apiUrl(`/api/public/forms/${slug}`))
       .then((res) => (res.ok ? res.json() : Promise.reject()))
       .then((data) => {
-        const next = data?.form?.settings?.shortDescription;
-        if (typeof next === "string" && next.trim()) setHeaderText(next);
+        const title = data?.form?.settings?.title;
+        const subtitle = data?.form?.settings?.shortDescription;
+        setHeaderContent({
+          title: typeof title === "string" && title.trim() ? title : DEFAULT_DEMO_FORM.settings.title,
+          subtitle: typeof subtitle === "string" && subtitle.trim() ? subtitle : DEFAULT_DEMO_FORM.settings.shortDescription,
+        });
       })
-      .catch(() => setHeaderText(DEFAULT_DEMO_FORM.settings.shortDescription));
+      .catch(() =>
+        setHeaderContent({
+          title: DEFAULT_DEMO_FORM.settings.title,
+          subtitle: DEFAULT_DEMO_FORM.settings.shortDescription,
+        })
+      );
   }, [open, slug]);
 
   return (
@@ -53,10 +65,11 @@ export function DemoModal({ open, onClose, slug = "demo-request" }: { open: bool
               >
                 <X className="h-4 w-4" />
               </button>
-              <p className="mt-1 pr-10 text-sm text-blue-100">{headerText}</p>
+              <h2 className="pr-10 text-xl font-bold leading-tight text-white">{headerContent.title}</h2>
+              {headerContent.subtitle && <p className="mt-2 pr-10 text-sm leading-6 text-blue-100">{headerContent.subtitle}</p>}
             </div>
 
-            <PublicForm slug={slug} source={`${slug}-modal`} />
+            <PublicForm slug={slug} source={`${slug}-modal`} showIntro={false} />
           </motion.div>
         </motion.div>
       )}

@@ -129,7 +129,8 @@ export function CaseStudiesGrid({ content, ctx }: { content: CaseStudiesGridCont
                 >
                   <X className="h-4 w-4" />
                 </button>
-                <p className="mt-1 pr-10 text-sm text-blue-100">
+                <h2 className="pr-10 text-xl font-bold leading-tight text-white">Download Case Study</h2>
+                <p className="mt-2 pr-10 text-sm leading-6 text-blue-100">
                   Submit your details to download {activeDownload.title}.
                 </p>
               </div>
@@ -137,6 +138,7 @@ export function CaseStudiesGrid({ content, ctx }: { content: CaseStudiesGridCont
               <PublicForm
                 slug={activeDownload.downloadFormSlug}
                 source={`case-study-download-${activeDownload.title}`}
+                showIntro={false}
                 onSuccess={() => {
                   downloadPdf(activeDownload.pdfUrl);
                   closeDownloadForm();

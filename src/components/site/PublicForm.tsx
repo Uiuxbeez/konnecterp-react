@@ -21,6 +21,7 @@ export function PublicForm({
   onSuccess,
   successRedirectHref,
   successRedirectDelayMs = 2500,
+  showIntro = true,
 }: {
   slug: string;
   source?: string;
@@ -28,6 +29,7 @@ export function PublicForm({
   onSuccess?: (values: Record<string, string>) => void;
   successRedirectHref?: string;
   successRedirectDelayMs?: number;
+  showIntro?: boolean;
 }) {
   const [definition, setDefinition] = useState<PublicFormData>({
     slug,
@@ -126,10 +128,12 @@ export function PublicForm({
       className={`${layout === "modal" ? "max-h-[64vh] overflow-y-auto" : ""} space-y-4 px-8 py-6`}
       noValidate
     >
-      <div>
-        <h3 className="text-xl font-bold text-gray-900">{definition.settings.title}</h3>
-        {definition.settings.shortDescription && <p className="mt-1 text-sm leading-6 text-gray-500">{definition.settings.shortDescription}</p>}
-      </div>
+      {showIntro && (
+        <div>
+          <h3 className="text-xl font-bold text-gray-900">{definition.settings.title}</h3>
+          {definition.settings.shortDescription && <p className="mt-1 text-sm leading-6 text-gray-500">{definition.settings.shortDescription}</p>}
+        </div>
+      )}
 
       <input type="text" value={website} onChange={(e) => setWebsite(e.target.value)} className="hidden" tabIndex={-1} autoComplete="off" />
 
