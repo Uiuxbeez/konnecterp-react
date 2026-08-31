@@ -19,6 +19,7 @@ import { CaseStudiesGrid, type CaseStudiesGridContent } from "@/sections/CaseStu
 import { TestimonialCollage, type TestimonialCollageContent } from "@/sections/TestimonialCollage";
 import { TestimonialCards, type TestimonialCardsContent } from "@/sections/TestimonialCards";
 import { FaqAccordion, type FaqAccordionContent } from "@/sections/FaqAccordion";
+import { PlainRichContent, type PlainRichContentData } from "@/sections/PlainRichContent";
 import type { SectionCtx } from "@/sections/shared";
 import { isCmsButtonVisible, runCmsButtonAction, type CmsButtonAction } from "@/lib/cms-button-actions";
 import NotFound from "@/pages/not-found";
@@ -61,6 +62,8 @@ function renderStandardSection(section: PageSection, ctx: SectionCtx, byType: (t
       return <TestimonialCards key={section.id} content={byType("testimonial_cards") as unknown as TestimonialCardsContent} ctx={ctx} />;
     case "faq_accordion":
       return <FaqAccordion key={section.id} content={byType("faq_accordion") as unknown as FaqAccordionContent} ctx={ctx} />;
+    case "plain_rich_content":
+      return <PlainRichContent key={section.id} content={byType("plain_rich_content") as unknown as PlainRichContentData} ctx={ctx} />;
     default:
       return null;
   }

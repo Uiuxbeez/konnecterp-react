@@ -6,6 +6,7 @@
 export type FieldDef =
   | { key: string; label: string; type: "text" }
   | { key: string; label: string; type: "textarea" }
+  | { key: string; label: string; type: "richtext"; helpText?: string }
   | { key: string; label: string; type: "image" }
   | { key: string; label: string; type: "file"; accept?: string; buttonText?: string }
   | { key: string; label: string; type: "form_select"; helpText?: string }
@@ -47,6 +48,7 @@ export type SectionType =
   | "contact"
   | "footer"
   | "product_hero"
+  | "plain_rich_content"
   | "product_intro"
   | "product_operations"
   | "product_outcomes"
@@ -590,12 +592,29 @@ export const SECTION_DEFS: SectionMeta[] = [
     },
   },
   {
+    type: "plain_rich_content",
+    name: "Plain Rich Content",
+    fields: [
+      {
+        key: "body",
+        label: "Page Body",
+        type: "richtext",
+        helpText: "Paste the full privacy policy, terms, or legal content here and format it with headings, paragraphs, links, and lists.",
+      },
+    ],
+    defaultContent: {
+      body:
+        "<h2>Overview</h2><p>Add your page introduction here. This template is designed for privacy policy, terms and conditions, and other simple content pages.</p><h3>Information We Cover</h3><ul><li>Replace this item with your own content.</li><li>Add more points as needed.</li></ul><h2>Contact</h2><p>Add contact or company information here.</p>",
+    },
+  },
+  {
     type: "product_intro",
     name: "Intro (Dashboard Preview)",
     fields: [
       { key: "eyebrow", label: "Eyebrow Tag", type: "text" },
       { key: "title", label: "Section Title", type: "text" },
       { key: "description", label: "Description", type: "textarea" },
+      { key: "showDashboardImage", label: "Show Dashboard Image", type: "boolean", helpText: "Show or hide the large dashboard preview image below this section" },
       { key: "dashboardUrl", label: "Browser Frame URL", type: "text" },
     ],
     defaultContent: {
@@ -603,6 +622,7 @@ export const SECTION_DEFS: SectionMeta[] = [
       title: "One Connected System for Every Operation",
       description:
         "Konnect ERP for SMEs brings these operations into a structured business environment, helping growing companies replace fragmented processes with better visibility, automation, and control.",
+      showDashboardImage: true,
       dashboardUrl: "app.konnecterp.com/dashboard",
     },
   },
@@ -1232,6 +1252,10 @@ export const SECTION_DEFS: SectionMeta[] = [
         itemLabel: "Leader",
         addRemove: true,
         fields: [
+          { key: "photo", label: "Photo", type: "image" },
+          { key: "photoAlt", label: "Photo Alt Text", type: "text" },
+          { key: "photoCropX", label: "Photo Crop X", type: "number" },
+          { key: "photoCropY", label: "Photo Crop Y", type: "number" },
           { key: "name", label: "Name", type: "text" },
           { key: "role", label: "Role", type: "text" },
           { key: "initials", label: "Initials", type: "text" },
@@ -1242,10 +1266,10 @@ export const SECTION_DEFS: SectionMeta[] = [
       eyebrow: "People",
       title: "Our Leadership Team",
       leaders: [
-        { name: "Mr. Saravanan KB", role: "CEO", initials: "SK" },
-        { name: "Ms. Prathina", role: "CFO", initials: "MP" },
-        { name: "Mr. Gowtham", role: "CTO", initials: "MG" },
-        { name: "Mr. Gnanaprakash", role: "COO", initials: "MG" },
+        { photo: "", photoAlt: "Mr. Saravanan KB", photoCropX: 50, photoCropY: 50, name: "Mr. Saravanan KB", role: "CEO", initials: "SK" },
+        { photo: "", photoAlt: "Ms. Prathina", photoCropX: 50, photoCropY: 50, name: "Ms. Prathina", role: "CFO", initials: "MP" },
+        { photo: "", photoAlt: "Mr. Gowtham", photoCropX: 50, photoCropY: 50, name: "Mr. Gowtham", role: "CTO", initials: "MG" },
+        { photo: "", photoAlt: "Mr. Gnanaprakash", photoCropX: 50, photoCropY: 50, name: "Mr. Gnanaprakash", role: "COO", initials: "MG" },
       ],
     },
   },

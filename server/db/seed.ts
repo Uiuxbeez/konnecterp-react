@@ -4,7 +4,7 @@ import { db, pool } from "./client";
 import { pages, sections, blogPosts } from "./schema";
 import { SECTION_DEFS_BY_TYPE } from "../../shared/sections";
 import { PAGE_TEMPLATES } from "../../shared/templates";
-import { createPageFromTemplate } from "../lib/createPage";
+import { createPageFromTemplate, ensureCoreBuilderPages } from "../lib/createPage";
 
 async function seedHome() {
   let [home] = await db.select().from(pages).where(eq(pages.slug, "home"));
@@ -244,6 +244,7 @@ async function seedBlog() {
 async function seed() {
   await seedHome();
   await seedErpForSmes();
+  await ensureCoreBuilderPages();
   await seedBlog();
   await pool.end();
 }

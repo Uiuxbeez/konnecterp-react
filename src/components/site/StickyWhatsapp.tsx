@@ -20,7 +20,7 @@ export function StickyWhatsapp() {
   const href = `https://wa.me/${phone}?text=${encodeURIComponent(whatsapp.message)}`;
 
   return (
-    <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-4">
+    <div className="fixed bottom-24 right-5 z-50 flex flex-col items-end gap-4 sm:right-6">
       {open && (
         <aside className="w-[min(330px,calc(100vw-2.5rem))] overflow-hidden rounded-md bg-white shadow-[0_18px_42px_rgba(15,23,42,0.2)]">
           <div className="relative bg-[#075E54] px-6 pb-8 pt-4 text-white">

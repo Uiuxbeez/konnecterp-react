@@ -9,6 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ImageField } from "./ImageField";
 import { IconPicker, AdminIcon } from "./IconPicker";
+import { RichTextEditor } from "./RichTextEditor";
 import { adminApi, type AdminForm } from "../lib/admin-api";
 
 type JsonValue = any;
@@ -34,6 +35,20 @@ function emptyValueForField(field: FieldDef) {
   if (field.type === "list") return [];
   if (field.type === "boolean") return false;
   return "";
+}
+
+function isRichTextField(field: FieldDef) {
+  if (field.type === "richtext") return true;
+  const key = field.key.toLowerCase();
+  return field.type === "textarea" && (
+    key.includes("description") ||
+    key.includes("paragraph") ||
+    key.includes("summary") ||
+    key.includes("answer") ||
+    key.includes("testimonial") ||
+    key.includes("body") ||
+    key.includes("content")
+  );
 }
 
 function FieldRenderer({
@@ -69,26 +84,53 @@ function FieldRenderer({
       }
       return <Input value={value ?? ""} onChange={(e) => onChange(e.target.value)} />;
     case "textarea":
+      if (isRichTextField(field)) {
+        return <RichTextEditor value={String(value ?? "")} onChange={onChange} />;
+      }
       return (
         <div className="space-y-1.5">
           <Textarea rows={4} value={value ?? ""} onChange={(e) => onChange(e.target.value)} />
-          {field.key.toLowerCase().includes("description") && (
-            <p className="text-xs text-slate-400">
-              Links supported: [Link text](https://example.com) or &lt;a href="https://example.com"&gt;Link text&lt;/a&gt;
-            </p>
-          )}
         </div>
       );
     case "number":
+      if (field.key.toLowerCase().includes("crop")) {
+        const cropValue = typeof value === "number" && Number.isFinite(value) ? value : 50;
+        return (
+          <div className="space-y-2">
+            <Input
+              type="range"
+              min={0}
+              max={100}
+              value={cropValue}
+              onChange={(e) => onChange(Number(e.target.value))}
+              className="h-2 cursor-pointer p-0 accent-orange-500"
+            />
+            <div className="flex items-center gap-2">
+              <Input
+                type="number"
+                min={0}
+                max={100}
+                value={cropValue}
+                onChange={(e) => onChange(e.target.value === "" ? 50 : Number(e.target.value))}
+              />
+              <span className="shrink-0 text-xs font-semibold text-slate-400">0-100</span>
+            </div>
+          </div>
+        );
+      }
       return (
         <Input
           type="number"
-          min={field.key.toLowerCase().includes("crop") ? 0 : undefined}
-          max={field.key.toLowerCase().includes("crop") ? 100 : undefined}
-          placeholder={field.key.toLowerCase().includes("crop") ? "0 to 100" : undefined}
           value={value ?? 0}
           onChange={(e) => onChange(e.target.value === "" ? 0 : Number(e.target.value))}
         />
+      );
+    case "richtext":
+      return (
+        <div className="space-y-1.5">
+          <RichTextEditor value={String(value ?? "")} onChange={onChange} />
+          {field.helpText && <p className="text-xs leading-5 text-slate-400">{field.helpText}</p>}
+        </div>
       );
     case "boolean":
       return (

@@ -88,6 +88,14 @@ export const PAGE_TEMPLATES: Record<string, PageTemplateDef> = {
     sectionTypes: ["product_hero", "product_intro", "product_operations", "product_outcomes", "product_cta"],
     pathPrefix: "",
   },
+  plain_content: {
+    key: "plain_content",
+    name: "Plain Content Page",
+    description:
+      "A simple inner page with a top banner and one full rich-text body. Use this for Privacy Policy, Terms and Conditions, and other copy-paste content pages.",
+    sectionTypes: ["product_hero", "plain_rich_content", "footer"],
+    pathPrefix: "",
+  },
   industry: {
     key: "industry",
     name: "Industry Page",

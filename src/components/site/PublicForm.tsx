@@ -19,11 +19,15 @@ export function PublicForm({
   source = "website",
   layout = "modal",
   onSuccess,
+  successRedirectHref,
+  successRedirectDelayMs = 2500,
 }: {
   slug: string;
   source?: string;
   layout?: "modal" | "page";
   onSuccess?: (values: Record<string, string>) => void;
+  successRedirectHref?: string;
+  successRedirectDelayMs?: number;
 }) {
   const [definition, setDefinition] = useState<PublicFormData>({
     slug,
@@ -58,6 +62,15 @@ export function PublicForm({
     setCaptchaAnswer("");
     setSubmitted(false);
   }, [initialValues]);
+
+  useEffect(() => {
+    if (!submitted || !successRedirectHref) return;
+    const timeout = window.setTimeout(() => {
+      window.location.assign(successRedirectHref);
+    }, successRedirectDelayMs);
+
+    return () => window.clearTimeout(timeout);
+  }, [submitted, successRedirectHref, successRedirectDelayMs]);
 
   const setField = (id: string, value: string) => setValues((prev) => ({ ...prev, [id]: value }));
 
@@ -100,6 +113,7 @@ export function PublicForm({
         </div>
         <h3 className="mb-2 text-xl font-bold text-gray-900">{definition.settings.successTitle}</h3>
         <p className="mb-6 text-sm leading-6 text-gray-500">{definition.settings.successMessage}</p>
+        {successRedirectHref && <p className="text-xs font-semibold text-gray-400">Redirecting to home page...</p>}
       </motion.div>
     );
   }

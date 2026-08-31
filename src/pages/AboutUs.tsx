@@ -16,7 +16,15 @@ import { isCmsButtonVisible, runCmsButtonAction } from "@/lib/cms-button-actions
 type StatItem = { value: string; label: string };
 type ValueItem = { title: string; text: string };
 type StrengthItem = { icon: string; title: string; description: string };
-type LeaderItem = { name: string; role: string; initials: string };
+type LeaderItem = {
+  photo?: string;
+  photoAlt?: string;
+  photoCropX?: number;
+  photoCropY?: number;
+  name: string;
+  role: string;
+  initials: string;
+};
 type ProductItem = { label: string; description: string };
 
 export default function AboutUs() {
@@ -167,8 +175,18 @@ export default function AboutUs() {
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {leaders.map((leader) => (
                 <div key={leader.name} className="rounded-lg border border-slate-200 bg-white p-6 text-center shadow-sm dark:border-white/10 dark:bg-white/5">
-                  <div className="mx-auto mb-5 flex h-24 w-24 items-center justify-center rounded-full border-2 border-orange-500 bg-gradient-to-br from-slate-900 to-slate-600 text-2xl font-black text-white">
-                    {leader.initials}
+                  <div className="mx-auto mb-5 flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-2 border-orange-500 bg-gradient-to-br from-slate-900 to-slate-600 text-2xl font-black text-white">
+                    {leader.photo?.trim() ? (
+                      <img
+                        src={leader.photo}
+                        alt={leader.photoAlt || leader.name}
+                        className="h-full w-full object-cover"
+                        style={{ objectPosition: `${leader.photoCropX ?? 50}% ${leader.photoCropY ?? 50}%` }}
+                        loading="lazy"
+                      />
+                    ) : (
+                      leader.initials
+                    )}
                   </div>
                   <h3 className="text-sm font-bold text-slate-900 dark:text-white">{leader.name}</h3>
                   <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-orange-500">{leader.role}</p>

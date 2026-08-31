@@ -174,6 +174,58 @@ const CORE_BUILDER_PAGES: Array<{
       },
     },
   },
+  {
+    slug: "privacy-policy",
+    title: "Privacy Policy",
+    template: "plain_content",
+    sectionContent: {
+      product_hero: {
+        breadcrumbLabel: "Privacy Policy",
+        eyebrow: "Legal",
+        title: "Privacy Policy",
+        highlight: "KonnectERP",
+        subhead: "Add your company privacy policy and data usage details in one editable page.",
+        description:
+          "Use the page body editor below to paste the full policy content and format it with headings, paragraphs, links, and lists.",
+        primaryButtonText: "",
+        primaryButtonVisible: false,
+        primaryButtonAction: "link",
+        primaryButtonHref: "",
+        secondaryButtonText: "",
+        secondaryButtonVisible: false,
+      },
+      plain_rich_content: {
+        body:
+          "<h2>Privacy Policy</h2><p>Paste your full privacy policy content here. Use the editor toolbar to format headings, paragraphs, links, and lists.</p><h3>Information We Collect</h3><ul><li>Add the information types collected by the business.</li><li>Add how the information is used and protected.</li></ul><h3>Contact</h3><p>Add the contact details for privacy questions.</p>",
+      },
+    },
+  },
+  {
+    slug: "terms-and-conditions",
+    title: "Terms and Conditions",
+    template: "plain_content",
+    sectionContent: {
+      product_hero: {
+        breadcrumbLabel: "Terms and Conditions",
+        eyebrow: "Legal",
+        title: "Terms and Conditions",
+        highlight: "KonnectERP",
+        subhead: "Add your website, product, or service terms in one editable page.",
+        description:
+          "Use the page body editor below to paste the full terms content and format it with headings, paragraphs, links, and lists.",
+        primaryButtonText: "",
+        primaryButtonVisible: false,
+        primaryButtonAction: "link",
+        primaryButtonHref: "",
+        secondaryButtonText: "",
+        secondaryButtonVisible: false,
+      },
+      plain_rich_content: {
+        body:
+          "<h2>Terms and Conditions</h2><p>Paste your full terms and conditions content here. Use the editor toolbar to format headings, paragraphs, links, and lists.</p><h3>Use of Website</h3><ul><li>Add acceptable use terms here.</li><li>Add limitations, obligations, or service terms here.</li></ul><h3>Contact</h3><p>Add the contact details for terms-related questions.</p>",
+      },
+    },
+  },
 ];
 
 async function seedSectionsForPage(pageId: number, template: string, sectionContent?: SectionContentOverrides) {

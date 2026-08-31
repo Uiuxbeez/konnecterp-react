@@ -35,7 +35,7 @@ export default function PublicFormPage() {
   return (
     <main className="min-h-screen bg-slate-50 px-4 py-8 font-sans">
       <section className="mx-auto w-full max-w-2xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl">
-        <PublicForm slug={formSlug} source={`${formSlug}-share-link`} layout="page" />
+        <PublicForm slug={formSlug} source={`${formSlug}-share-link`} layout="page" successRedirectHref="/" />
       </section>
     </main>
   );

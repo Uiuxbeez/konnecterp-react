@@ -8,6 +8,7 @@ export interface ProductIntroContent {
   eyebrow: string;
   title: string;
   description: string;
+  showDashboardImage?: boolean;
   dashboardUrl: string;
 }
 
@@ -30,13 +31,15 @@ export function ProductIntro({ content, ctx }: { content: ProductIntroContent; c
         </motion.div>
       </div>
 
-      <div className="container mx-auto px-4 max-w-5xl">
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} transition={{ delay: 0.1 }}>
-          <BrowserFrame url={content.dashboardUrl}>
-            <MiniDashboardMock />
-          </BrowserFrame>
-        </motion.div>
-      </div>
+      {content.showDashboardImage !== false && (
+        <div className="container mx-auto px-4 max-w-5xl">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} transition={{ delay: 0.1 }}>
+            <BrowserFrame url={content.dashboardUrl}>
+              <MiniDashboardMock />
+            </BrowserFrame>
+          </motion.div>
+        </div>
+      )}
     </section>
   );
 }
