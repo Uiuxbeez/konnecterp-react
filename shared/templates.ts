@@ -16,7 +16,7 @@ export const PAGE_TEMPLATES: Record<string, PageTemplateDef> = {
     name: "Home Page",
     description: "The site's single home page — not selectable when creating a new page.",
     sectionTypes: [
-      "hero", "statistics", "trusted_companies", "industry_solutions", "gst_compliance",
+      "hero", "statistics", "built_different", "trusted_companies", "industry_solutions", "gst_compliance",
       "why_choose_us", "customer_stories", "contact", "footer",
     ],
     pathPrefix: null,

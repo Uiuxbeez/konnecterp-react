@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Plus, Trash2, GripVertical } from "lucide-react";
 import type { FieldDef } from "@shared/sections";
 import { Input } from "@/components/ui/input";
@@ -9,6 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ImageField } from "./ImageField";
 import { IconPicker, AdminIcon } from "./IconPicker";
+import { adminApi, type AdminForm } from "../lib/admin-api";
 
 type JsonValue = any;
 
@@ -16,17 +17,56 @@ function setAt(obj: Record<string, JsonValue>, key: string, value: JsonValue) {
   return { ...obj, [key]: value };
 }
 
+function isFormTargetField(field: FieldDef, parentContent?: Record<string, JsonValue>) {
+  if (field.type !== "text" || !field.key.endsWith("Href") || !parentContent) return false;
+  const actionKey = field.key.replace(/Href$/, "Action");
+  return parentContent[actionKey] === "custom_form_modal";
+}
+
+function hasHrefField(fields: FieldDef[]): boolean {
+  return fields.some((field) => {
+    if (field.key.endsWith("Href") || field.type === "form_select") return true;
+    return field.type === "repeater" ? hasHrefField(field.fields) : false;
+  });
+}
+
+function emptyValueForField(field: FieldDef) {
+  if (field.type === "list") return [];
+  if (field.type === "boolean") return false;
+  return "";
+}
+
 function FieldRenderer({
   field,
   value,
   onChange,
+  parentContent,
+  formOptions,
 }: {
   field: FieldDef;
   value: JsonValue;
   onChange: (v: JsonValue) => void;
+  parentContent?: Record<string, JsonValue>;
+  formOptions: AdminForm[];
 }) {
   switch (field.type) {
     case "text":
+      if (isFormTargetField(field, parentContent)) {
+        return (
+          <Select value={String(value ?? "")} onValueChange={onChange}>
+            <SelectTrigger>
+              <SelectValue placeholder={formOptions.length ? "Select form" : "No forms available"} />
+            </SelectTrigger>
+            <SelectContent>
+              {formOptions.map((form) => (
+                <SelectItem key={form.id} value={form.slug}>
+                  {form.name} (/{form.slug})
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        );
+      }
       return <Input value={value ?? ""} onChange={(e) => onChange(e.target.value)} />;
     case "textarea":
       return <Textarea rows={4} value={value ?? ""} onChange={(e) => onChange(e.target.value)} />;
@@ -72,6 +112,21 @@ function FieldRenderer({
           emptyText="No file selected"
           preview="file"
         />
+      );
+    case "form_select":
+      return (
+        <Select value={String(value ?? "")} onValueChange={onChange}>
+          <SelectTrigger>
+            <SelectValue placeholder={formOptions.length ? "Select form" : "No forms available"} />
+          </SelectTrigger>
+          <SelectContent>
+            {formOptions.map((form) => (
+              <SelectItem key={form.id} value={form.slug}>
+                {form.name} (/{form.slug})
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       );
     case "icon":
       return <IconPicker value={value ?? ""} onChange={onChange} />;
@@ -141,6 +196,8 @@ function FieldRenderer({
                     <FieldRenderer
                       field={sub}
                       value={item[sub.key]}
+                      parentContent={item}
+                      formOptions={formOptions}
                       onChange={(v) => {
                         const next = [...items];
                         next[i] = setAt(item, sub.key, v);
@@ -158,7 +215,7 @@ function FieldRenderer({
               variant="outline"
               size="sm"
               onClick={() =>
-                onChange([...items, Object.fromEntries(field.fields.map((f) => [f.key, f.type === "list" ? [] : ""]))])
+                onChange([...items, Object.fromEntries(field.fields.map((f) => [f.key, emptyValueForField(f)]))])
               }
             >
               <Plus className="h-3.5 w-3.5" /> Add {field.itemLabel}
@@ -181,6 +238,16 @@ export function SectionForm({
   content: Record<string, JsonValue>;
   onChange: (content: Record<string, JsonValue>) => void;
 }) {
+  const [formOptions, setFormOptions] = useState<AdminForm[]>([]);
+  const needsFormOptions = useMemo(() => hasHrefField(fields), [fields]);
+
+  useEffect(() => {
+    if (!needsFormOptions) return;
+    adminApi.listForms()
+      .then((res) => setFormOptions(res.forms))
+      .catch(() => setFormOptions([]));
+  }, [needsFormOptions]);
+
   return (
     <div className="space-y-5">
       {fields.map((field) => (
@@ -189,6 +256,8 @@ export function SectionForm({
           <FieldRenderer
             field={field}
             value={content[field.key]}
+            parentContent={content}
+            formOptions={formOptions}
             onChange={(v) => onChange(setAt(content, field.key, v))}
           />
         </div>

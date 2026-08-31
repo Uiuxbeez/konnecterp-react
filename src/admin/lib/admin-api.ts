@@ -18,6 +18,8 @@ export interface AdminPage {
   id: number;
   slug: string;
   title: string;
+  metaTitle: string;
+  metaDescription: string;
   template: string;
   path: string;
   updatedAt: string;
@@ -129,6 +131,8 @@ export const adminApi = {
   listPages: () => request<{ pages: AdminPage[]; templates: PageTemplateInfo[] }>("/api/admin/pages"),
   createPage: (data: { title: string; slug: string; template: string }) =>
     request<AdminPage>("/api/admin/pages", { method: "POST", body: JSON.stringify(data) }),
+  updatePageSeo: (slug: string, data: { metaTitle: string; metaDescription: string }) =>
+    request<AdminPage>(`/api/admin/pages/${slug}/seo`, { method: "PATCH", body: JSON.stringify(data) }),
   deletePage: (slug: string) => request<void>(`/api/admin/pages/${slug}`, { method: "DELETE" }),
 
   getNavigation: () => request<{ navigation: MenuGroup[] }>("/api/admin/navigation"),

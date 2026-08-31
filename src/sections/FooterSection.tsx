@@ -49,7 +49,14 @@ export function FooterSection({ content }: { content: FooterContent }) {
 
             <div className="flex gap-3">
               {socialLinks.map((link) => (
-                <a key={`${link.label}-${link.href}`} href={link.href} aria-label={link.label} className="w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.14] flex items-center justify-center transition-colors">
+                <a
+                  key={`${link.label}-${link.href}`}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={link.label}
+                  className="w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.14] flex items-center justify-center transition-colors"
+                >
                   <SocialIcon label={link.label} />
                 </a>
               ))}

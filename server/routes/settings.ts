@@ -3,7 +3,13 @@ import { eq } from "drizzle-orm";
 import { db } from "../db/client";
 import { siteSettings } from "../db/schema";
 import { requireAuth } from "../auth";
-import { DEFAULT_SITE_SETTINGS, type FooterSocialLink, type SiteSettings } from "../../shared/site-settings";
+import {
+  DEFAULT_SITE_SETTINGS,
+  type FooterSocialLink,
+  type HeaderCtaAction,
+  type HeaderCtaButton,
+  type SiteSettings,
+} from "../../shared/site-settings";
 
 const SETTINGS_KEY = "site";
 
@@ -22,11 +28,36 @@ function normalizeSocialLink(value: unknown): FooterSocialLink | null {
   };
 }
 
+function normalizeHeaderCta(value: unknown, fallback: HeaderCtaButton): HeaderCtaButton {
+  if (!value || typeof value !== "object") return fallback;
+  const cta = value as Record<string, unknown>;
+  const action = typeof cta.action === "string" && ["demo_modal", "custom_form_modal", "link"].includes(cta.action)
+    ? cta.action as HeaderCtaAction
+    : fallback.action;
+  const style = cta.style === "secondary" ? "secondary" : fallback.style;
+
+  return {
+    enabled: typeof cta.enabled === "boolean" ? cta.enabled : fallback.enabled,
+    text: typeof cta.text === "string" && cta.text.trim() ? cta.text.trim() : fallback.text,
+    action,
+    target: typeof cta.target === "string" ? cta.target.trim() : fallback.target,
+    style,
+  };
+}
+
 function normalizeSettings(value: unknown): SiteSettings {
   if (!value || typeof value !== "object") return DEFAULT_SITE_SETTINGS;
   const settings = value as Record<string, unknown>;
+  const header = settings.header && typeof settings.header === "object" ? settings.header as Record<string, unknown> : {};
   const footer = settings.footer && typeof settings.footer === "object" ? settings.footer as Record<string, unknown> : {};
   const whatsapp = settings.whatsapp && typeof settings.whatsapp === "object" ? settings.whatsapp as Record<string, unknown> : {};
+  const rawHeaderCtas = Array.isArray(header.ctas) ? header.ctas : null;
+  const headerCtas = rawHeaderCtas
+    ? DEFAULT_SITE_SETTINGS.header.ctas.map((fallback, index) => normalizeHeaderCta(rawHeaderCtas[index], fallback))
+    : [
+        normalizeHeaderCta(header.cta, DEFAULT_SITE_SETTINGS.header.ctas[0]),
+        DEFAULT_SITE_SETTINGS.header.ctas[1],
+      ];
   const socialLinks = Array.isArray(footer.socialLinks)
     ? footer.socialLinks.map(normalizeSocialLink).filter((link): link is FooterSocialLink => link !== null && link.label.length > 0)
     : DEFAULT_SITE_SETTINGS.footer.socialLinks;
@@ -35,6 +66,9 @@ function normalizeSettings(value: unknown): SiteSettings {
     : DEFAULT_SITE_SETTINGS.footer.footerMenuHrefs;
 
   return {
+    header: {
+      ctas: headerCtas,
+    },
     footer: {
       tagline: typeof footer.tagline === "string" ? footer.tagline : DEFAULT_SITE_SETTINGS.footer.tagline,
       copyright: typeof footer.copyright === "string" ? footer.copyright : DEFAULT_SITE_SETTINGS.footer.copyright,

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Plus, Save, Trash2 } from "lucide-react";
+import { Check, Copy, ExternalLink, Plus, Save, Trash2 } from "lucide-react";
 import { AdminShell } from "../components/AdminShell";
 import { adminApi, type AdminForm, type AdminFormField } from "../lib/admin-api";
 import { Button } from "@/components/ui/button";
@@ -29,9 +29,14 @@ export default function FormsBuilder() {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [draft, setDraft] = useState<AdminForm | null>(null);
   const [saving, setSaving] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const selected = useMemo(() => forms?.find((form) => form.id === selectedId) ?? forms?.[0] ?? null, [forms, selectedId]);
+  const shareUrl = useMemo(() => {
+    if (!draft?.slug || typeof window === "undefined") return "";
+    return `${window.location.origin}/forms/${slugify(draft.slug)}`;
+  }, [draft?.slug]);
 
   useEffect(() => {
     adminApi.listForms().then((res) => {
@@ -46,6 +51,7 @@ export default function FormsBuilder() {
 
   const setDraftField = <K extends keyof AdminForm>(key: K, value: AdminForm[K]) => {
     setDraft((prev) => prev ? { ...prev, [key]: value } : prev);
+    setCopied(false);
   };
 
   const setSetting = (key: keyof AdminForm["settings"], value: string | boolean) => {
@@ -78,6 +84,13 @@ export default function FormsBuilder() {
     } finally {
       setSaving(false);
     }
+  };
+
+  const copyShareUrl = async () => {
+    if (!shareUrl) return;
+    await navigator.clipboard.writeText(shareUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1800);
   };
 
   const createForm = async () => {
@@ -145,6 +158,24 @@ export default function FormsBuilder() {
                 <div className="grid gap-4 md:grid-cols-2">
                   <Field label="Form Name"><Input value={draft.name} onChange={(e) => setDraftField("name", e.target.value)} /></Field>
                   <Field label="Slug"><Input value={draft.slug} onChange={(e) => setDraftField("slug", slugify(e.target.value))} /></Field>
+                  <div className="space-y-1.5 md:col-span-2">
+                    <Label>Share Form Link</Label>
+                    <div className="flex flex-col gap-2 rounded-lg border border-slate-200 p-3 sm:flex-row sm:items-center">
+                      <Input value={shareUrl} readOnly className="font-mono text-xs" />
+                      <div className="flex gap-2">
+                        <Button type="button" variant="outline" size="sm" onClick={copyShareUrl}>
+                          {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+                          {copied ? "Copied" : "Copy"}
+                        </Button>
+                        <Button type="button" variant="outline" size="sm" asChild>
+                          <a href={shareUrl} target="_blank" rel="noreferrer">
+                            <ExternalLink className="h-3.5 w-3.5" /> Open
+                          </a>
+                        </Button>
+                      </div>
+                    </div>
+                    <p className="text-xs text-slate-400">Use this link on WhatsApp, LinkedIn, Facebook, email, or any other platform.</p>
+                  </div>
                   <Field label="Popup Title"><Input value={draft.settings.title} onChange={(e) => setSetting("title", e.target.value)} /></Field>
                   <Field label="Submit Button"><Input value={draft.settings.submitButtonText} onChange={(e) => setSetting("submitButtonText", e.target.value)} /></Field>
                   <Field label="Popup Top Header Text"><Textarea value={draft.settings.shortDescription} onChange={(e) => setSetting("shortDescription", e.target.value)} /></Field>

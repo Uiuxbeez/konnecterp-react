@@ -75,9 +75,9 @@ export default function StandardPage() {
   const heroContent = byType("product_hero") as unknown as StandardHeroContent;
   const pageTitle = page?.title ?? heroContent.highlight ?? slug;
 
-  useDocumentMeta(`${pageTitle} | KonnectERP`, heroContent.description);
+  useDocumentMeta(page?.metaTitle || `${pageTitle} | KonnectERP`, page?.metaDescription || heroContent.description);
 
-  const sectionCtx: SectionCtx = { isDarkMode, openDemo: chrome.openDemo, openVideo: chrome.openVideo };
+  const sectionCtx: SectionCtx = { isDarkMode, openDemo: chrome.openDemo, openForm: chrome.openForm, openVideo: chrome.openVideo };
   const bodySections = sections.filter((s) => s.type !== "product_hero");
   const handlePrimaryButtonClick = () => {
     runCmsButtonAction(heroContent.primaryButtonAction, heroContent.primaryButtonHref, sectionCtx, "demo_modal");
@@ -103,6 +103,7 @@ export default function StandardPage() {
         isMobileMenuOpen={chrome.isMobileMenuOpen}
         setIsMobileMenuOpen={chrome.setIsMobileMenuOpen}
         openDemo={chrome.openDemo}
+        openForm={chrome.openForm}
         overDarkBackground
       />
 
@@ -126,7 +127,7 @@ export default function StandardPage() {
       <FooterSection content={footerContent} />
 
       <ScrollToTopButton show={chrome.showScrollTop} />
-      <DemoModal open={chrome.isDemoModalOpen} onClose={() => chrome.setIsDemoModalOpen(false)} />
+      <DemoModal open={chrome.isDemoModalOpen} onClose={() => chrome.setIsDemoModalOpen(false)} slug={chrome.activeFormSlug} />
       <VideoModal open={chrome.isVideoModalOpen} onClose={() => chrome.setIsVideoModalOpen(false)} />
     </div>
   );

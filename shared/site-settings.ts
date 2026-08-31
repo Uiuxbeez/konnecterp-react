@@ -4,7 +4,20 @@ export interface FooterSocialLink {
   visible?: boolean;
 }
 
+export type HeaderCtaAction = "demo_modal" | "custom_form_modal" | "link";
+
+export interface HeaderCtaButton {
+  enabled: boolean;
+  text: string;
+  action: HeaderCtaAction;
+  target: string;
+  style: "primary" | "secondary";
+}
+
 export interface SiteSettings {
+  header: {
+    ctas: HeaderCtaButton[];
+  };
   footer: {
     tagline: string;
     copyright: string;
@@ -19,6 +32,24 @@ export interface SiteSettings {
 }
 
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
+  header: {
+    ctas: [
+      {
+        enabled: true,
+        text: "Request Demo",
+        action: "demo_modal",
+        target: "",
+        style: "primary",
+      },
+      {
+        enabled: true,
+        text: "Become a Partner",
+        action: "link",
+        target: "/contact",
+        style: "secondary",
+      },
+    ],
+  },
   footer: {
     tagline: "The intelligent cloud ERP platform that helps ambitious companies scale their operations efficiently.",
     copyright: "© 2026 KonnectERP. All rights reserved.",

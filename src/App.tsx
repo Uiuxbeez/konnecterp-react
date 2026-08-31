@@ -12,6 +12,7 @@ import StandardPage from "@/pages/StandardPage";
 import AboutUs from "@/pages/AboutUs";
 import ContactUs from "@/pages/ContactUs";
 import Career from "@/pages/Career";
+import PublicFormPage from "@/pages/PublicFormPage";
 import BlogList from "@/pages/blog/BlogList";
 import BlogDetail from "@/pages/blog/BlogDetail";
 import { AuthProvider } from "@/admin/lib/AuthContext";
@@ -39,6 +40,7 @@ function Router() {
       <Route path="/about-us" component={AboutUs} />
       <Route path="/contact" component={ContactUs} />
       <Route path="/career" component={Career} />
+      <Route path="/forms/:slug" component={PublicFormPage} />
       <Route path="/blog" component={BlogList} />
       <Route path="/blog/:slug" component={BlogDetail} />
       <Route path="/admin/login" component={AdminLogin} />

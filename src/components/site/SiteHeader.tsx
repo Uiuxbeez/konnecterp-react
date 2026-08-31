@@ -2,9 +2,12 @@ import React from 'react';
 import { motion, AnimatePresence, type MotionValue } from 'framer-motion';
 import { ChevronRight, Menu, X, Monitor, Moon, Sun, Handshake } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { runCmsButtonAction } from '@/lib/cms-button-actions';
 import { getMenuColumnClass, getMenuColumns, MEGA_MENU_THRESHOLD } from '@/lib/nav';
 import { useNavigation } from '@/lib/useNavigation';
+import { useSiteSettings } from '@/lib/useSiteSettings';
 import type { ThemeMode } from '@/hooks/useSiteChrome';
+import type { HeaderCtaButton } from '@shared/site-settings';
 
 export interface SiteHeaderProps {
   isDarkMode: boolean;
@@ -20,6 +23,7 @@ export interface SiteHeaderProps {
   isMobileMenuOpen: boolean;
   setIsMobileMenuOpen: (open: boolean) => void;
   openDemo: () => void;
+  openForm?: (slug: string) => void;
   /**
    * Set on pages whose content directly under the header is always dark
    * (e.g. PageHero), regardless of the site-wide light/dark toggle — otherwise
@@ -36,14 +40,33 @@ const THEME_OPTIONS: { mode: ThemeMode; icon: React.ReactNode; label: string }[]
   { mode: 'dark', icon: <Moon className="w-4 h-4" />, label: 'Dark' },
 ];
 
+function getHeaderCtaClass(cta: HeaderCtaButton, chromeDark: boolean) {
+  if (cta.style === 'secondary') {
+    return chromeDark
+      ? 'bg-transparent text-white border-white/30 hover:bg-white/10'
+      : 'bg-[#041D4D] text-white border-[#041D4D]/25 hover:bg-[#0a2d6b]';
+  }
+  return 'bg-[#F97316] hover:bg-[#EA580C] text-white shadow-lg shadow-orange-900/30 border-0';
+}
+
 export function SiteHeader({
   isDarkMode, themeMode, setThemeMode,
   headerBackdropFilter, headerBgLight, headerBorderLight, headerShadowLight, headerBgDark, headerBorderDark, headerShadowDark,
-  isMobileMenuOpen, setIsMobileMenuOpen, openDemo,
+  isMobileMenuOpen, setIsMobileMenuOpen, openDemo, openForm,
   overDarkBackground = false,
 }: SiteHeaderProps) {
   const chromeDark = isDarkMode || overDarkBackground;
   const navigation = useNavigation();
+  const settings = useSiteSettings();
+  const headerCtas = settings.header.ctas;
+  const handleHeaderCtaClick = (cta: HeaderCtaButton) => {
+    runCmsButtonAction(
+      cta.action,
+      cta.target,
+      { openDemo, openForm, openVideo: () => {} },
+      'demo_modal',
+    );
+  };
 
   return (
     <>
@@ -131,16 +154,16 @@ export function SiteHeader({
                 </button>
               ))}
             </div>
-            <Button onClick={openDemo} className="bg-[#F97316] hover:bg-[#EA580C] text-white shadow-lg shadow-orange-900/30 border-0">
-              Request Demo
-            </Button>
-            <button
-              className={`h-9 px-4 text-sm font-semibold rounded-md border transition-colors btn-infinity ${chromeDark ? 'bg-transparent text-white border-white/30 hover:bg-white/10' : 'bg-[#041D4D] text-white border-[#041D4D]/25 hover:bg-[#0a2d6b]'}`}
-              aria-label="Become a Partner"
-            >
-              <Handshake className="w-4 h-4 mr-2 inline-block" />
-              Become a Partner
-            </button>
+            {headerCtas.filter((cta) => cta.enabled).map((cta, index) => (
+              <Button
+                key={`${cta.style}-${index}`}
+                onClick={() => handleHeaderCtaClick(cta)}
+                className={`h-9 px-4 text-sm font-semibold rounded-md border transition-colors ${cta.style === 'secondary' ? 'btn-infinity' : ''} ${getHeaderCtaClass(cta, chromeDark)}`}
+              >
+                {cta.style === 'secondary' && <Handshake className="w-4 h-4 mr-2 inline-block" />}
+                {cta.text}
+              </Button>
+            ))}
           </div>
 
           <button className="lg:hidden p-2 text-foreground" onClick={() => setIsMobileMenuOpen(true)}>
@@ -206,7 +229,17 @@ export function SiteHeader({
               </div>
               <div className="pt-2 flex flex-col gap-3">
                 <Button variant="outline" className="w-full justify-center" onClick={() => setIsMobileMenuOpen(false)}>Log In</Button>
-                <Button className="w-full justify-center" onClick={() => { setIsMobileMenuOpen(false); openDemo(); }}>Request Demo</Button>
+                {headerCtas.filter((cta) => cta.enabled).map((cta, index) => (
+                  <Button
+                    key={`${cta.style}-${index}`}
+                    variant={cta.style === 'secondary' ? 'outline' : 'default'}
+                    className="w-full justify-center"
+                    onClick={() => { setIsMobileMenuOpen(false); handleHeaderCtaClick(cta); }}
+                  >
+                    {cta.style === 'secondary' && <Handshake className="w-4 h-4" />}
+                    {cta.text}
+                  </Button>
+                ))}
               </div>
             </div>
           </motion.div>

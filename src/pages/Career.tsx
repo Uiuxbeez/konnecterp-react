@@ -29,7 +29,7 @@ type CareerJob = {
 export default function Career() {
   const chrome = useSiteChrome();
   const { isDarkMode } = chrome;
-  const { sections, byType } = usePageSections("career");
+  const { sections, page, byType } = usePageSections("career");
   const hasSection = (type: string) => sections.some((section) => section.type === type);
   const heroContent = byType("product_hero");
   const rolesContent = byType("career_roles");
@@ -39,8 +39,8 @@ export default function Career() {
   const [openIndex, setOpenIndex] = useState(3);
 
   useDocumentMeta(
-    "Careers | KonnectERP",
-    "Explore career opportunities at Konnect Analytics and join a growing ERP product and consulting team."
+    page?.metaTitle || "Careers | KonnectERP",
+    page?.metaDescription || "Explore career opportunities at Konnect Analytics and join a growing ERP product and consulting team."
   );
 
   return (
@@ -59,6 +59,7 @@ export default function Career() {
         isMobileMenuOpen={chrome.isMobileMenuOpen}
         setIsMobileMenuOpen={chrome.setIsMobileMenuOpen}
         openDemo={chrome.openDemo}
+        openForm={chrome.openForm}
         overDarkBackground
       />
 
@@ -83,6 +84,7 @@ export default function Career() {
             }
             runCmsButtonAction(heroContent.primaryButtonAction, heroContent.primaryButtonHref, {
               openDemo: chrome.openDemo,
+              openForm: chrome.openForm,
               openVideo: chrome.openVideo,
             }, "link");
           }}
@@ -209,7 +211,7 @@ export default function Career() {
 
       <FooterSection content={footerContent} />
       <ScrollToTopButton show={chrome.showScrollTop} />
-      <DemoModal open={chrome.isDemoModalOpen} onClose={() => chrome.setIsDemoModalOpen(false)} />
+      <DemoModal open={chrome.isDemoModalOpen} onClose={() => chrome.setIsDemoModalOpen(false)} slug={chrome.activeFormSlug} />
       <VideoModal open={chrome.isVideoModalOpen} onClose={() => chrome.setIsVideoModalOpen(false)} />
     </div>
   );

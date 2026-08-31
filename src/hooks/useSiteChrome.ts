@@ -10,7 +10,7 @@ function isNightTime(d: Date) {
 
 // Shared header/theme/modal/scroll-to-top state used by every page (Home and
 // inner pages) so they look and behave identically.
-export function useSiteChrome() {
+export function useSiteChrome({ autoOpenDemo = true }: { autoOpenDemo?: boolean } = {}) {
   const { scrollY } = useScroll();
   const headerBlur = useTransform(scrollY, [0, 60], [0, 14]);
   const headerBackdropFilter = useTransform(headerBlur, v => `blur(${v}px)`);
@@ -38,12 +38,21 @@ export function useSiteChrome() {
 
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
-  const openDemo = () => setIsDemoModalOpen(true);
+  const [activeFormSlug, setActiveFormSlug] = useState("demo-request");
+  const openDemo = () => {
+    setActiveFormSlug("demo-request");
+    setIsDemoModalOpen(true);
+  };
+  const openForm = (slug: string) => {
+    setActiveFormSlug(slug || "demo-request");
+    setIsDemoModalOpen(true);
+  };
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsDemoModalOpen(true), 20000);
+    if (!autoOpenDemo) return undefined;
+    const timer = setTimeout(() => openDemo(), 20000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [autoOpenDemo]);
 
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const openVideo = () => setIsVideoModalOpen(true);
@@ -59,7 +68,7 @@ export function useSiteChrome() {
     headerBackdropFilter, headerBgLight, headerBorderLight, headerShadowLight, headerBgDark, headerBorderDark, headerShadowDark,
     isMobileMenuOpen, setIsMobileMenuOpen,
     showScrollTop,
-    isDemoModalOpen, setIsDemoModalOpen, openDemo,
+    isDemoModalOpen, setIsDemoModalOpen, activeFormSlug, openDemo, openForm,
     isVideoModalOpen, setIsVideoModalOpen, openVideo,
   };
 }

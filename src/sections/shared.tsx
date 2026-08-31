@@ -74,6 +74,7 @@ export function InViewTextEffect({
 export interface SectionCtx {
   isDarkMode: boolean;
   openDemo: () => void;
+  openForm?: (slug: string) => void;
   openVideo: () => void;
 }
 

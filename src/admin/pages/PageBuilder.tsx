@@ -25,6 +25,7 @@ export default function PageBuilder() {
   const [publishedAt, setPublishedAt] = useState<string | null>(null);
 
   const saveTimers = useRef<Record<number, ReturnType<typeof setTimeout>>>({});
+  const pageSeoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [previewNonce, setPreviewNonce] = useState(0);
   const refreshPreview = () => setPreviewNonce((n) => n + 1);
 
@@ -67,6 +68,24 @@ export default function PageBuilder() {
     scheduleSave(id, { enabled });
   };
 
+  const handlePageMetaChange = (patch: Pick<AdminPage, "metaTitle" | "metaDescription">) => {
+    if (!page) return;
+    const nextPage = { ...page, ...patch };
+    setPage(nextPage);
+    setSaveStatus("saving");
+    if (pageSeoSaveTimer.current) clearTimeout(pageSeoSaveTimer.current);
+    pageSeoSaveTimer.current = setTimeout(async () => {
+      try {
+        const updated = await adminApi.updatePageSeo(pageSlug, patch);
+        setPage(updated);
+        setSaveStatus("saved");
+        refreshPreview();
+      } catch {
+        setSaveStatus("error");
+      }
+    }, SAVE_DEBOUNCE_MS);
+  };
+
   const handleReorder = (orderedIds: number[]) => {
     const byId = new Map(sections.map((s) => [s.id, s]));
     const next = orderedIds.map((id, i) => ({ ...byId.get(id)!, position: i }));
@@ -101,8 +120,10 @@ export default function PageBuilder() {
   const handleSaveDraftNow = async () => {
     if (!selected) return;
     Object.values(saveTimers.current).forEach(clearTimeout);
+    if (pageSeoSaveTimer.current) clearTimeout(pageSeoSaveTimer.current);
     setSaveStatus("saving");
     try {
+      if (page) await adminApi.updatePageSeo(pageSlug, { metaTitle: page.metaTitle, metaDescription: page.metaDescription });
       await adminApi.updateSection(selected.id, { content: selected.content, enabled: selected.enabled });
       setSaveStatus("saved");
       refreshPreview();
@@ -172,8 +193,10 @@ export default function PageBuilder() {
           <div className="w-[26rem] shrink-0 border-l border-slate-200 bg-white">
             <EditSectionPanel
               section={selected}
+              page={page}
               onContentChange={(content) => handleContentChange(selected.id, content)}
               onEnabledChange={(enabled) => handleEnabledChange(selected.id, enabled)}
+              onPageMetaChange={handlePageMetaChange}
             />
           </div>
         )}

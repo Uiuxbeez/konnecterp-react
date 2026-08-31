@@ -123,6 +123,7 @@ export default function BlogDetail() {
         isMobileMenuOpen={chrome.isMobileMenuOpen}
         setIsMobileMenuOpen={chrome.setIsMobileMenuOpen}
         openDemo={chrome.openDemo}
+        openForm={chrome.openForm}
         overDarkBackground
       />
 
@@ -215,7 +216,7 @@ export default function BlogDetail() {
       <FooterSection content={footerContent} />
 
       <ScrollToTopButton show={chrome.showScrollTop} />
-      <DemoModal open={chrome.isDemoModalOpen} onClose={() => chrome.setIsDemoModalOpen(false)} />
+      <DemoModal open={chrome.isDemoModalOpen} onClose={() => chrome.setIsDemoModalOpen(false)} slug={chrome.activeFormSlug} />
       <VideoModal open={chrome.isVideoModalOpen} onClose={() => chrome.setIsVideoModalOpen(false)} />
     </div>
   );

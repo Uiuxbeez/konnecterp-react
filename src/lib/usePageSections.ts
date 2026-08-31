@@ -9,6 +9,15 @@ export interface PageSection {
   content: Record<string, unknown>;
 }
 
+export interface PageInfo {
+  slug: string;
+  title: string;
+  template?: string;
+  path?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+}
+
 const FALLBACK_SECTIONS: PageSection[] = SECTION_DEFS.map((def, i) => ({
   id: -(i + 1),
   type: def.type,
@@ -27,7 +36,7 @@ function isPreview() {
 // never breaks if the backend/DB isn't running.
 export function usePageSections(slug: string) {
   const [sections, setSections] = useState<PageSection[] | null>(null);
-  const [page, setPage] = useState<{ slug: string; title: string; template?: string } | null>(null);
+  const [page, setPage] = useState<PageInfo | null>(null);
   const [loading, setLoading] = useState(true);
   // True only when the API affirmatively said this page doesn't exist (HTTP 404) —
   // as opposed to the API being unreachable, which falls back to defaults instead

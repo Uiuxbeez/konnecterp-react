@@ -19,13 +19,13 @@ async function seedHome() {
 
   const toInsert = homeSectionTypes
     .filter((type) => !existingTypes.has(type))
-    .map((type, i) => {
+    .map((type) => {
       const meta = SECTION_DEFS_BY_TYPE[type];
       return {
         pageId: home.id,
         type,
         name: meta.name,
-        position: existing.length + i,
+        position: homeSectionTypes.indexOf(type),
         enabled: true,
         content: meta.defaultContent,
         publishedContent: meta.defaultContent,
@@ -38,6 +38,17 @@ async function seedHome() {
   } else {
     console.log("Home page sections already present — nothing to seed.");
   }
+
+  const orderedSections = await db.select().from(sections).where(eq(sections.pageId, home.id));
+  await Promise.all(
+    orderedSections.map((section) => {
+      const templatePosition = homeSectionTypes.indexOf(section.type as typeof homeSectionTypes[number]);
+      return db
+        .update(sections)
+        .set({ position: templatePosition >= 0 ? templatePosition : section.position })
+        .where(eq(sections.id, section.id));
+    })
+  );
 }
 
 async function seedErpForSmes() {

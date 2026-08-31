@@ -50,9 +50,9 @@ export default function IndustryPage() {
   const heroContent = byType('industry_hero') as unknown as IndustryHeroContent;
   const pageTitle = page?.title ?? heroContent.headingLine1 ?? slug;
 
-  useDocumentMeta(`${pageTitle} | KonnectERP`, heroContent.description);
+  useDocumentMeta(page?.metaTitle || `${pageTitle} | KonnectERP`, page?.metaDescription || heroContent.description);
 
-  const sectionCtx: SectionCtx = { isDarkMode, openDemo: chrome.openDemo, openVideo: chrome.openVideo };
+  const sectionCtx: SectionCtx = { isDarkMode, openDemo: chrome.openDemo, openForm: chrome.openForm, openVideo: chrome.openVideo };
   const bodySections = sections.filter((s) => s.type !== 'industry_hero');
 
   const scrollToFlow = () => {
@@ -90,6 +90,7 @@ export default function IndustryPage() {
         isMobileMenuOpen={chrome.isMobileMenuOpen}
         setIsMobileMenuOpen={chrome.setIsMobileMenuOpen}
         openDemo={chrome.openDemo}
+        openForm={chrome.openForm}
         overDarkBackground
       />
 
@@ -105,7 +106,7 @@ export default function IndustryPage() {
       <FooterSection content={footerContent} />
 
       <ScrollToTopButton show={chrome.showScrollTop} />
-      <DemoModal open={chrome.isDemoModalOpen} onClose={() => chrome.setIsDemoModalOpen(false)} />
+      <DemoModal open={chrome.isDemoModalOpen} onClose={() => chrome.setIsDemoModalOpen(false)} slug={chrome.activeFormSlug} />
       <VideoModal open={chrome.isVideoModalOpen} onClose={() => chrome.setIsVideoModalOpen(false)} />
     </div>
   );

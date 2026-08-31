@@ -109,7 +109,14 @@ publicSectionsRouter.get("/pages/:slug", async (req, res) => {
     .where(and(eq(sections.pageId, page.id), eq(sections.enabled, true)))
     .orderBy(asc(sections.position));
   res.json({
-    page: { slug: page.slug, title: page.title },
+    page: {
+      slug: page.slug,
+      title: page.title,
+      template: page.template,
+      path: pagePath(page.template, page.slug),
+      metaTitle: page.metaTitle,
+      metaDescription: page.metaDescription,
+    },
     sections: rows
       .filter((s) => s.publishedContent !== null)
       .map((s) => ({ id: s.id, type: s.type, name: s.name, content: s.publishedContent })),

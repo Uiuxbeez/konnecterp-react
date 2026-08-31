@@ -5,6 +5,8 @@ export const pages = pgTable("pages", {
   id: serial("id").primaryKey(),
   slug: text("slug").notNull(),
   title: text("title").notNull(),
+  metaTitle: text("meta_title").notNull().default(""),
+  metaDescription: text("meta_description").notNull().default(""),
   // Key into shared/templates.ts PAGE_TEMPLATES — determines which section
   // types a page has and which URL prefix it's served under.
   template: text("template").notNull().default("home"),

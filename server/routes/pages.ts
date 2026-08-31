@@ -11,11 +11,15 @@ pagesRouter.use(requireAuth);
 
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
+function toAdminPage(page: typeof pages.$inferSelect) {
+  return { ...page, path: pagePath(page.template, page.slug) };
+}
+
 pagesRouter.get("/pages", async (_req, res) => {
   await ensureCoreBuilderPages();
   const rows = await db.select().from(pages).orderBy(pages.id);
   res.json({
-    pages: rows.map((p) => ({ ...p, path: pagePath(p.template, p.slug) })),
+    pages: rows.map(toAdminPage),
     templates: Object.values(PAGE_TEMPLATES).filter((t) => t.key !== "home"),
   });
 });
@@ -42,7 +46,7 @@ pagesRouter.post("/pages", async (req, res) => {
 
   try {
     const page = await createPageFromTemplate({ slug, title: title.trim(), template });
-    res.status(201).json({ ...page, path: pagePath(page.template, page.slug) });
+    res.status(201).json(toAdminPage(page));
   } catch (err) {
     if (err instanceof UnknownTemplateError) {
       res.status(400).json({ error: err.message });
@@ -50,6 +54,26 @@ pagesRouter.post("/pages", async (req, res) => {
     }
     throw err;
   }
+});
+
+pagesRouter.patch("/pages/:slug/seo", async (req, res) => {
+  const { metaTitle, metaDescription } = req.body ?? {};
+  const [updated] = await db
+    .update(pages)
+    .set({
+      metaTitle: typeof metaTitle === "string" ? metaTitle.trim() : "",
+      metaDescription: typeof metaDescription === "string" ? metaDescription.trim() : "",
+      updatedAt: new Date(),
+    })
+    .where(eq(pages.slug, req.params.slug))
+    .returning();
+
+  if (!updated) {
+    res.status(404).json({ error: "Page not found" });
+    return;
+  }
+
+  res.json(toAdminPage(updated));
 });
 
 pagesRouter.delete("/pages/:slug", async (req, res) => {

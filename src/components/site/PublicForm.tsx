@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, ChevronDown } from "lucide-react";
+import { ArrowRight, Calculator, CheckCircle2, ChevronDown } from "lucide-react";
 import { apiUrl } from "@/lib/api-base";
 import { DEFAULT_DEMO_FORM, type FormDefinitionContent, type FormFieldDef } from "@shared/forms";
 
@@ -14,7 +14,17 @@ function makeCaptcha() {
   return { a: Math.floor(Math.random() * 7) + 2, b: Math.floor(Math.random() * 6) + 3 };
 }
 
-export function PublicForm({ slug, source = "website", onSuccess }: { slug: string; source?: string; onSuccess?: (values: Record<string, string>) => void }) {
+export function PublicForm({
+  slug,
+  source = "website",
+  layout = "modal",
+  onSuccess,
+}: {
+  slug: string;
+  source?: string;
+  layout?: "modal" | "page";
+  onSuccess?: (values: Record<string, string>) => void;
+}) {
   const [definition, setDefinition] = useState<PublicFormData>({
     slug,
     name: "Demo Request",
@@ -95,7 +105,13 @@ export function PublicForm({ slug, source = "website", onSuccess }: { slug: stri
   }
 
   return (
-    <motion.form initial={{ opacity: 0 }} animate={{ opacity: 1 }} onSubmit={submit} className="max-h-[64vh] space-y-4 overflow-y-auto px-8 py-6" noValidate>
+    <motion.form
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      onSubmit={submit}
+      className={`${layout === "modal" ? "max-h-[64vh] overflow-y-auto" : ""} space-y-4 px-8 py-6`}
+      noValidate
+    >
       <div>
         <h3 className="text-xl font-bold text-gray-900">{definition.settings.title}</h3>
         {definition.settings.shortDescription && <p className="mt-1 text-sm leading-6 text-gray-500">{definition.settings.shortDescription}</p>}
@@ -108,17 +124,33 @@ export function PublicForm({ slug, source = "website", onSuccess }: { slug: stri
       ))}
 
       {definition.settings.antiSpamEnabled && (
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
-            Anti-spam check <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="number"
-            value={captchaAnswer}
-            onChange={(e) => setCaptchaAnswer(e.target.value)}
-            placeholder={`${captcha.a} + ${captcha.b} = ?`}
-            className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2.5 text-sm outline-none focus:border-[#F97316] focus:ring-2 focus:ring-[#F97316]/30"
-          />
+        <div className="rounded-xl border border-orange-200 bg-orange-50/70 p-4">
+          <div className="mb-3 flex items-start gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#F97316] shadow-sm">
+              <Calculator className="h-5 w-5" />
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-gray-900">
+                Anti-spam verification <span className="text-red-500">*</span>
+              </label>
+              <p className="mt-1 text-xs leading-5 text-gray-600">
+                Solve this simple calculation. The form will submit only when the correct answer is entered.
+              </p>
+            </div>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-[auto_1fr] sm:items-center">
+            <div className="flex h-12 items-center justify-center rounded-lg border border-orange-200 bg-white px-5 text-lg font-black text-[#0B1F4A] shadow-sm">
+              {captcha.a} + {captcha.b} = ?
+            </div>
+            <input
+              type="number"
+              value={captchaAnswer}
+              onChange={(e) => setCaptchaAnswer(e.target.value)}
+              placeholder="Enter the answer"
+              aria-label={`Answer for ${captcha.a} plus ${captcha.b}`}
+              className="h-12 w-full rounded-lg border border-orange-200 bg-white px-3 text-sm outline-none transition-colors focus:border-[#F97316] focus:ring-2 focus:ring-[#F97316]/30"
+            />
+          </div>
           {errors.form && <p className="mt-1 text-xs text-red-500">{errors.form}</p>}
         </div>
       )}

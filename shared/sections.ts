@@ -8,6 +8,7 @@ export type FieldDef =
   | { key: string; label: string; type: "textarea" }
   | { key: string; label: string; type: "image" }
   | { key: string; label: string; type: "file"; accept?: string; buttonText?: string }
+  | { key: string; label: string; type: "form_select"; helpText?: string }
   | { key: string; label: string; type: "icon" }
   | { key: string; label: string; type: "number" }
   | { key: string; label: string; type: "boolean"; helpText?: string }
@@ -17,6 +18,7 @@ export type FieldDef =
 
 const BUTTON_ACTION_OPTIONS = [
   { label: "Open demo popup", value: "demo_modal" },
+  { label: "Open selected form popup", value: "custom_form_modal" },
   { label: "Open video popup", value: "video_modal" },
   { label: "Link to page or URL", value: "link" },
 ];
@@ -36,6 +38,7 @@ export const ICON_OPTIONS = [
 export type SectionType =
   | "hero"
   | "statistics"
+  | "built_different"
   | "trusted_companies"
   | "industry_solutions"
   | "gst_compliance"
@@ -140,6 +143,84 @@ export const SECTION_DEFS: SectionMeta[] = [
         { icon: "Building2", value: 20, suffix: "+", label: "Industries Served", sub: "NATIONWIDE COVERAGE" },
         { icon: "Activity", value: 400, suffix: "+", label: "Transactions Built-in", sub: "ZERO-INTEGRATION NEEDED" },
         { icon: "BarChart3", value: 150, suffix: "+", label: "Reports & Dashboards", sub: "REAL-TIME ANALYTICS" },
+      ],
+    },
+  },
+  {
+    type: "built_different",
+    name: "Built Different",
+    fields: [
+      { key: "eyebrow", label: "Eyebrow Text", type: "text" },
+      { key: "title", label: "Title", type: "text" },
+      { key: "highlight", label: "Highlight Text", type: "text" },
+      {
+        key: "mapDots",
+        label: "Map Location Dots",
+        type: "repeater",
+        itemLabel: "Location",
+        addRemove: true,
+        fields: [
+          { key: "label", label: "Location Label", type: "text" },
+          { key: "x", label: "X Position", type: "number" },
+          { key: "y", label: "Y Position", type: "number" },
+        ],
+      },
+      {
+        key: "features",
+        label: "Feature Cards",
+        type: "repeater",
+        itemLabel: "Feature",
+        addRemove: true,
+        fields: [
+          { key: "icon", label: "Icon", type: "icon" },
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+        ],
+      },
+      { key: "officeEyebrow", label: "Office Eyebrow", type: "text" },
+      { key: "officeTitle", label: "Office Title", type: "text" },
+      { key: "securityEyebrow", label: "Security Eyebrow", type: "text" },
+      { key: "securityTitle", label: "Security Title", type: "text" },
+      {
+        key: "stats",
+        label: "Bottom Stats",
+        type: "repeater",
+        itemLabel: "Stat",
+        addRemove: true,
+        fields: [
+          { key: "value", label: "Value", type: "number" },
+          { key: "suffix", label: "Suffix", type: "text" },
+          { key: "label", label: "Label", type: "text" },
+        ],
+      },
+    ],
+    defaultContent: {
+      eyebrow: "Why 5,000 Businesses Choose KonnectERP",
+      title: "Built Different.",
+      highlight: "Proven in the Field.",
+      mapDots: [
+        { x: 320, y: 195, label: "Tamil Nadu" },
+        { x: 437, y: 77, label: "Maharashtra" },
+        { x: 640, y: 68, label: "Karnataka" },
+        { x: 860, y: 203, label: "Gujarat" },
+        { x: 870, y: 122, label: "Goa" },
+        { x: 950, y: 167, label: "Kerala" },
+      ],
+      features: [
+        { icon: "Server", title: "Cloud-Native, Low TCO", description: "No servers to buy, no IT staff to manage. Start for a fraction of what legacy ERP costs." },
+        { icon: "Layers", title: "Modular by Design", description: "Start with finance and inventory. Add CRM, HRMS, and BI when you're ready. No forced bundles." },
+        { icon: "Shield", title: "Amazon-Hosted Security", description: "Triple-layered data security on AWS. Your business data stays private and always backed up." },
+        { icon: "Zap", title: "Quickest Onboarding", description: "Go live in weeks, not months. Pre-configured industry templates mean 80% setup is already done." },
+      ],
+      officeEyebrow: "Coimbatore - Pune - Chennai",
+      officeTitle: "5 Offices Across India",
+      securityEyebrow: "Amazon AWS Hosted",
+      securityTitle: "Triple-layer security",
+      stats: [
+        { value: 500, suffix: "+", label: "Businesses Managed" },
+        { value: 50, suffix: "k+", label: "Daily Transactions" },
+        { value: 99.9, suffix: "%", label: "System Uptime" },
+        { value: 15, suffix: "+", label: "Industry Verticals" },
       ],
     },
   },
@@ -1418,11 +1499,11 @@ export const SECTION_DEFS: SectionMeta[] = [
         itemLabel: "Case Study",
         addRemove: true,
         fields: [
-          { key: "logo", label: "Client Logo", type: "image" },
-          { key: "clientName", label: "Client Name", type: "text" },
           { key: "title", label: "Card Title", type: "text" },
           { key: "description", label: "Short Description", type: "textarea" },
           { key: "pdfUrl", label: "PDF File", type: "file", accept: "application/pdf", buttonText: "Upload PDF" },
+          { key: "restrictDownload", label: "Restrict Download With Form", type: "boolean", helpText: "Require a form submission before downloading this PDF" },
+          { key: "downloadFormSlug", label: "Select Download Form", type: "form_select" },
         ],
       },
     ],
@@ -1438,6 +1519,8 @@ export const SECTION_DEFS: SectionMeta[] = [
           title: "Manufacturing operations unified on one ERP",
           description: "A growing manufacturer connected inventory, production, purchase, sales, and finance workflows with KonnectERP.",
           pdfUrl: "",
+          restrictDownload: false,
+          downloadFormSlug: "",
         },
         {
           logo: "/images/brands/brand-2.jpg",
@@ -1445,6 +1528,8 @@ export const SECTION_DEFS: SectionMeta[] = [
           title: "Trading visibility across branches",
           description: "A multi-branch trading business improved stock accuracy, order processing, and management reporting.",
           pdfUrl: "",
+          restrictDownload: false,
+          downloadFormSlug: "",
         },
         {
           logo: "/images/brands/brand-3.png",
@@ -1452,6 +1537,8 @@ export const SECTION_DEFS: SectionMeta[] = [
           title: "Distribution control with real-time data",
           description: "A distribution team replaced disconnected reports with live operational dashboards and structured workflows.",
           pdfUrl: "",
+          restrictDownload: false,
+          downloadFormSlug: "",
         },
       ],
     },

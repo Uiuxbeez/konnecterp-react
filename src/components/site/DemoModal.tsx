@@ -5,7 +5,7 @@ import { PublicForm } from "./PublicForm";
 import { apiUrl } from "@/lib/api-base";
 import { DEFAULT_DEMO_FORM } from "@shared/forms";
 
-export function DemoModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+export function DemoModal({ open, onClose, slug = "demo-request" }: { open: boolean; onClose: () => void; slug?: string }) {
   const [headerText, setHeaderText] = useState(DEFAULT_DEMO_FORM.settings.shortDescription);
 
   useEffect(() => {
@@ -16,14 +16,14 @@ export function DemoModal({ open, onClose }: { open: boolean; onClose: () => voi
 
   useEffect(() => {
     if (!open) return;
-    fetch(apiUrl("/api/public/forms/demo-request"))
+    fetch(apiUrl(`/api/public/forms/${slug}`))
       .then((res) => (res.ok ? res.json() : Promise.reject()))
       .then((data) => {
         const next = data?.form?.settings?.shortDescription;
         if (typeof next === "string" && next.trim()) setHeaderText(next);
       })
       .catch(() => setHeaderText(DEFAULT_DEMO_FORM.settings.shortDescription));
-  }, [open]);
+  }, [open, slug]);
 
   return (
     <AnimatePresence>
@@ -56,7 +56,7 @@ export function DemoModal({ open, onClose }: { open: boolean; onClose: () => voi
               <p className="mt-1 pr-10 text-sm text-blue-100">{headerText}</p>
             </div>
 
-            <PublicForm slug="demo-request" source="demo-modal" />
+            <PublicForm slug={slug} source={`${slug}-modal`} />
           </motion.div>
         </motion.div>
       )}

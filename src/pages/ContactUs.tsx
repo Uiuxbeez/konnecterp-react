@@ -19,7 +19,7 @@ type Pill = { icon: string; label: string };
 export default function ContactUs() {
   const chrome = useSiteChrome();
   const { isDarkMode } = chrome;
-  const { sections, byType } = usePageSections("contact");
+  const { sections, page, byType } = usePageSections("contact");
   const hasSection = (type: string) => sections.some((section) => section.type === type);
   const heroContent = byType("product_hero");
   const contactContent = byType("contact_details");
@@ -31,8 +31,8 @@ export default function ContactUs() {
   const pills = (supportContent.pills as Pill[] | undefined) ?? [];
 
   useDocumentMeta(
-    "Contact Us | KonnectERP",
-    "Contact Konnect Analytics for ERP demos, product support, implementation discussions, and office details across India."
+    page?.metaTitle || "Contact Us | KonnectERP",
+    page?.metaDescription || "Contact Konnect Analytics for ERP demos, product support, implementation discussions, and office details across India."
   );
 
   return (
@@ -51,6 +51,7 @@ export default function ContactUs() {
         isMobileMenuOpen={chrome.isMobileMenuOpen}
         setIsMobileMenuOpen={chrome.setIsMobileMenuOpen}
         openDemo={chrome.openDemo}
+        openForm={chrome.openForm}
         overDarkBackground
       />
 
@@ -71,6 +72,7 @@ export default function ContactUs() {
           onPrimaryClick={() =>
             runCmsButtonAction(heroContent.primaryButtonAction, heroContent.primaryButtonHref, {
               openDemo: chrome.openDemo,
+              openForm: chrome.openForm,
               openVideo: chrome.openVideo,
             }, "demo_modal")
           }
@@ -205,7 +207,7 @@ export default function ContactUs() {
 
       <FooterSection content={footerContent} />
       <ScrollToTopButton show={chrome.showScrollTop} />
-      <DemoModal open={chrome.isDemoModalOpen} onClose={() => chrome.setIsDemoModalOpen(false)} />
+      <DemoModal open={chrome.isDemoModalOpen} onClose={() => chrome.setIsDemoModalOpen(false)} slug={chrome.activeFormSlug} />
       <VideoModal open={chrome.isVideoModalOpen} onClose={() => chrome.setIsVideoModalOpen(false)} />
     </div>
   );
