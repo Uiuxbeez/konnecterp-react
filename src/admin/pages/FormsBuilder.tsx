@@ -62,6 +62,7 @@ export default function FormsBuilder() {
     setError(null);
     try {
       const updated = await adminApi.updateForm(draft.id, {
+        slug: slugify(draft.slug),
         name: draft.name,
         title: draft.settings.title,
         shortDescription: draft.settings.shortDescription,
@@ -143,7 +144,7 @@ export default function FormsBuilder() {
                 </div>
                 <div className="grid gap-4 md:grid-cols-2">
                   <Field label="Form Name"><Input value={draft.name} onChange={(e) => setDraftField("name", e.target.value)} /></Field>
-                  <Field label="Slug"><Input value={draft.slug} disabled /></Field>
+                  <Field label="Slug"><Input value={draft.slug} onChange={(e) => setDraftField("slug", slugify(e.target.value))} /></Field>
                   <Field label="Popup Title"><Input value={draft.settings.title} onChange={(e) => setSetting("title", e.target.value)} /></Field>
                   <Field label="Submit Button"><Input value={draft.settings.submitButtonText} onChange={(e) => setSetting("submitButtonText", e.target.value)} /></Field>
                   <Field label="Popup Top Header Text"><Textarea value={draft.settings.shortDescription} onChange={(e) => setSetting("shortDescription", e.target.value)} /></Field>

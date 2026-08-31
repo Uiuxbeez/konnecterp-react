@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq, ne } from "drizzle-orm";
 import { db } from "../db/client";
 import { forms, leads } from "../db/schema";
 import { requireAuth } from "../auth";
@@ -134,6 +134,19 @@ adminFormsRouter.patch("/forms/:id", async (req, res) => {
   const id = Number(req.params.id);
   const body = req.body ?? {};
   const patch: Record<string, unknown> = { updatedAt: new Date() };
+  if (typeof body.slug === "string") {
+    const slug = body.slug.trim();
+    if (!SLUG_RE.test(slug)) {
+      res.status(400).json({ error: "Slug must be lowercase letters, numbers, and hyphens only" });
+      return;
+    }
+    const [duplicate] = await db.select().from(forms).where(and(eq(forms.slug, slug), ne(forms.id, id)));
+    if (duplicate) {
+      res.status(409).json({ error: "Another form already uses this slug" });
+      return;
+    }
+    patch.slug = slug;
+  }
   if (typeof body.name === "string") patch.name = body.name.trim();
   if (typeof body.title === "string") patch.title = body.title.trim();
   if (typeof body.shortDescription === "string") patch.shortDescription = body.shortDescription;

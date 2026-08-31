@@ -160,6 +160,7 @@ export const adminApi = {
     fields: AdminFormField[];
   }) => request<AdminForm>("/api/admin/forms", { method: "POST", body: JSON.stringify(data) }),
   updateForm: (id: number, data: Partial<{
+    slug: string;
     name: string;
     title: string;
     shortDescription: string;
