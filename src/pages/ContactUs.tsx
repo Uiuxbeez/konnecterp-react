@@ -129,6 +129,8 @@ export default function ContactUs() {
                     <a
                       key={item.label}
                       href={item.href}
+                      target="_blank"
+                      rel="noreferrer"
                       aria-label={item.label}
                       className="flex h-9 w-9 items-center justify-center rounded-full border border-orange-400 text-[#0B1F4A] transition-colors hover:bg-orange-500 hover:text-white dark:text-white"
                     >
