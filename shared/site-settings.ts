@@ -4,6 +4,12 @@ export interface FooterSocialLink {
   visible?: boolean;
 }
 
+export interface FooterBottomLink {
+  label: string;
+  href: string;
+  visible?: boolean;
+}
+
 export type HeaderCtaAction = "demo_modal" | "custom_form_modal" | "link";
 
 export interface HeaderCtaButton {
@@ -23,6 +29,7 @@ export interface SiteSettings {
     copyright: string;
     socialLinks: FooterSocialLink[];
     footerMenuHrefs: string[];
+    bottomLinks: FooterBottomLink[];
   };
   whatsapp: {
     enabled: boolean;
@@ -54,6 +61,11 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
     tagline: "The intelligent cloud ERP platform that helps ambitious companies scale their operations efficiently.",
     copyright: "© 2026 KonnectERP. All rights reserved.",
     footerMenuHrefs: ["#products", "#industries", "#customers", "#resources", "/about-us"],
+    bottomLinks: [
+      { label: "Privacy Policy", href: "/privacy-policy", visible: true },
+      { label: "Terms of Service", href: "/terms-and-conditions", visible: true },
+      { label: "Security", href: "#", visible: true },
+    ],
     socialLinks: [
       { label: "Facebook", href: "#", visible: true },
       { label: "LinkedIn", href: "#", visible: true },

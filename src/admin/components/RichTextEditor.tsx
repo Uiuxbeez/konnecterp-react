@@ -6,6 +6,20 @@ function hasHtml(value: string) {
   return /<\/?[a-z][\s\S]*>/i.test(value);
 }
 
+function hasEscapedHtml(value: string) {
+  return /&lt;\/?[a-z][\s\S]*?&gt;/i.test(value);
+}
+
+function decodeHtmlEntities(value: string) {
+  return value
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/&amp;/gi, "&");
+}
+
 function textToHtml(value: string) {
   return value
     .split(/\r?\n/)
@@ -26,7 +40,7 @@ export function RichTextEditor({
   useEffect(() => {
     const editor = editorRef.current;
     if (!editor || value === lastValueRef.current) return;
-    const html = hasHtml(value) ? value : textToHtml(value);
+    const html = hasEscapedHtml(value) ? decodeHtmlEntities(value) : hasHtml(value) ? value : textToHtml(value);
     editor.innerHTML = html;
     lastValueRef.current = value;
   }, [value]);
@@ -51,6 +65,16 @@ export function RichTextEditor({
     const href = window.prompt("Enter link URL");
     if (!href?.trim()) return;
     command("createLink", href.trim());
+  };
+
+  const handlePaste = (event: React.ClipboardEvent<HTMLDivElement>) => {
+    const plainText = event.clipboardData.getData("text/plain");
+    if (!hasHtml(plainText) && !hasEscapedHtml(plainText)) return;
+
+    event.preventDefault();
+    const html = hasEscapedHtml(plainText) ? decodeHtmlEntities(plainText) : plainText;
+    document.execCommand("insertHTML", false, html);
+    sync();
   };
 
   return (
@@ -95,7 +119,8 @@ export function RichTextEditor({
         aria-multiline="true"
         onInput={sync}
         onBlur={sync}
-        className="min-h-32 px-3 py-2.5 text-sm leading-6 text-slate-800 outline-none empty:before:text-slate-400 empty:before:content-['Start_typing...'] [&_a]:font-semibold [&_a]:text-[#F97316] [&_a]:underline [&_a]:underline-offset-4 [&_h2]:mb-3 [&_h2]:mt-5 [&_h2]:text-xl [&_h2]:font-bold [&_h3]:mb-2 [&_h3]:mt-4 [&_h3]:text-lg [&_h3]:font-bold [&_ol]:list-decimal [&_ol]:pl-5 [&_p]:my-2 [&_ul]:list-disc [&_ul]:pl-5"
+        onPaste={handlePaste}
+        className="min-h-32 px-3 py-2.5 text-sm leading-6 text-slate-800 outline-none empty:before:text-slate-400 empty:before:content-['Start_typing...'] [&_a]:font-semibold [&_a]:text-[#F97316] [&_a]:underline [&_a]:underline-offset-4 [&_h1]:mb-4 [&_h1]:mt-5 [&_h1]:text-2xl [&_h1]:font-bold [&_h2]:mb-3 [&_h2]:mt-5 [&_h2]:text-xl [&_h2]:font-bold [&_h3]:mb-2 [&_h3]:mt-4 [&_h3]:text-lg [&_h3]:font-bold [&_h4]:mb-2 [&_h4]:mt-4 [&_h4]:text-base [&_h4]:font-bold [&_h5]:mb-2 [&_h5]:mt-3 [&_h5]:text-sm [&_h5]:font-bold [&_h6]:mb-2 [&_h6]:mt-3 [&_h6]:text-xs [&_h6]:font-bold [&_h6]:uppercase [&_ol]:list-decimal [&_ol]:pl-5 [&_p]:my-2 [&_section]:my-3 [&_ul]:list-disc [&_ul]:pl-5"
         suppressContentEditableWarning
       />
     </div>

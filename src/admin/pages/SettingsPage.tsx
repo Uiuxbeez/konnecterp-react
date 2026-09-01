@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import type React from "react";
 import { Plus, Save, Trash2 } from "lucide-react";
 import { AdminShell } from "../components/AdminShell";
-import { adminApi, type AdminForm } from "../lib/admin-api";
+import { adminApi, type AdminForm, type AdminPage } from "../lib/admin-api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,7 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
-import { DEFAULT_SITE_SETTINGS, type FooterSocialLink, type HeaderCtaAction, type SiteSettings } from "@shared/site-settings";
+import { DEFAULT_SITE_SETTINGS, type FooterBottomLink, type FooterSocialLink, type HeaderCtaAction, type SiteSettings } from "@shared/site-settings";
 import type { MenuGroup } from "@/lib/nav";
 
 function emptySocialLink(): FooterSocialLink {
@@ -21,6 +21,7 @@ export default function SettingsPage() {
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [navigation, setNavigation] = useState<MenuGroup[]>([]);
   const [forms, setForms] = useState<AdminForm[]>([]);
+  const [pages, setPages] = useState<AdminPage[]>([]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
@@ -31,11 +32,12 @@ export default function SettingsPage() {
   const footerMenuHrefs = useMemo(() => new Set(footer.footerMenuHrefs), [footer.footerMenuHrefs]);
 
   useEffect(() => {
-    Promise.all([adminApi.getSettings(), adminApi.getNavigation(), adminApi.listForms()])
-      .then(([settingsRes, navigationRes, formsRes]) => {
+    Promise.all([adminApi.getSettings(), adminApi.getNavigation(), adminApi.listForms(), adminApi.listPages()])
+      .then(([settingsRes, navigationRes, formsRes, pagesRes]) => {
         setSettings(settingsRes.settings);
         setNavigation(navigationRes.navigation);
         setForms(formsRes.forms);
+        setPages(pagesRes.pages);
       })
       .catch((err) => setError(err instanceof Error ? err.message : "Failed to load settings"));
   }, []);
@@ -70,6 +72,12 @@ export default function SettingsPage() {
   const updateSocialLink = (index: number, patch: Partial<FooterSocialLink>) => {
     patchFooter({
       socialLinks: footer.socialLinks.map((link, i) => i === index ? { ...link, ...patch } : link),
+    });
+  };
+
+  const updateBottomLink = (index: number, patch: Partial<FooterBottomLink>) => {
+    patchFooter({
+      bottomLinks: footer.bottomLinks.map((link, i) => i === index ? { ...link, ...patch } : link),
     });
   };
 
@@ -204,6 +212,45 @@ export default function SettingsPage() {
                 <Field label="Copyright Text">
                   <Input value={footer.copyright} onChange={(e) => patchFooter({ copyright: e.target.value })} />
                 </Field>
+              </div>
+            </section>
+
+            <section className="rounded-xl border border-slate-200 bg-white p-5">
+              <div className="mb-5">
+                <h2 className="text-lg font-bold text-slate-900">Footer Bottom Links</h2>
+                <p className="mt-1 text-xs text-slate-400">Show, hide, rename, and assign pages for Privacy Policy, Terms, and Security links.</p>
+              </div>
+
+              <div className="space-y-3">
+                {footer.bottomLinks.map((link, index) => (
+                  <div key={`${link.label}-${index}`} className="grid gap-3 rounded-lg border border-slate-200 p-4 md:grid-cols-[1fr_1.35fr_1.35fr_110px]">
+                    <Field label="Link Label">
+                      <Input value={link.label} onChange={(e) => updateBottomLink(index, { label: e.target.value })} placeholder="Privacy Policy" />
+                    </Field>
+                    <Field label="Assign Page">
+                      <Select value={link.href} onValueChange={(value) => updateBottomLink(index, { href: value })}>
+                        <SelectTrigger>
+                          <SelectValue placeholder={pages.length ? "Select page" : "No pages available"} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {pages.map((page) => (
+                            <SelectItem key={page.id} value={page.path}>
+                              {page.title} ({page.path})
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </Field>
+                    <Field label="Custom Path / URL">
+                      <Input value={link.href} onChange={(e) => updateBottomLink(index, { href: e.target.value })} placeholder="/privacy-policy or https://..." />
+                    </Field>
+                    <Field label="Visibility">
+                      <label className="flex h-10 items-center gap-2 text-xs font-semibold text-slate-600">
+                        <Switch checked={link.visible !== false} onCheckedChange={(checked) => updateBottomLink(index, { visible: checked })} /> Show
+                      </label>
+                    </Field>
+                  </div>
+                ))}
               </div>
             </section>
 

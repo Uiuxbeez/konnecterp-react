@@ -1,6 +1,6 @@
 import { useNavigation } from "@/lib/useNavigation";
 import { useSiteSettings } from "@/lib/useSiteSettings";
-import type { FooterSocialLink } from "@shared/site-settings";
+import type { FooterBottomLink, FooterSocialLink } from "@shared/site-settings";
 
 export interface FooterContent {
   tagline: string;
@@ -34,6 +34,7 @@ export function FooterSection({ content }: { content: FooterContent }) {
   const settings = useSiteSettings();
   const footer = settings.footer;
   const socialLinks = footer.socialLinks.filter((link: FooterSocialLink) => link.visible !== false && link.href);
+  const bottomLinks = (footer.bottomLinks ?? []).filter((link: FooterBottomLink) => link.visible !== false && link.href);
   const footerNavigation = navigation.filter((group) => footer.footerMenuHrefs.includes(group.href));
 
   return (
@@ -78,8 +79,8 @@ export function FooterSection({ content }: { content: FooterContent }) {
         <div className="border-t border-white/[0.07] py-5 flex flex-col sm:flex-row justify-between items-center gap-3">
           <p className="text-slate-500 text-xs">{footer.copyright || content.copyright}</p>
           <div className="flex gap-6">
-            {["Privacy Policy", "Terms of Service", "Security"].map((link) => (
-              <a key={link} href="#" className="text-slate-500 text-xs hover:text-white transition-colors">{link}</a>
+            {bottomLinks.map((link) => (
+              <a key={`${link.label}-${link.href}`} href={link.href} className="text-slate-500 text-xs hover:text-white transition-colors">{link.label}</a>
             ))}
           </div>
         </div>

@@ -5,6 +5,7 @@ import { siteSettings } from "../db/schema";
 import { requireAuth } from "../auth";
 import {
   DEFAULT_SITE_SETTINGS,
+  type FooterBottomLink,
   type FooterSocialLink,
   type HeaderCtaAction,
   type HeaderCtaButton,
@@ -17,6 +18,18 @@ export const publicSettingsRouter = Router();
 export const adminSettingsRouter = Router();
 
 function normalizeSocialLink(value: unknown): FooterSocialLink | null {
+  if (!value || typeof value !== "object") return null;
+  const link = value as Record<string, unknown>;
+  if (typeof link.label !== "string" || typeof link.href !== "string") return null;
+
+  return {
+    label: link.label.trim(),
+    href: link.href.trim() || "#",
+    visible: link.visible !== false,
+  };
+}
+
+function normalizeBottomLink(value: unknown): FooterBottomLink | null {
   if (!value || typeof value !== "object") return null;
   const link = value as Record<string, unknown>;
   if (typeof link.label !== "string" || typeof link.href !== "string") return null;
@@ -64,6 +77,9 @@ function normalizeSettings(value: unknown): SiteSettings {
   const footerMenuHrefs = Array.isArray(footer.footerMenuHrefs)
     ? footer.footerMenuHrefs.filter((href): href is string => typeof href === "string").map((href) => href.trim()).filter(Boolean)
     : DEFAULT_SITE_SETTINGS.footer.footerMenuHrefs;
+  const bottomLinks = Array.isArray(footer.bottomLinks)
+    ? footer.bottomLinks.map(normalizeBottomLink).filter((link): link is FooterBottomLink => link !== null && link.label.length > 0)
+    : DEFAULT_SITE_SETTINGS.footer.bottomLinks;
 
   return {
     header: {
@@ -74,6 +90,7 @@ function normalizeSettings(value: unknown): SiteSettings {
       copyright: typeof footer.copyright === "string" ? footer.copyright : DEFAULT_SITE_SETTINGS.footer.copyright,
       socialLinks,
       footerMenuHrefs,
+      bottomLinks,
     },
     whatsapp: {
       enabled: typeof whatsapp.enabled === "boolean" ? whatsapp.enabled : DEFAULT_SITE_SETTINGS.whatsapp.enabled,
