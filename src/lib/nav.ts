@@ -44,8 +44,9 @@ export const MENU_GROUPS: MenuGroup[] = [
     href: "#customers",
     description: "Proof points from real customer success and client experiences.",
     items: [
-      { label: "Case Studies", href: "#customers" },
-      { label: "Testimonials", href: "#customers" },
+      { label: "Clients", href: "/clients" },
+      { label: "Case Studies", href: "/case-studies" },
+      { label: "Testimonials", href: "/testimonials" },
     ],
   },
   {

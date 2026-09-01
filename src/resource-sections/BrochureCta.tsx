@@ -24,12 +24,13 @@ const fadeInUp = {
 };
 
 export function BrochureCta({ content, ctx }: { content: BrochureCtaContent; ctx: SectionCtx }) {
+  const { isDarkMode } = ctx;
   const hasFile = Boolean(content.fileUrl?.trim());
   const buttonHref = content.buttonHref?.trim() || content.fileUrl;
   const shouldRenderLink = isCmsButtonVisible(content.buttonVisible) && Boolean(buttonHref.trim()) && (content.buttonAction === "link" || (!content.buttonAction && hasFile));
 
   return (
-    <section className="py-20 md:py-28 bg-white">
+    <section className={`py-20 md:py-28 ${isDarkMode ? 'bg-[#080E1D]' : 'bg-white'}`}>
       <div className="container mx-auto px-4 max-w-5xl">
         <motion.div
           initial="hidden"

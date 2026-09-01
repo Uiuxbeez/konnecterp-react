@@ -64,6 +64,14 @@ export const PAGE_TEMPLATES: Record<string, PageTemplateDef> = {
     sectionTypes: ["product_hero", "trusted_companies", "case_studies_grid", "footer"],
     pathPrefix: "",
   },
+  clients: {
+    key: "clients",
+    name: "Clients Page",
+    description:
+      "A standard inner page with an editable client logo grid. Use this to add, remove, and reorder client logos from Page Builder.",
+    sectionTypes: ["product_hero", "client_logo_grid", "footer"],
+    pathPrefix: "",
+  },
   testimonials: {
     key: "testimonials",
     name: "Testimonials Page",

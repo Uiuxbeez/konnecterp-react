@@ -131,6 +131,28 @@ const CORE_BUILDER_PAGES: Array<{
     },
   },
   {
+    slug: "clients",
+    title: "Clients",
+    template: "clients",
+    sectionContent: {
+      product_hero: {
+        breadcrumbLabel: "Clients",
+        eyebrow: "Our Clients",
+        title: "Trusted by",
+        highlight: "Businesses Across India",
+        subhead: "A growing network of companies use KonnectERP to simplify operations and gain real-time control.",
+        description:
+          "Explore a dynamic client logo grid managed from the Page Builder. Add new client logos anytime and present them as clean cards instead of a scrolling strip.",
+        primaryButtonText: "Request Demo",
+        primaryButtonVisible: true,
+        primaryButtonAction: "demo_modal",
+        primaryButtonHref: "",
+        secondaryButtonText: "",
+        secondaryButtonVisible: false,
+      },
+    },
+  },
+  {
     slug: "testimonials",
     title: "Testimonials",
     template: "testimonials",
@@ -226,6 +248,73 @@ const CORE_BUILDER_PAGES: Array<{
       },
     },
   },
+  {
+    slug: "implementation-methodology",
+    title: "Implementation Methodology",
+    template: "methodology",
+    sectionContent: {
+      product_hero: {
+        breadcrumbLabel: "Implementation Methodology",
+        eyebrow: "Implementation Methodology",
+        title: "Faster ERP Implementation.",
+        highlight: "Clearer Adoption. Better Results.",
+        subhead: "Konnect ERP follows a structured implementation methodology supported by Konnect One, our implementation support app.",
+        description:
+          "From project kickoff to go-live and post-implementation support, every milestone, requirement, task, and update stays visible and coordinated.",
+        primaryButtonText: "Implement with Confidence",
+        primaryButtonVisible: true,
+        primaryButtonAction: "demo_modal",
+        primaryButtonHref: "",
+        secondaryButtonText: "",
+        secondaryButtonVisible: false,
+      },
+      methodology_cycle: {
+        eyebrow: "Powered by Konnect One",
+        title: "Implementation",
+        highlight: "Visibility",
+        description:
+          "Konnect One provides implementation visibility throughout the ERP journey. Every milestone, requirement, task, and update stays visible and coordinated.",
+        centerLabel: "Konnect One",
+        steps: [
+          { icon: "ClipboardList", title: "Track Milestones", description: "Track implementation milestones, pending requirements, and project progress in one place." },
+          { icon: "Users", title: "Assign Responsibilities", description: "Assign coordinators, responsibilities, and ownership so every team knows the next action." },
+          { icon: "Activity", title: "Monitor Adoption", description: "Monitor user activity, adoption, licenses, subscriptions, and post-go-live activities." },
+          { icon: "MessageCircle", title: "Centralize Communication", description: "Centralize client-Konnect communication from kickoff through go-live and support." },
+        ],
+      },
+      methodology_stages: {
+        eyebrow: "Our Implementation Process",
+        title: "Our Implementation",
+        highlight: "Process",
+        description: "Konnect ERP follows a structured implementation methodology supported by Konnect One, our implementation support app.",
+        stages: [
+          { icon: "Server", title: "Account Setup", items: ["Set up your ERP environment and implementation requirements."] },
+          { icon: "Rocket", title: "Project Kick-Off", items: ["Align teams, timelines, responsibilities, and implementation goals."] },
+          { icon: "Network", title: "Business Process Mapping", items: ["Understand and map your business workflows for the ERP."] },
+          { icon: "Settings", title: "System Setup & Configuration", items: ["Configure the system based on approved processes and requirements."] },
+          { icon: "GraduationCap", title: "Key User Training", items: ["Train key users for effective system adoption."] },
+          { icon: "ClipboardCheck", title: "User Acceptance Testing", items: ["Validate processes, reports, print formats, and workflows before go-live."] },
+          { icon: "CheckCircle2", title: "Go-Live & Hypercare", items: ["Launch the system with dedicated support for a smooth transition."] },
+        ],
+      },
+      methodology_packages: {
+        eyebrow: "Business Impact",
+        title: "From Implementation",
+        highlight: "to Adoption",
+        description: "Plan -> Prepare -> Assign -> Track -> Go-Live. Konnect One helps teams stay aligned, informed, and ready at every stage of ERP implementation.",
+        buttonText: "Implement with Confidence",
+        buttonVisible: true,
+        buttonAction: "demo_modal",
+        buttonHref: "",
+        packages: [
+          { icon: "Zap", text: "Faster Adoption" },
+          { icon: "Eye", text: "Greater Transparency" },
+          { icon: "Rocket", text: "Smoother Go-Live" },
+          { icon: "Headphones", text: "Continuous Support" },
+        ],
+      },
+    },
+  },
 ];
 
 async function seedSectionsForPage(pageId: number, template: string, sectionContent?: SectionContentOverrides) {
@@ -271,10 +360,29 @@ export async function ensureCoreBuilderPages() {
         const content = row.content as Record<string, unknown>;
         return content.title === "ERP Software Built for" || content.eyebrow === "01 · ERP for SMEs";
       });
+    const hasStaleMethodologyContent =
+      corePage.slug === "implementation-methodology" &&
+      rows.some((row) => {
+        if (!["product_hero", "methodology_cycle", "methodology_stages", "methodology_packages"].includes(row.type)) {
+          return false;
+        }
+        if (typeof row.content !== "object" || row.content === null || Array.isArray(row.content)) {
+          return false;
+        }
+
+        const content = row.content as Record<string, unknown>;
+        return (
+          content.title === "Agile Development" ||
+          content.centerLabel === "Agile Methodology" ||
+          content.highlight === "Packages" ||
+          content.title === "Konnect ERP"
+        );
+      });
     const needsRepair =
       existing.template !== corePage.template ||
       expectedTypes.some((type) => !currentTypes.includes(type)) ||
-      hasStaleTestimonialsHero;
+      hasStaleTestimonialsHero ||
+      hasStaleMethodologyContent;
 
     if (!needsRepair) continue;
 

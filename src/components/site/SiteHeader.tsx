@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence, type MotionValue } from 'framer-motion';
-import { ChevronRight, Menu, X, Monitor, Moon, Sun, Handshake } from 'lucide-react';
+import { ChevronDown, ChevronRight, Menu, X, Monitor, Moon, Sun, Handshake } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { runCmsButtonAction } from '@/lib/cms-button-actions';
 import { getMenuColumnClass, getMenuColumns, MEGA_MENU_THRESHOLD } from '@/lib/nav';
@@ -59,6 +59,12 @@ export function SiteHeader({
   const navigation = useNavigation();
   const settings = useSiteSettings();
   const headerCtas = settings.header.ctas;
+  const mobileDemoCta =
+    headerCtas.find((cta) => cta.enabled && cta.text.toLowerCase().includes('demo')) ??
+    headerCtas.find((cta) => cta.enabled && cta.style === 'primary') ??
+    headerCtas.find((cta) => cta.enabled);
+  const mobileDrawerCtas = headerCtas.filter((cta) => cta.enabled && cta !== mobileDemoCta);
+  const [expandedMobileMenus, setExpandedMobileMenus] = useState<Set<string>>(new Set());
   const handleHeaderCtaClick = (cta: HeaderCtaButton) => {
     runCmsButtonAction(
       cta.action,
@@ -66,6 +72,13 @@ export function SiteHeader({
       { openDemo, openForm, openVideo: () => {} },
       'demo_modal',
     );
+  };
+  const toggleMobileMenu = (label: string) => {
+    setExpandedMobileMenus((current) => {
+      const next = new Set(current);
+      next.has(label) ? next.delete(label) : next.add(label);
+      return next;
+    });
   };
 
   return (
@@ -172,6 +185,25 @@ export function SiteHeader({
         </div>
       </motion.header>
 
+      {mobileDemoCta && !isMobileMenuOpen && (
+        <button
+          type="button"
+          aria-label={mobileDemoCta.text}
+          onClick={() => handleHeaderCtaClick(mobileDemoCta)}
+          className="fixed right-2 top-[42%] z-40 inline-flex h-36 w-10 -translate-y-1/2 flex-col items-center justify-center gap-2 overflow-hidden rounded-full border border-white/25 bg-gradient-to-b from-[#FF8A1F] via-[#F97316] to-[#EA580C] text-white shadow-[0_16px_34px_rgba(15,23,42,0.22),0_8px_22px_rgba(249,115,22,0.32)] transition-transform hover:-translate-y-1/2 hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-[#F97316]/40 lg:hidden"
+        >
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white">
+            <ChevronRight className="h-3.5 w-3.5 rotate-180" />
+          </span>
+          <span
+            className="whitespace-nowrap text-[11px] font-extrabold leading-none tracking-wide"
+            style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}
+          >
+            {mobileDemoCta.text}
+          </span>
+        </button>
+      )}
+
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -187,60 +219,103 @@ export function SiteHeader({
                 <X className="w-6 h-6" />
               </button>
             </div>
-            <div className="p-4 flex flex-col gap-4 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto p-4">
+              <div className="mb-5 rounded-2xl border border-border bg-muted/40 p-3">
+                <div className="mb-3">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Theme</p>
+                  <div className="flex items-center gap-2 rounded-full border border-border bg-background p-1">
+                    {THEME_OPTIONS.map(({ mode, icon, label }) => (
+                      <button
+                        key={mode}
+                        onClick={() => setThemeMode(mode)}
+                        className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
+                          themeMode === mode
+                            ? 'bg-[#0B1F4A] text-white shadow-sm dark:bg-white dark:text-[#0B1220]'
+                            : 'text-muted-foreground hover:text-foreground'
+                        }`}
+                      >
+                        {icon}{label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                {mobileDrawerCtas.length > 0 && (
+                  <div className="grid gap-2">
+                    {mobileDrawerCtas.map((cta, index) => (
+                      <Button
+                        key={`${cta.style}-${index}`}
+                        variant={cta.style === 'secondary' ? 'outline' : 'default'}
+                        className={`w-full justify-center ${cta.style === 'secondary' ? 'gap-2' : ''}`}
+                        onClick={() => { setIsMobileMenuOpen(false); handleHeaderCtaClick(cta); }}
+                      >
+                        {cta.style === 'secondary' && <Handshake className="w-4 h-4" />}
+                        {cta.text}
+                      </Button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <nav className="flex flex-col gap-1">
               <a
                 href="/"
-                className="text-left text-lg font-medium text-foreground py-2 border-b border-border"
+                className="text-left text-base font-semibold text-foreground py-3 border-b border-border"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Home
               </a>
-              {navigation.map((group) => (
-                <div key={group.label} className="border-b border-border pb-3">
-                  <a href={group.href} className="block text-lg font-medium text-foreground py-2" onClick={() => setIsMobileMenuOpen(false)}>
-                    {group.label}
-                  </a>
-                  <div className="grid gap-1 pl-3">
-                    {group.items.map((item) => (
-                      <a key={item.label} href={item.href} className="py-1.5 text-sm text-muted-foreground" onClick={() => setIsMobileMenuOpen(false)}>
-                        {item.label}
+              {navigation.map((group) => {
+                const isExpanded = expandedMobileMenus.has(group.label);
+                return (
+                  <div key={group.label} className="border-b border-border">
+                    <div className="flex items-center gap-2">
+                      <a
+                        href={group.href}
+                        className="flex-1 py-3 text-base font-semibold text-foreground"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {group.label}
                       </a>
-                    ))}
+                      {group.items.length > 0 && (
+                        <button
+                          type="button"
+                          aria-expanded={isExpanded}
+                          aria-label={`Toggle ${group.label} submenu`}
+                          onClick={() => toggleMobileMenu(group.label)}
+                          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                        >
+                          <ChevronDown className={`h-4 w-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                        </button>
+                      )}
+                    </div>
+                    <AnimatePresence initial={false}>
+                      {isExpanded && group.items.length > 0 && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="grid gap-1 pb-3 pl-3">
+                            {group.items.map((item) => (
+                              <a
+                                key={item.label}
+                                href={item.href}
+                                className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                              >
+                                {item.label}
+                              </a>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
-                </div>
-              ))}
-              <div className="pt-2 pb-1">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-2">Theme</p>
-                <div className="flex items-center gap-2 rounded-full border border-border bg-muted p-1">
-                  {THEME_OPTIONS.map(({ mode, icon, label }) => (
-                    <button
-                      key={mode}
-                      onClick={() => setThemeMode(mode)}
-                      className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
-                        themeMode === mode
-                          ? 'bg-background text-foreground shadow-sm'
-                          : 'text-muted-foreground hover:text-foreground'
-                      }`}
-                    >
-                      {icon}{label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div className="pt-2 flex flex-col gap-3">
-                <Button variant="outline" className="w-full justify-center" onClick={() => setIsMobileMenuOpen(false)}>Log In</Button>
-                {headerCtas.filter((cta) => cta.enabled).map((cta, index) => (
-                  <Button
-                    key={`${cta.style}-${index}`}
-                    variant={cta.style === 'secondary' ? 'outline' : 'default'}
-                    className="w-full justify-center"
-                    onClick={() => { setIsMobileMenuOpen(false); handleHeaderCtaClick(cta); }}
-                  >
-                    {cta.style === 'secondary' && <Handshake className="w-4 h-4" />}
-                    {cta.text}
-                  </Button>
-                ))}
-              </div>
+                );
+              })}
+              </nav>
             </div>
           </motion.div>
         )}

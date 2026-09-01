@@ -15,6 +15,7 @@ import { ProductOutcomes, type ProductOutcomesContent } from "@/product-sections
 import { ProductCta, type ProductCtaContent } from "@/product-sections/ProductCta";
 import { ContactSection, type ContactContent } from "@/sections/ContactSection";
 import { TrustedCompanies, type TrustedCompaniesContent } from "@/sections/TrustedCompanies";
+import { ClientLogoGrid, type ClientLogoGridContent } from "@/sections/ClientLogoGrid";
 import { CaseStudiesGrid, type CaseStudiesGridContent } from "@/sections/CaseStudiesGrid";
 import { TestimonialCollage, type TestimonialCollageContent } from "@/sections/TestimonialCollage";
 import { TestimonialCards, type TestimonialCardsContent } from "@/sections/TestimonialCards";
@@ -56,6 +57,8 @@ function renderStandardSection(section: PageSection, ctx: SectionCtx, byType: (t
       return <ContactSection key={section.id} content={byType("contact") as unknown as ContactContent} ctx={ctx} />;
     case "trusted_companies":
       return <TrustedCompanies key={section.id} content={byType("trusted_companies") as unknown as TrustedCompaniesContent} ctx={ctx} />;
+    case "client_logo_grid":
+      return <ClientLogoGrid key={section.id} content={byType("client_logo_grid") as unknown as ClientLogoGridContent} ctx={ctx} />;
     case "case_studies_grid":
       return <CaseStudiesGrid key={section.id} content={byType("case_studies_grid") as unknown as CaseStudiesGridContent} ctx={ctx} />;
     case "testimonial_cards":

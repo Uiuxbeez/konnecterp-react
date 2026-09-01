@@ -29,6 +29,7 @@ function renderIndustrySection(section: PageSection, ctx: SectionCtx, byType: (t
         <IndustryChallengesBenefits
           key={section.id}
           content={byType('industry_challenges_benefits') as unknown as IndustryChallengesBenefitsContent}
+          ctx={ctx}
         />
       );
     case 'product_cta':
