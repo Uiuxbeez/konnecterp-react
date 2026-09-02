@@ -91,6 +91,7 @@ export function PublicForm({
           captchaB: captcha.b,
           captchaAnswer,
           source,
+          pageUrl: typeof window !== "undefined" ? window.location.href : "",
         }),
       });
       const body = await res.json().catch(() => ({}));

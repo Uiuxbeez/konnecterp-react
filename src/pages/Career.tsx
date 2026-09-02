@@ -198,7 +198,7 @@ export default function Career() {
                             </div>
                           )}
 
-                          <a href={job.applyHref || "mailto:sales@konnectbi.com"} className="mt-6 inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#F97316] px-5 text-sm font-bold text-white">
+                          <a href={job.applyHref || "mailto:hr@konnectbi.com"} className="mt-6 inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#F97316] px-5 text-sm font-bold text-white">
                             {job.applyText || "Apply Now"} <Send className="h-4 w-4" />
                           </a>
                         </div>

@@ -75,6 +75,7 @@ export const forms = pgTable("forms", {
   successTitle: text("success_title").notNull().default("Thank you"),
   successMessage: text("success_message").notNull().default("We have received your submission."),
   antiSpamEnabled: boolean("anti_spam_enabled").notNull().default(true),
+  emailRecipient: text("email_recipient").notNull().default("sales@konnectbi.com"),
   fields: jsonb("fields").notNull().default(sql`'[]'::jsonb`),
   status: text("status").notNull().default("active"),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),

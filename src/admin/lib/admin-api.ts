@@ -78,6 +78,7 @@ export interface AdminForm {
     successTitle: string;
     successMessage: string;
     antiSpamEnabled: boolean;
+    emailRecipient: string;
   };
 }
 
@@ -161,6 +162,7 @@ export const adminApi = {
     successTitle: string;
     successMessage: string;
     antiSpamEnabled: boolean;
+    emailRecipient: string;
     fields: AdminFormField[];
   }) => request<AdminForm>("/api/admin/forms", { method: "POST", body: JSON.stringify(data) }),
   updateForm: (id: number, data: Partial<{
@@ -172,6 +174,7 @@ export const adminApi = {
     successTitle: string;
     successMessage: string;
     antiSpamEnabled: boolean;
+    emailRecipient: string;
     fields: AdminFormField[];
   }>) => request<AdminForm>(`/api/admin/forms/${id}`, { method: "PATCH", body: JSON.stringify(data) }),
   deleteForm: (id: number) => request<void>(`/api/admin/forms/${id}`, { method: "DELETE" }),

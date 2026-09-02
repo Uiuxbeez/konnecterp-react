@@ -16,6 +16,7 @@ export interface FormSettings {
   successTitle: string;
   successMessage: string;
   antiSpamEnabled: boolean;
+  emailRecipient?: string;
 }
 
 export interface FormDefinitionContent {
@@ -31,6 +32,7 @@ export const DEFAULT_DEMO_FORM: FormDefinitionContent = {
     successTitle: "You're all set!",
     successMessage: "We've received your request. Our team will contact you within 24 hours.",
     antiSpamEnabled: true,
+    emailRecipient: "sales@konnectbi.com",
   },
   fields: [
     { id: "name", label: "Full Name", type: "text", placeholder: "Rajesh Kumar", required: true },
