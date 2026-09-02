@@ -46,6 +46,9 @@ export function usePageSections(slug: string) {
   useEffect(() => {
     let cancelled = false;
     let is404 = false;
+    setLoading(true);
+    setSections(null);
+    setPage(null);
     setNotFound(false);
     const url = apiUrl(isPreview() ? `/api/admin/pages/${slug}/sections` : `/api/public/pages/${slug}`);
 
@@ -92,5 +95,5 @@ export function usePageSections(slug: string) {
     return { ...fallback, ...(match?.content ?? {}) };
   };
 
-  return { sections: sections ?? FALLBACK_SECTIONS, page, loading, notFound, byType };
+  return { sections: sections ?? (loading ? [] : FALLBACK_SECTIONS), page, loading, notFound, byType };
 }

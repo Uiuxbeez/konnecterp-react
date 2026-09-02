@@ -36,6 +36,9 @@ export interface SiteSettings {
     phone: string;
     message: string;
   };
+  forms: {
+    autoPopupDelaySeconds: number;
+  };
 }
 
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
@@ -78,5 +81,8 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
     enabled: true,
     phone: "919843111651",
     message: "Hi KonnectERP team, I would like to know more about your ERP solutions.",
+  },
+  forms: {
+    autoPopupDelaySeconds: 20,
   },
 };

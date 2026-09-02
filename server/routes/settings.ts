@@ -64,6 +64,8 @@ function normalizeSettings(value: unknown): SiteSettings {
   const header = settings.header && typeof settings.header === "object" ? settings.header as Record<string, unknown> : {};
   const footer = settings.footer && typeof settings.footer === "object" ? settings.footer as Record<string, unknown> : {};
   const whatsapp = settings.whatsapp && typeof settings.whatsapp === "object" ? settings.whatsapp as Record<string, unknown> : {};
+  const formsSettings = settings.forms && typeof settings.forms === "object" ? settings.forms as Record<string, unknown> : {};
+  const popupDelay = Number(formsSettings.autoPopupDelaySeconds);
   const rawHeaderCtas = Array.isArray(header.ctas) ? header.ctas : null;
   const headerCtas = rawHeaderCtas
     ? DEFAULT_SITE_SETTINGS.header.ctas.map((fallback, index) => normalizeHeaderCta(rawHeaderCtas[index], fallback))
@@ -96,6 +98,11 @@ function normalizeSettings(value: unknown): SiteSettings {
       enabled: typeof whatsapp.enabled === "boolean" ? whatsapp.enabled : DEFAULT_SITE_SETTINGS.whatsapp.enabled,
       phone: typeof whatsapp.phone === "string" ? whatsapp.phone.trim() : DEFAULT_SITE_SETTINGS.whatsapp.phone,
       message: typeof whatsapp.message === "string" ? whatsapp.message : DEFAULT_SITE_SETTINGS.whatsapp.message,
+    },
+    forms: {
+      autoPopupDelaySeconds: Number.isFinite(popupDelay)
+        ? Math.max(0, Math.min(300, Math.round(popupDelay)))
+        : DEFAULT_SITE_SETTINGS.forms.autoPopupDelaySeconds,
     },
   };
 }

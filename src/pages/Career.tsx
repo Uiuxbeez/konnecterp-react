@@ -6,6 +6,7 @@ import { PageHero } from "@/components/site/PageHero";
 import { DemoModal } from "@/components/site/DemoModal";
 import { VideoModal } from "@/components/site/VideoModal";
 import { ScrollToTopButton } from "@/components/site/ScrollToTopButton";
+import { PageLoadingState } from "@/components/site/PageLoadingState";
 import { FooterSection, type FooterContent } from "@/sections/FooterSection";
 import { RichText } from "@/components/site/RichText";
 import { getIcon } from "@/sections/shared";
@@ -31,7 +32,7 @@ type CareerJob = {
 export default function Career() {
   const chrome = useSiteChrome();
   const { isDarkMode } = chrome;
-  const { sections, page, byType } = usePageSections("career");
+  const { sections, page, byType, loading } = usePageSections("career");
   const hasSection = (type: string) => sections.some((section) => section.type === type);
   const heroContent = byType("product_hero");
   const rolesContent = byType("career_roles");
@@ -65,6 +66,9 @@ export default function Career() {
         overDarkBackground
       />
 
+      {loading ? (
+        <PageLoadingState />
+      ) : (
       <main>
         {hasSection("product_hero") && (
         <PageHero
@@ -224,6 +228,7 @@ export default function Career() {
         </section>
         )}
       </main>
+      )}
 
       <FooterSection content={footerContent} />
       <ScrollToTopButton show={chrome.showScrollTop} />

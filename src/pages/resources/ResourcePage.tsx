@@ -9,6 +9,7 @@ import { FooterSection, type FooterContent } from '@/sections/FooterSection';
 import { ScrollToTopButton } from '@/components/site/ScrollToTopButton';
 import { DemoModal } from '@/components/site/DemoModal';
 import { VideoModal } from '@/components/site/VideoModal';
+import { PageLoadingState } from '@/components/site/PageLoadingState';
 import { AgileCycle, type AgileCycleContent } from '@/resource-sections/AgileCycle';
 import { MethodologyStages, type MethodologyStagesContent } from '@/resource-sections/MethodologyStages';
 import { MethodologyPackages, type MethodologyPackagesContent } from '@/resource-sections/MethodologyPackages';
@@ -51,7 +52,7 @@ export default function ResourcePage() {
   const chrome = useSiteChrome();
   const { isDarkMode, openDemo } = chrome;
 
-  const { sections, page, notFound, byType } = usePageSections(slug ?? '');
+  const { sections, page, notFound, byType, loading } = usePageSections(slug ?? '');
   const { byType: byHomeType } = usePageSections('home');
   const footerContent = byHomeType('footer') as unknown as FooterContent;
 
@@ -87,25 +88,31 @@ export default function ResourcePage() {
         overDarkBackground
       />
 
-      <PageHero
-        breadcrumb={[
-          { label: 'Home', href: '/' },
-          { label: 'Resources', href: '/#resources' },
-          { label: pageTitle },
-        ]}
-        eyebrow={heroContent.eyebrow}
-        title={heroContent.title}
-        highlight={heroContent.highlight}
-        subhead={heroContent.subhead}
-        description={heroContent.description}
-        primaryButtonText={heroContent.primaryButtonText}
-        heroImage={heroContent.heroImage}
-        heroImageCropX={heroContent.heroImageCropX}
-        heroImageCropY={heroContent.heroImageCropY}
-        onPrimaryClick={openDemo}
-      />
+      {loading ? (
+        <PageLoadingState />
+      ) : (
+        <>
+          <PageHero
+            breadcrumb={[
+              { label: 'Home', href: '/' },
+              { label: 'Resources', href: '/#resources' },
+              { label: pageTitle },
+            ]}
+            eyebrow={heroContent.eyebrow}
+            title={heroContent.title}
+            highlight={heroContent.highlight}
+            subhead={heroContent.subhead}
+            description={heroContent.description}
+            primaryButtonText={heroContent.primaryButtonText}
+            heroImage={heroContent.heroImage}
+            heroImageCropX={heroContent.heroImageCropX}
+            heroImageCropY={heroContent.heroImageCropY}
+            onPrimaryClick={openDemo}
+          />
 
-      {bodySections.map((section) => renderResourceSection(section, sectionCtx, byType))}
+          {bodySections.map((section) => renderResourceSection(section, sectionCtx, byType))}
+        </>
+      )}
 
       <FooterSection content={footerContent} />
 

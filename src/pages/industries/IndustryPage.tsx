@@ -8,6 +8,7 @@ import { FooterSection, type FooterContent } from '@/sections/FooterSection';
 import { ScrollToTopButton } from '@/components/site/ScrollToTopButton';
 import { DemoModal } from '@/components/site/DemoModal';
 import { VideoModal } from '@/components/site/VideoModal';
+import { PageLoadingState } from '@/components/site/PageLoadingState';
 import { IndustryHero, type IndustryHeroContent } from '@/industry-sections/IndustryHero';
 import { IndustryFlow, type IndustryFlowContent } from '@/industry-sections/IndustryFlow';
 import { IndustryChallengesBenefits, type IndustryChallengesBenefitsContent } from '@/industry-sections/IndustryChallengesBenefits';
@@ -44,7 +45,7 @@ export default function IndustryPage() {
   const chrome = useSiteChrome();
   const { isDarkMode } = chrome;
 
-  const { sections, page, notFound, byType } = usePageSections(slug ?? '');
+  const { sections, page, notFound, byType, loading } = usePageSections(slug ?? '');
   const { byType: byHomeType } = usePageSections('home');
   const footerContent = byHomeType('footer') as unknown as FooterContent;
 
@@ -95,14 +96,20 @@ export default function IndustryPage() {
         overDarkBackground
       />
 
-      <IndustryHero
-        content={heroContent}
-        breadcrumb={[{ label: 'Home', href: '/' }, { label: 'Industries', href: '/#industries' }, { label: pageTitle }]}
-        onPrimaryClick={handlePrimaryButtonClick}
-        onSecondaryClick={handleSecondaryButtonClick}
-      />
+      {loading ? (
+        <PageLoadingState />
+      ) : (
+        <>
+          <IndustryHero
+            content={heroContent}
+            breadcrumb={[{ label: 'Home', href: '/' }, { label: 'Industries', href: '/#industries' }, { label: pageTitle }]}
+            onPrimaryClick={handlePrimaryButtonClick}
+            onSecondaryClick={handleSecondaryButtonClick}
+          />
 
-      {bodySections.map((section) => renderIndustrySection(section, sectionCtx, byType))}
+          {bodySections.map((section) => renderIndustrySection(section, sectionCtx, byType))}
+        </>
+      )}
 
       <FooterSection content={footerContent} />
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useScroll, useTransform } from 'framer-motion';
+import { useSiteSettings } from '@/lib/useSiteSettings';
 
 export type ThemeMode = 'light' | 'dark' | 'auto';
 
@@ -11,6 +12,7 @@ function isNightTime(d: Date) {
 // Shared header/theme/modal/scroll-to-top state used by every page (Home and
 // inner pages) so they look and behave identically.
 export function useSiteChrome({ autoOpenDemo = true }: { autoOpenDemo?: boolean } = {}) {
+  const settings = useSiteSettings();
   const { scrollY } = useScroll();
   const headerBlur = useTransform(scrollY, [0, 60], [0, 14]);
   const headerBackdropFilter = useTransform(headerBlur, v => `blur(${v}px)`);
@@ -50,9 +52,11 @@ export function useSiteChrome({ autoOpenDemo = true }: { autoOpenDemo?: boolean 
 
   useEffect(() => {
     if (!autoOpenDemo) return undefined;
-    const timer = setTimeout(() => openDemo(), 20000);
+    const delayMs = Math.max(0, Math.min(300, settings.forms.autoPopupDelaySeconds)) * 1000;
+    if (delayMs <= 0) return undefined;
+    const timer = setTimeout(() => openDemo(), delayMs);
     return () => clearTimeout(timer);
-  }, [autoOpenDemo]);
+  }, [autoOpenDemo, settings.forms.autoPopupDelaySeconds]);
 
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const openVideo = () => setIsVideoModalOpen(true);

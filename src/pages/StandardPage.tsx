@@ -9,6 +9,7 @@ import { FooterSection, type FooterContent } from "@/sections/FooterSection";
 import { ScrollToTopButton } from "@/components/site/ScrollToTopButton";
 import { DemoModal } from "@/components/site/DemoModal";
 import { VideoModal } from "@/components/site/VideoModal";
+import { PageLoadingState } from "@/components/site/PageLoadingState";
 import { ProductIntro, type ProductIntroContent } from "@/product-sections/ProductIntro";
 import { ProductOperations, type ProductOperationsContent } from "@/product-sections/ProductOperations";
 import { ProductOutcomes, type ProductOutcomesContent } from "@/product-sections/ProductOutcomes";
@@ -77,7 +78,7 @@ export default function StandardPage() {
   const chrome = useSiteChrome();
   const { isDarkMode } = chrome;
 
-  const { sections, page, notFound, byType } = usePageSections(slug ?? "");
+  const { sections, page, notFound, byType, loading } = usePageSections(slug ?? "");
   const { byType: byHomeType } = usePageSections("home");
   const footerContent = byHomeType("footer") as unknown as FooterContent;
 
@@ -116,25 +117,31 @@ export default function StandardPage() {
         overDarkBackground
       />
 
-      <PageHero
-        breadcrumb={[
-          { label: "Home", href: "/" },
-          { label: heroContent.breadcrumbLabel || pageTitle },
-        ]}
-        eyebrow={heroContent.eyebrow}
-        title={heroContent.title}
-        highlight={heroContent.highlight}
-        subhead={heroContent.subhead}
-        description={heroContent.description}
-        primaryButtonText={heroContent.primaryButtonText}
-        showPrimaryButton={isCmsButtonVisible(heroContent.primaryButtonVisible)}
-        heroImage={heroContent.heroImage}
-        heroImageCropX={heroContent.heroImageCropX}
-        heroImageCropY={heroContent.heroImageCropY}
-        onPrimaryClick={handlePrimaryButtonClick}
-      />
+      {loading ? (
+        <PageLoadingState />
+      ) : (
+        <>
+          <PageHero
+            breadcrumb={[
+              { label: "Home", href: "/" },
+              { label: heroContent.breadcrumbLabel || pageTitle },
+            ]}
+            eyebrow={heroContent.eyebrow}
+            title={heroContent.title}
+            highlight={heroContent.highlight}
+            subhead={heroContent.subhead}
+            description={heroContent.description}
+            primaryButtonText={heroContent.primaryButtonText}
+            showPrimaryButton={isCmsButtonVisible(heroContent.primaryButtonVisible)}
+            heroImage={heroContent.heroImage}
+            heroImageCropX={heroContent.heroImageCropX}
+            heroImageCropY={heroContent.heroImageCropY}
+            onPrimaryClick={handlePrimaryButtonClick}
+          />
 
-      {bodySections.map((section) => renderStandardSection(section, sectionCtx, byType))}
+          {bodySections.map((section) => renderStandardSection(section, sectionCtx, byType))}
+        </>
+      )}
 
       <FooterSection content={footerContent} />
 

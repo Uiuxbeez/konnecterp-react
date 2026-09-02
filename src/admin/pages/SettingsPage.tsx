@@ -29,6 +29,7 @@ export default function SettingsPage() {
   const footer = settings?.footer ?? DEFAULT_SITE_SETTINGS.footer;
   const header = settings?.header ?? DEFAULT_SITE_SETTINGS.header;
   const whatsapp = settings?.whatsapp ?? DEFAULT_SITE_SETTINGS.whatsapp;
+  const formsSettings = settings?.forms ?? DEFAULT_SITE_SETTINGS.forms;
   const footerMenuHrefs = useMemo(() => new Set(footer.footerMenuHrefs), [footer.footerMenuHrefs]);
 
   useEffect(() => {
@@ -65,6 +66,14 @@ export default function SettingsPage() {
     setSettings((prev) => ({
       ...(prev ?? DEFAULT_SITE_SETTINGS),
       whatsapp: { ...(prev?.whatsapp ?? DEFAULT_SITE_SETTINGS.whatsapp), ...patch },
+    }));
+    setSaved(false);
+  };
+
+  const patchForms = (patch: Partial<SiteSettings["forms"]>) => {
+    setSettings((prev) => ({
+      ...(prev ?? DEFAULT_SITE_SETTINGS),
+      forms: { ...(prev?.forms ?? DEFAULT_SITE_SETTINGS.forms), ...patch },
     }));
     setSaved(false);
   };
@@ -197,6 +206,31 @@ export default function SettingsPage() {
                     </div>
                   </div>
                 ))}
+              </div>
+            </section>
+
+            <section className="rounded-xl border border-slate-200 bg-white p-5">
+              <div className="mb-5">
+                <h2 className="text-lg font-bold text-slate-900">Popup Form Timing</h2>
+                <p className="mt-1 text-xs text-slate-400">Set when the automatic demo popup should open on public pages.</p>
+              </div>
+              <div className="grid gap-4 md:grid-cols-2">
+                <Field label="Auto Popup Delay">
+                  <div className="flex items-center gap-3">
+                    <Input
+                      type="number"
+                      min={0}
+                      max={300}
+                      value={formsSettings.autoPopupDelaySeconds}
+                      onChange={(e) => {
+                        const value = Number(e.target.value);
+                        patchForms({ autoPopupDelaySeconds: Number.isFinite(value) ? value : 0 });
+                      }}
+                    />
+                    <span className="shrink-0 text-xs font-semibold text-slate-500">seconds</span>
+                  </div>
+                  <p className="mt-1 text-xs leading-5 text-slate-400">Use 0 to stop the automatic popup. Maximum 300 seconds.</p>
+                </Field>
               </div>
             </section>
 

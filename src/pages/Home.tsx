@@ -18,6 +18,7 @@ import { SiteHeader } from '@/components/site/SiteHeader';
 import { DemoModal } from '@/components/site/DemoModal';
 import { VideoModal } from '@/components/site/VideoModal';
 import { ScrollToTopButton } from '@/components/site/ScrollToTopButton';
+import { PageLoadingState } from '@/components/site/PageLoadingState';
 
 function renderManagedSection(section: PageSection, ctx: SectionCtx, byType: (t: SectionType) => Record<string, unknown>) {
   switch (section.type) {
@@ -48,7 +49,7 @@ export default function Home() {
   const chrome = useSiteChrome();
   const { isDarkMode, openDemo, openForm, openVideo } = chrome;
 
-  const { sections, page, byType } = usePageSections('home');
+  const { sections, page, byType, loading } = usePageSections('home');
   const heroContent = byType('hero') as unknown as HeroContent;
   const homeTitle = [heroContent.title, heroContent.highlight].filter(Boolean).join(' ');
   useDocumentMeta(page?.metaTitle || (homeTitle ? `${homeTitle} | KonnectERP` : undefined), page?.metaDescription || heroContent.description);
@@ -76,7 +77,7 @@ export default function Home() {
         openForm={chrome.openForm}
       />
 
-      {bodySections.map((section) => renderManagedSection(section, sectionCtx, byType))}
+      {loading ? <PageLoadingState /> : bodySections.map((section) => renderManagedSection(section, sectionCtx, byType))}
 
       <FooterSection content={footerContent} />
 
