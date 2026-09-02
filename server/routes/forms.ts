@@ -33,7 +33,7 @@ function cleanFields(value: unknown): FormFieldDef[] {
       const id = typeof f.id === "string" ? f.id.trim() : "";
       const label = typeof f.label === "string" ? f.label.trim() : "";
       const type = typeof f.type === "string" ? f.type : "text";
-      if (!id || !label || !["text", "email", "tel", "textarea", "select"].includes(type)) return null;
+      if (!id || !label || !["text", "email", "tel", "textarea", "select", "file"].includes(type)) return null;
       return {
         id,
         label,
@@ -105,6 +105,7 @@ function validateSubmission(fields: FormFieldDef[], values: Record<string, unkno
     if (value && field.type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) errors[field.id] = "Enter a valid email";
     if (value && field.type === "tel" && !/^\+?[\d\s\-()]{7,}$/.test(value)) errors[field.id] = "Enter a valid phone number";
     if (value && field.type === "select" && field.options?.length && !field.options.includes(value)) errors[field.id] = "Choose a valid option";
+    if (value && field.type === "file" && !/^https?:\/\/.+\/uploads\/forms\/.+/i.test(value)) errors[field.id] = "Upload a valid file";
   }
   return errors;
 }

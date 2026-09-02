@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Spinner } from "@/components/ui/spinner";
 
-const FIELD_TYPES: AdminFormField["type"][] = ["text", "email", "tel", "textarea", "select"];
+const FIELD_TYPES: AdminFormField["type"][] = ["text", "email", "tel", "textarea", "select", "file"];
 
 function slugify(value: string) {
   return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
@@ -224,6 +224,11 @@ export default function FormsBuilder() {
                           placeholder="One option per line"
                           className="lg:col-span-5"
                         />
+                      )}
+                      {field.type === "file" && (
+                        <p className="rounded-lg bg-orange-50 px-3 py-2 text-xs font-medium leading-5 text-orange-700 lg:col-span-5">
+                          End users can upload PNG, JPG, WEBP, GIF, PDF, DOC, or DOCX files up to 10 MB.
+                        </p>
                       )}
                     </div>
                   ))}

@@ -61,7 +61,7 @@ function buildFieldRows(fields: FormFieldDef[], values: Record<string, unknown>)
   return fields.map((field) => {
     const value = values[field.id];
     const displayValue = Array.isArray(value) ? value.join(", ") : String(value ?? "").trim();
-    return { label: field.label, value: displayValue || "-" };
+    return { label: field.label, value: displayValue || "-", type: field.type };
   });
 }
 
@@ -93,7 +93,7 @@ function renderHtml(input: FormEmailInput) {
                 ${summaryItems.length ? `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-bottom:22px;"><tr>${summaryItems.map(([label, value]) => `<td style="width:25%;padding:10px;background:#f8fafc;border:1px solid #e2e8f0;"><p style="margin:0 0 5px;font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;">${escapeHtml(label)}</p><p style="margin:0;font-size:13px;font-weight:700;color:#0b1f4a;word-break:break-word;">${escapeHtml(value)}</p></td>`).join("")}</tr></table>` : ""}
                 <h2 style="margin:0 0 12px;font-size:16px;color:#0b1f4a;">Submitted Details</h2>
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
-                  ${rows.map((row) => `<tr><td style="width:34%;padding:12px;border:1px solid #e2e8f0;background:#f8fafc;font-size:13px;font-weight:700;color:#334155;">${escapeHtml(row.label)}</td><td style="padding:12px;border:1px solid #e2e8f0;font-size:13px;line-height:1.6;color:#0f172a;white-space:pre-wrap;word-break:break-word;">${escapeHtml(row.value)}</td></tr>`).join("")}
+                  ${rows.map((row) => `<tr><td style="width:34%;padding:12px;border:1px solid #e2e8f0;background:#f8fafc;font-size:13px;font-weight:700;color:#334155;">${escapeHtml(row.label)}</td><td style="padding:12px;border:1px solid #e2e8f0;font-size:13px;line-height:1.6;color:#0f172a;white-space:pre-wrap;word-break:break-word;">${row.type === "file" && row.value !== "-" ? `<a href="${escapeHtml(row.value)}" style="color:#f97316;font-weight:700;text-decoration:underline;">Download uploaded file</a>` : escapeHtml(row.value)}</td></tr>`).join("")}
                 </table>
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-top:22px;border-collapse:collapse;">
                   <tr><td style="padding:10px 0;font-size:12px;color:#64748b;"><strong>Source:</strong> ${escapeHtml(input.source)}</td></tr>

@@ -1,4 +1,4 @@
-export type FormFieldType = "text" | "email" | "tel" | "textarea" | "select";
+export type FormFieldType = "text" | "email" | "tel" | "textarea" | "select" | "file";
 
 export interface FormFieldDef {
   id: string;

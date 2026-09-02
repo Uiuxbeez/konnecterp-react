@@ -13,7 +13,7 @@ import { usePageSections } from "@/lib/usePageSections";
 import { useSiteChrome } from "@/hooks/useSiteChrome";
 import { useDocumentMeta } from "@/hooks/useDocumentMeta";
 import { cn } from "@/lib/utils";
-import { isCmsButtonVisible, runCmsButtonAction } from "@/lib/cms-button-actions";
+import { isCmsButtonVisible, runCmsButtonAction, type CmsButtonAction } from "@/lib/cms-button-actions";
 
 type CareerStat = { icon: string; value: string; label: string };
 type CareerJob = {
@@ -24,6 +24,7 @@ type CareerJob = {
   responsibilities?: string[];
   requirements?: string[];
   applyText?: string;
+  applyAction?: CmsButtonAction;
   applyHref?: string;
 };
 
@@ -150,6 +151,9 @@ export default function Career() {
               <motion.div initial={{ opacity: 0, x: 18 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.08 }} className="space-y-4">
                 {jobs.map((job, index) => {
                   const open = openIndex === index;
+                  const applyAction = job.applyAction || "custom_form_modal";
+                  const legacyMailHref = typeof job.applyHref === "string" && job.applyHref.trim().toLowerCase().startsWith("mailto:");
+                  const applyHref = applyAction === "link" || !legacyMailHref ? job.applyHref : "";
 
                   return (
                     <div key={job.title} className={cn("overflow-hidden rounded-xl border bg-white transition-all dark:bg-white/5", open ? "border-orange-200 shadow-xl shadow-orange-100/60 dark:border-orange-500/40 dark:shadow-none" : "border-slate-200 shadow-sm dark:border-white/10")}>
@@ -198,9 +202,17 @@ export default function Career() {
                             </div>
                           )}
 
-                          <a href={job.applyHref || "mailto:hr@konnectbi.com"} className="mt-6 inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#F97316] px-5 text-sm font-bold text-white">
+                          <button
+                            type="button"
+                            onClick={() => runCmsButtonAction(applyAction, applyHref, {
+                              openDemo: chrome.openDemo,
+                              openForm: chrome.openForm,
+                              openVideo: chrome.openVideo,
+                            }, "custom_form_modal")}
+                            className="mt-6 inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#F97316] px-5 text-sm font-bold text-white transition hover:bg-[#EA580C]"
+                          >
                             {job.applyText || "Apply Now"} <Send className="h-4 w-4" />
-                          </a>
+                          </button>
                         </div>
                       )}
                     </div>

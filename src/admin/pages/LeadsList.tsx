@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
-import { Mail, Phone, User } from "lucide-react";
+import { Mail, Paperclip, Phone, User } from "lucide-react";
 import { AdminShell } from "../components/AdminShell";
 import { adminApi, type AdminLead } from "../lib/admin-api";
 import { Spinner } from "@/components/ui/spinner";
+
+function getLeadFiles(data: Record<string, unknown>) {
+  return Object.entries(data).flatMap(([key, value]) => {
+    if (typeof value !== "string" || !value.includes("/uploads/forms/")) return [];
+    return [{ key, url: value }];
+  });
+}
 
 export default function LeadsList() {
   const [leads, setLeads] = useState<AdminLead[] | null>(null);
@@ -44,27 +51,46 @@ export default function LeadsList() {
                   </tr>
                 </thead>
                 <tbody>
-                  {leads.map((lead) => (
-                    <tr key={lead.id} className="border-b border-slate-50 align-top last:border-0">
-                      <td className="px-5 py-4">
-                        <p className="flex items-center gap-2 font-bold text-slate-900"><User className="h-4 w-4 text-orange-500" /> {lead.name || "Unnamed Lead"}</p>
-                        {lead.company && <p className="mt-1 text-xs text-slate-500">{lead.company}</p>}
-                      </td>
-                      <td className="px-5 py-4">
-                        <p className="font-medium text-slate-800">{lead.formName}</p>
-                        <p className="mt-1 text-xs text-slate-400">{lead.source}</p>
-                      </td>
-                      <td className="px-5 py-4">
-                        {lead.email && <p className="flex items-center gap-2 text-slate-600"><Mail className="h-3.5 w-3.5 text-slate-400" /> {lead.email}</p>}
-                        {lead.phone && <p className="mt-1 flex items-center gap-2 text-slate-600"><Phone className="h-3.5 w-3.5 text-slate-400" /> {lead.phone}</p>}
-                        <details className="mt-2">
-                          <summary className="cursor-pointer text-xs font-semibold text-primary">View all fields</summary>
-                          <pre className="mt-2 max-w-md overflow-auto rounded-lg bg-slate-50 p-3 text-xs text-slate-600">{JSON.stringify(lead.data, null, 2)}</pre>
-                        </details>
-                      </td>
-                      <td className="px-5 py-4 text-slate-500">{new Date(lead.createdAt).toLocaleString()}</td>
-                    </tr>
-                  ))}
+                  {leads.map((lead) => {
+                    const files = getLeadFiles(lead.data);
+                    return (
+                      <tr key={lead.id} className="border-b border-slate-50 align-top last:border-0">
+                        <td className="px-5 py-4">
+                          <p className="flex items-center gap-2 font-bold text-slate-900"><User className="h-4 w-4 text-orange-500" /> {lead.name || "Unnamed Lead"}</p>
+                          {lead.company && <p className="mt-1 text-xs text-slate-500">{lead.company}</p>}
+                        </td>
+                        <td className="px-5 py-4">
+                          <p className="font-medium text-slate-800">{lead.formName}</p>
+                          <p className="mt-1 text-xs text-slate-400">{lead.source}</p>
+                        </td>
+                        <td className="px-5 py-4">
+                          {lead.email && <p className="flex items-center gap-2 text-slate-600"><Mail className="h-3.5 w-3.5 text-slate-400" /> {lead.email}</p>}
+                          {lead.phone && <p className="mt-1 flex items-center gap-2 text-slate-600"><Phone className="h-3.5 w-3.5 text-slate-400" /> {lead.phone}</p>}
+                          {files.length > 0 && (
+                            <div className="mt-2 space-y-1">
+                              {files.map((file) => (
+                                <a
+                                  key={`${lead.id}-${file.key}`}
+                                  href={file.url}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="flex items-center gap-1.5 text-xs font-semibold text-primary underline underline-offset-2"
+                                >
+                                  <Paperclip className="h-3.5 w-3.5" />
+                                  Download {file.key}
+                                </a>
+                              ))}
+                            </div>
+                          )}
+                          <details className="mt-2">
+                            <summary className="cursor-pointer text-xs font-semibold text-primary">View all fields</summary>
+                            <pre className="mt-2 max-w-md overflow-auto rounded-lg bg-slate-50 p-3 text-xs text-slate-600">{JSON.stringify(lead.data, null, 2)}</pre>
+                          </details>
+                        </td>
+                        <td className="px-5 py-4 text-slate-500">{new Date(lead.createdAt).toLocaleString()}</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

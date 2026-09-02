@@ -60,7 +60,7 @@ export type BlogPostInput = {
 export interface AdminFormField {
   id: string;
   label: string;
-  type: "text" | "email" | "tel" | "textarea" | "select";
+  type: "text" | "email" | "tel" | "textarea" | "select" | "file";
   placeholder?: string;
   required?: boolean;
   options?: string[];
