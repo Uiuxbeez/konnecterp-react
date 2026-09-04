@@ -29,6 +29,27 @@ function isPreview() {
   return typeof window !== "undefined" && new URLSearchParams(window.location.search).get("preview") === "1";
 }
 
+type PageSectionsResult = { page: PageInfo | null; sections: PageSection[] };
+
+const PAGE_CACHE_TTL_MS = 60_000;
+const pageCache = new Map<string, { expiresAt: number; data: PageSectionsResult }>();
+const pageRequests = new Map<string, Promise<PageSectionsResult>>();
+
+function mapPageSections(data: any) {
+  const rows = data.sections;
+  const mapped: PageSection[] = rows
+    .filter((s: any) => isPreview() || s.enabled !== false)
+    .sort((a: any, b: any) => (a.position ?? 0) - (b.position ?? 0))
+    .map((s: any) => ({
+      id: s.id,
+      type: s.type as SectionType,
+      name: s.name,
+      content: (isPreview() ? s.content : s.content) ?? {},
+    }));
+
+  return { page: data.page ?? null, sections: mapped.length > 0 ? mapped : FALLBACK_SECTIONS };
+}
+
 // Fetches the CMS-managed sections for a page. In preview mode (admin's draft
 // preview iframe) it reads the authenticated draft endpoint; otherwise it reads
 // the public published endpoint. Falls back to the hardcoded defaults (mirroring
@@ -50,9 +71,23 @@ export function usePageSections(slug: string) {
     setSections(null);
     setPage(null);
     setNotFound(false);
-    const url = apiUrl(isPreview() ? `/api/admin/pages/${slug}/sections` : `/api/public/pages/${slug}`);
+    const preview = isPreview();
+    const cacheKey = `${preview ? "preview" : "public"}:${slug}`;
+    const cached = preview ? null : pageCache.get(cacheKey);
+    if (cached && cached.expiresAt > Date.now()) {
+      setSections(cached.data.sections);
+      setPage(cached.data.page);
+      setLoading(false);
+      return () => {
+        cancelled = true;
+      };
+    }
 
-    fetch(url, { credentials: "include" })
+    const url = apiUrl(preview ? `/api/admin/pages/${slug}/sections` : `/api/public/pages/${slug}`);
+    const request = preview
+      ? null
+      : pageRequests.get(cacheKey);
+    const nextRequest = request ?? fetch(url, { credentials: "include" })
       .then((res) => {
         if (res.status === 404) {
           is404 = true;
@@ -63,19 +98,21 @@ export function usePageSections(slug: string) {
         return res.json();
       })
       .then((data) => {
+        const result = mapPageSections(data);
+        if (!preview) pageCache.set(cacheKey, { expiresAt: Date.now() + PAGE_CACHE_TTL_MS, data: result });
+        return result;
+      })
+      .finally(() => {
+        if (!preview) pageRequests.delete(cacheKey);
+      });
+
+    if (!preview && !request) pageRequests.set(cacheKey, nextRequest);
+
+    nextRequest
+      .then((data) => {
         if (cancelled) return;
-        const rows = isPreview() ? data.sections : data.sections;
-        const mapped: PageSection[] = rows
-          .filter((s: any) => isPreview() || s.enabled !== false)
-          .sort((a: any, b: any) => (a.position ?? 0) - (b.position ?? 0))
-          .map((s: any) => ({
-            id: s.id,
-            type: s.type as SectionType,
-            name: s.name,
-            content: (isPreview() ? s.content : s.content) ?? {},
-          }));
-        setSections(mapped.length > 0 ? mapped : FALLBACK_SECTIONS);
-        if (data.page) setPage(data.page);
+        setSections(data.sections);
+        setPage(data.page);
       })
       .catch(() => {
         if (!cancelled && !is404) setSections(FALLBACK_SECTIONS);

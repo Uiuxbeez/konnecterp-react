@@ -6,6 +6,8 @@ import { requireAuth } from "../auth";
 import { getVisibleNavigation, MENU_GROUPS, type MenuGroup } from "../../src/lib/nav";
 
 const NAVIGATION_KEY = "main";
+const PUBLIC_NAVIGATION_CACHE_TTL_MS = Number(process.env.PUBLIC_NAVIGATION_CACHE_TTL_MS ?? 60_000);
+let publicNavigationCache: { expiresAt: number; navigation: MenuGroup[] } | null = null;
 const LEGACY_HREFS: Record<string, string> = {
   "#about-us": "/about-us",
   "#career": "/career",
@@ -64,7 +66,16 @@ async function readNavigation() {
 }
 
 publicNavigationRouter.get("/navigation", async (_req, res) => {
-  res.json({ navigation: getVisibleNavigation(await readNavigation()) });
+  if (publicNavigationCache && publicNavigationCache.expiresAt > Date.now()) {
+    res.setHeader("Cache-Control", "public, max-age=30, stale-while-revalidate=120");
+    res.json({ navigation: publicNavigationCache.navigation });
+    return;
+  }
+
+  const navigation = getVisibleNavigation(await readNavigation());
+  publicNavigationCache = { expiresAt: Date.now() + PUBLIC_NAVIGATION_CACHE_TTL_MS, navigation };
+  res.setHeader("Cache-Control", "public, max-age=30, stale-while-revalidate=120");
+  res.json({ navigation });
 });
 
 adminNavigationRouter.use(requireAuth);
@@ -89,5 +100,6 @@ adminNavigationRouter.patch("/navigation", async (req, res) => {
     })
     .returning();
 
+  publicNavigationCache = null;
   res.json({ navigation: normalizeNavigation(row.menu) ?? navigation });
 });

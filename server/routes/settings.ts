@@ -13,6 +13,8 @@ import {
 } from "../../shared/site-settings";
 
 const SETTINGS_KEY = "site";
+const PUBLIC_SETTINGS_CACHE_TTL_MS = Number(process.env.PUBLIC_SETTINGS_CACHE_TTL_MS ?? 60_000);
+let publicSettingsCache: { expiresAt: number; settings: SiteSettings } | null = null;
 
 export const publicSettingsRouter = Router();
 export const adminSettingsRouter = Router();
@@ -113,7 +115,16 @@ async function readSettings() {
 }
 
 publicSettingsRouter.get("/settings", async (_req, res) => {
-  res.json({ settings: await readSettings() });
+  if (publicSettingsCache && publicSettingsCache.expiresAt > Date.now()) {
+    res.setHeader("Cache-Control", "public, max-age=30, stale-while-revalidate=120");
+    res.json({ settings: publicSettingsCache.settings });
+    return;
+  }
+
+  const settings = await readSettings();
+  publicSettingsCache = { expiresAt: Date.now() + PUBLIC_SETTINGS_CACHE_TTL_MS, settings };
+  res.setHeader("Cache-Control", "public, max-age=30, stale-while-revalidate=120");
+  res.json({ settings });
 });
 
 adminSettingsRouter.use(requireAuth);
@@ -133,5 +144,6 @@ adminSettingsRouter.patch("/settings", async (req, res) => {
     })
     .returning();
 
+  publicSettingsCache = null;
   res.json({ settings: normalizeSettings(row.value) });
 });

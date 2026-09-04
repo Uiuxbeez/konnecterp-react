@@ -9,9 +9,35 @@ import { ensureCoreBuilderPages } from "../lib/createPage";
 export const adminSectionsRouter = Router();
 export const publicSectionsRouter = Router();
 
+const CORE_PAGE_SLUGS = new Set(["about-us", "contact", "career", "case-studies", "testimonials", "faq"]);
+const PUBLIC_PAGE_CACHE_TTL_MS = Number(process.env.PUBLIC_PAGE_CACHE_TTL_MS ?? 60_000);
+const publicPageCache = new Map<string, { expiresAt: number; payload: unknown }>();
+let coreBuilderPagesReady = false;
+let coreBuilderPagesPromise: Promise<void> | null = null;
+
+async function ensureCoreBuilderPagesOnce() {
+  if (coreBuilderPagesReady) return;
+  coreBuilderPagesPromise ??= ensureCoreBuilderPages()
+    .then(() => {
+      coreBuilderPagesReady = true;
+    })
+    .finally(() => {
+      coreBuilderPagesPromise = null;
+    });
+  await coreBuilderPagesPromise;
+}
+
+function clearPublicPageCache(slug?: string) {
+  if (slug) {
+    publicPageCache.delete(slug);
+    return;
+  }
+  publicPageCache.clear();
+}
+
 async function getPageBySlug(slug: string) {
-  if (slug === "about-us" || slug === "contact" || slug === "career" || slug === "case-studies" || slug === "testimonials" || slug === "faq") {
-    await ensureCoreBuilderPages();
+  if (CORE_PAGE_SLUGS.has(slug)) {
+    await ensureCoreBuilderPagesOnce();
   }
   const [page] = await db.select().from(pages).where(eq(pages.slug, slug));
   return page ?? null;
@@ -93,11 +119,19 @@ adminSectionsRouter.post("/pages/:slug/publish", async (req, res) => {
     )
   );
   await db.update(pages).set({ updatedAt: new Date() }).where(eq(pages.id, page.id));
+  clearPublicPageCache(req.params.slug);
   res.json({ published: true, publishedAt: new Date().toISOString() });
 });
 
 // ── Public: published content only, enabled sections only ──────────────────
 publicSectionsRouter.get("/pages/:slug", async (req, res) => {
+  const cached = publicPageCache.get(req.params.slug);
+  if (cached && cached.expiresAt > Date.now()) {
+    res.setHeader("Cache-Control", "public, max-age=30, stale-while-revalidate=120");
+    res.json(cached.payload);
+    return;
+  }
+
   const page = await getPageBySlug(req.params.slug);
   if (!page) {
     res.status(404).json({ error: "Page not found" });
@@ -108,7 +142,7 @@ publicSectionsRouter.get("/pages/:slug", async (req, res) => {
     .from(sections)
     .where(and(eq(sections.pageId, page.id), eq(sections.enabled, true)))
     .orderBy(asc(sections.position));
-  res.json({
+  const payload = {
     page: {
       slug: page.slug,
       title: page.title,
@@ -120,5 +154,9 @@ publicSectionsRouter.get("/pages/:slug", async (req, res) => {
     sections: rows
       .filter((s) => s.publishedContent !== null)
       .map((s) => ({ id: s.id, type: s.type, name: s.name, content: s.publishedContent })),
-  });
+  };
+
+  publicPageCache.set(req.params.slug, { expiresAt: Date.now() + PUBLIC_PAGE_CACHE_TTL_MS, payload });
+  res.setHeader("Cache-Control", "public, max-age=30, stale-while-revalidate=120");
+  res.json(payload);
 });

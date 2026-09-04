@@ -2,20 +2,37 @@ import { useEffect, useState } from "react";
 import { apiUrl } from "@/lib/api-base";
 import { getVisibleNavigation, MENU_GROUPS, type MenuGroup } from "@/lib/nav";
 
+let cachedNavigation: MenuGroup[] | null = null;
+let navigationPromise: Promise<MenuGroup[]> | null = null;
+
+function loadNavigation() {
+  if (cachedNavigation) return Promise.resolve(cachedNavigation);
+  navigationPromise ??= fetch(apiUrl("/api/public/navigation"))
+    .then((res) => (res.ok ? res.json() : Promise.reject()))
+    .then((body: { navigation?: MenuGroup[] }) => {
+      cachedNavigation = Array.isArray(body.navigation) ? getVisibleNavigation(body.navigation) : getVisibleNavigation(MENU_GROUPS);
+      return cachedNavigation;
+    })
+    .catch(() => {
+      cachedNavigation = getVisibleNavigation(MENU_GROUPS);
+      return cachedNavigation;
+    })
+    .finally(() => {
+      navigationPromise = null;
+    });
+
+  return navigationPromise;
+}
+
 export function useNavigation() {
-  const [navigation, setNavigation] = useState<MenuGroup[]>(getVisibleNavigation(MENU_GROUPS));
+  const [navigation, setNavigation] = useState<MenuGroup[]>(cachedNavigation ?? getVisibleNavigation(MENU_GROUPS));
 
   useEffect(() => {
     let alive = true;
 
-    fetch(apiUrl("/api/public/navigation"))
-      .then((res) => (res.ok ? res.json() : Promise.reject()))
-      .then((body: { navigation?: MenuGroup[] }) => {
-        if (alive && Array.isArray(body.navigation)) setNavigation(getVisibleNavigation(body.navigation));
-      })
-      .catch(() => {
-        if (alive) setNavigation(getVisibleNavigation(MENU_GROUPS));
-      });
+    loadNavigation().then((next) => {
+      if (alive) setNavigation(next);
+    });
 
     return () => {
       alive = false;
