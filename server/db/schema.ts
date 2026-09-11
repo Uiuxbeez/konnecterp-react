@@ -1,4 +1,4 @@
-import { pgTable, serial, text, integer, jsonb, boolean, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, integer, jsonb, boolean, timestamp, uniqueIndex, index } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
 export const pages = pgTable("pages", {
@@ -27,7 +27,9 @@ export const sections = pgTable("sections", {
   // Snapshot copied from `content` whenever the page is published; the public site renders this.
   publishedContent: jsonb("published_content"),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
-});
+}, (table) => ({
+  pagePositionIdx: index("sections_page_position_idx").on(table.pageId, table.position),
+}));
 
 export const blogPosts = pgTable("blog_posts", {
   id: serial("id").primaryKey(),

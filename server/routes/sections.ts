@@ -36,11 +36,12 @@ function clearPublicPageCache(slug?: string) {
 }
 
 async function getPageBySlug(slug: string) {
-  if (CORE_PAGE_SLUGS.has(slug)) {
-    await ensureCoreBuilderPagesOnce();
-  }
   const [page] = await db.select().from(pages).where(eq(pages.slug, slug));
-  return page ?? null;
+  if (page || !CORE_PAGE_SLUGS.has(slug)) return page ?? null;
+
+  await ensureCoreBuilderPagesOnce();
+  const [createdPage] = await db.select().from(pages).where(eq(pages.slug, slug));
+  return createdPage ?? null;
 }
 
 // ── Admin: full draft content, including disabled sections ─────────────────

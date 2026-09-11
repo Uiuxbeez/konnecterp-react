@@ -163,6 +163,7 @@ export function PublicForm({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       onSubmit={submit}
+      style={{ colorScheme: "light" }}
       className={`${layout === "modal" ? "max-h-[64vh] overflow-y-auto" : ""} space-y-4 px-8 py-6`}
       noValidate
     >
@@ -212,7 +213,7 @@ export function PublicForm({
               onChange={(e) => setCaptchaAnswer(e.target.value)}
               placeholder="Enter the answer"
               aria-label={`Answer for ${captcha.a} plus ${captcha.b}`}
-              className="h-12 w-full rounded-lg border border-orange-200 bg-white px-3 text-sm outline-none transition-colors focus:border-[#F97316] focus:ring-2 focus:ring-[#F97316]/30"
+              className="h-12 w-full rounded-lg border border-orange-200 bg-white px-3 text-sm text-gray-900 placeholder:text-gray-500 outline-none transition-colors focus:border-[#F97316] focus:ring-2 focus:ring-[#F97316]/30"
             />
           </div>
           {errors.form && <p className="mt-1 text-xs text-red-500">{errors.form}</p>}
@@ -251,7 +252,7 @@ function FormField({
       {field.label} {field.required && <span className="text-red-500">*</span>}
     </label>
   );
-  const className = `w-full rounded-lg border px-3 py-2.5 text-sm outline-none transition-colors focus:border-[#F97316] focus:ring-2 focus:ring-[#F97316]/30 ${error ? "border-red-400 bg-red-50" : "border-gray-200 bg-gray-50"}`;
+  const className = `w-full rounded-lg border px-3 py-2.5 text-sm text-gray-900 placeholder:text-gray-500 outline-none transition-colors focus:border-[#F97316] focus:ring-2 focus:ring-[#F97316]/30 ${error ? "border-red-400 bg-red-50" : "border-gray-200 bg-gray-50"}`;
 
   return (
     <div>
@@ -261,8 +262,8 @@ function FormField({
       ) : field.type === "select" ? (
         <div className="relative">
           <select value={value} onChange={(e) => onChange(e.target.value)} className={`${className} appearance-none pr-8`}>
-            <option value="">{field.placeholder || `Select ${field.label}`}</option>
-            {(field.options ?? []).map((option) => <option key={option} value={option}>{option}</option>)}
+            <option value="" className="bg-gray-50 text-gray-900">{field.placeholder || `Select ${field.label}`}</option>
+            {(field.options ?? []).map((option) => <option key={option} value={option} className="bg-gray-50 text-gray-900">{option}</option>)}
           </select>
           <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400" />
         </div>
