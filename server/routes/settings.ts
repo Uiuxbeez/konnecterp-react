@@ -63,6 +63,7 @@ function normalizeHeaderCta(value: unknown, fallback: HeaderCtaButton): HeaderCt
 function normalizeSettings(value: unknown): SiteSettings {
   if (!value || typeof value !== "object") return DEFAULT_SITE_SETTINGS;
   const settings = value as Record<string, unknown>;
+  const analytics = settings.analytics && typeof settings.analytics === "object" ? settings.analytics as Record<string, unknown> : {};
   const header = settings.header && typeof settings.header === "object" ? settings.header as Record<string, unknown> : {};
   const footer = settings.footer && typeof settings.footer === "object" ? settings.footer as Record<string, unknown> : {};
   const whatsapp = settings.whatsapp && typeof settings.whatsapp === "object" ? settings.whatsapp as Record<string, unknown> : {};
@@ -88,6 +89,10 @@ function normalizeSettings(value: unknown): SiteSettings {
   return {
     header: {
       ctas: headerCtas,
+    },
+    analytics: {
+      enabled: analytics.enabled === true,
+      measurementId: typeof analytics.measurementId === "string" ? analytics.measurementId.trim().toUpperCase() : "",
     },
     footer: {
       tagline: typeof footer.tagline === "string" ? footer.tagline : DEFAULT_SITE_SETTINGS.footer.tagline,
@@ -135,6 +140,10 @@ adminSettingsRouter.get("/settings", async (_req, res) => {
 
 adminSettingsRouter.patch("/settings", async (req, res) => {
   const settings = normalizeSettings(req.body?.settings);
+  if ((settings.analytics.enabled || settings.analytics.measurementId) && !/^G-[A-Z0-9]+$/.test(settings.analytics.measurementId)) {
+    res.status(400).json({ error: "Enter a valid GA4 Measurement ID, such as G-XXXXXXXXXX." });
+    return;
+  }
   const [row] = await db
     .insert(siteSettings)
     .values({ key: SETTINGS_KEY, value: settings, updatedAt: new Date() })

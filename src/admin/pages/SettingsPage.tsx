@@ -134,6 +134,24 @@ export default function SettingsPage() {
         {settings && (
           <div className="mx-auto max-w-5xl space-y-5">
             <SeoSettings />
+            <section className="rounded-xl border border-slate-200 bg-white p-5 space-y-4">
+              <h2 className="text-lg font-bold text-slate-900">Google Analytics (GA4)</h2>
+              <div className="flex items-center gap-3">
+                <Switch id="ga-enabled" checked={settings.analytics?.enabled ?? false} onCheckedChange={(enabled) => {
+                  setSettings({ ...settings, analytics: { ...(settings.analytics ?? DEFAULT_SITE_SETTINGS.analytics), enabled } }); setSaved(false);
+                }} />
+                <Label htmlFor="ga-enabled">Enable Google Analytics tracking</Label>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="ga-id">GA4 Measurement ID</Label>
+                <Input id="ga-id" placeholder="G-XXXXXXXXXX" value={settings.analytics?.measurementId ?? ""} onChange={(event) => {
+                  setSettings({ ...settings, analytics: { ...(settings.analytics ?? DEFAULT_SITE_SETTINGS.analytics), measurementId: event.target.value.trim().toUpperCase() } }); setSaved(false);
+                }} />
+                <p className="text-sm text-slate-500">Find this under Google Analytics → Admin → Data streams → your website. Enter the G- ID; the website adds the tracking code automatically.</p>
+              </div>
+              <p className="text-sm text-slate-500">Click Save Settings at the top to apply. Public page visits and navigation are tracked; admin pages are excluded. Changes apply on the next page reload after the settings cache refreshes (up to a few minutes).</p>
+              <p className="text-sm text-slate-500">To avoid duplicate page views, turn off “Page changes based on browser history events” in your GA4 web stream’s Enhanced measurement → Page views → advanced settings. This website sends page views for navigation.</p>
+            </section>
             <section className="rounded-xl border border-slate-200 bg-white p-5">
               <div className="mb-5">
                 <h2 className="text-lg font-bold text-slate-900">Header CTA Buttons</h2>

@@ -27,6 +27,7 @@ import MenuBuilder from "@/admin/pages/MenuBuilder";
 import FormsBuilder from "@/admin/pages/FormsBuilder";
 import LeadsList from "@/admin/pages/LeadsList";
 import SettingsPage from "@/admin/pages/SettingsPage";
+import { GoogleAnalytics } from "@/components/site/GoogleAnalytics";
 
 const queryClient = new QueryClient();
 
@@ -112,6 +113,7 @@ function App() {
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
           <AuthProvider>
             <Router />
+            <GoogleAnalytics />
             <StickyWhatsapp />
           </AuthProvider>
         </WouterRouter>

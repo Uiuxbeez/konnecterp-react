@@ -21,6 +21,7 @@ export interface HeaderCtaButton {
 }
 
 export interface SiteSettings {
+  analytics: { enabled: boolean; measurementId: string };
   header: {
     ctas: HeaderCtaButton[];
   };
@@ -42,6 +43,7 @@ export interface SiteSettings {
 }
 
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
+  analytics: { enabled: false, measurementId: "" },
   header: {
     ctas: [
       {
