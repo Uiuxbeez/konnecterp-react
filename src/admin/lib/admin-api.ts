@@ -1,6 +1,7 @@
 import { apiUrl } from "@/lib/api-base";
 import type { MenuGroup } from "@/lib/nav";
 import type { SiteSettings } from "@shared/site-settings";
+import type { SeoFiles } from "@shared/seo";
 
 export interface AdminSection {
   id: number;
@@ -117,6 +118,9 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export const adminApi = {
+  getSeo: () => request<SeoFiles>("/api/admin/seo"),
+  generateSeo: (siteUrl: string, verification?: { filename: string; content: string }) =>
+    request<SeoFiles>("/api/admin/seo/generate", { method: "POST", body: JSON.stringify({ siteUrl, verification }) }),
   login: (username: string, password: string) =>
     request<{ username: string }>("/api/auth/login", { method: "POST", body: JSON.stringify({ username, password }) }),
   logout: () => request<void>("/api/auth/logout", { method: "POST" }),

@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Spinner } from "@/components/ui/spinner";
 import { DEFAULT_SITE_SETTINGS, type FooterBottomLink, type FooterSocialLink, type HeaderCtaAction, type SiteSettings } from "@shared/site-settings";
 import type { MenuGroup } from "@/lib/nav";
+import { SeoSettings } from "../components/SeoSettings";
 
 function emptySocialLink(): FooterSocialLink {
   return { label: "New Link", href: "#", visible: true };
@@ -132,6 +133,7 @@ export default function SettingsPage() {
 
         {settings && (
           <div className="mx-auto max-w-5xl space-y-5">
+            <SeoSettings />
             <section className="rounded-xl border border-slate-200 bg-white p-5">
               <div className="mb-5">
                 <h2 className="text-lg font-bold text-slate-900">Header CTA Buttons</h2>

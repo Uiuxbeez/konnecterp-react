@@ -11,6 +11,7 @@ import { adminBlogRouter, publicBlogRouter } from "./routes/blog";
 import { adminNavigationRouter, publicNavigationRouter } from "./routes/navigation";
 import { adminFormsRouter, publicFormsRouter } from "./routes/forms";
 import { adminSettingsRouter, publicSettingsRouter } from "./routes/settings";
+import { adminSeoRouter, publicSeoRouter } from "./routes/seo";
 
 const app = express();
 // Railway (and most PaaS hosts) inject PORT and expect the app to bind to it.
@@ -22,6 +23,8 @@ app.set("trust proxy", 1);
 app.use(cors({ origin: CLIENT_ORIGINS, credentials: true }));
 app.use(express.json({ limit: "2mb" }));
 app.use(cookieParser());
+app.use(publicSeoRouter);
+app.use("/api/admin", adminSeoRouter);
 app.use("/uploads", express.static(path.resolve(process.cwd(), "public", "uploads")));
 
 app.use("/api/auth", authRouter);

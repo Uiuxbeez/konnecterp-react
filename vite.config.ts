@@ -28,6 +28,10 @@ import { defineConfig } from "vite";
       allowedHosts: true,
       open: false,
       proxy: {
+        "^/(sitemap\\.xml|sitemap\\.html|robots\\.txt|google[a-zA-Z0-9_-]+\\.html)$": {
+          target: API_TARGET,
+          changeOrigin: true,
+        },
         "/api": {
           target: API_TARGET,
           changeOrigin: true,
