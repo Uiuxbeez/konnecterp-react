@@ -1,3 +1,4 @@
+import { imageAlt } from "@shared/image-alt";
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { isCmsButtonVisible, type CmsButtonAction } from '@/lib/cms-button-actions';
@@ -43,7 +44,7 @@ export function IndustryHero({
 
   return (
     <section className="relative overflow-hidden pt-32 pb-20 md:pt-40 md:pb-24 bg-[#080E1D]">
-      <img src={content.backgroundImage} alt="" className="absolute inset-0 w-full h-full object-cover" />
+      <img src={content.backgroundImage} alt={imageAlt(content, "backgroundImage", "")} className="absolute inset-0 w-full h-full object-cover" />
       {/* Dark on the left for text legibility, fading out so the photo reads clearly on the right */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#080E1D] via-[#080E1D]/90 via-45% to-[#080E1D]/10" />
       <div className="absolute inset-0 bg-gradient-to-t from-[#080E1D] via-transparent to-transparent" />
@@ -118,7 +119,7 @@ export function IndustryHero({
               <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-2xl">
                 <img
                   src={content.heroImage}
-                  alt=""
+                  alt={imageAlt(content, "heroImage", "")}
                   className="h-[360px] w-full object-cover"
                   style={{ objectPosition: `${content.heroImageCropX ?? 50}% ${content.heroImageCropY ?? 50}%` }}
                   loading="eager"

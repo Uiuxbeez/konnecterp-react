@@ -155,7 +155,7 @@ function FieldRenderer({
         </Select>
       );
     case "image":
-      return <ImageField value={value ?? ""} onChange={onChange} />;
+      return <ImageField value={value ?? ""} alt={parentContent?.[`${field.key}Alt`] ?? parentContent?.alt ?? ""} onChange={onChange} />;
     case "file":
       return (
         <ImageField

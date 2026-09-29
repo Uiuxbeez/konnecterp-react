@@ -1,5 +1,21 @@
 # KonnectERP Website
 
+## Image alt text
+
+Page Builder image fields now include an Alt Text field, including hero images,
+backgrounds, and nested cards. Existing alt fields are retained. Save and publish
+the section to apply its description to the public image. Leave alt text empty
+for decorative images. New image fields in the shared section definitions gain
+an alt field automatically; image renderers should use `imageAlt(content, key)`.
+Fixed site logos retain their existing `KonnectERP` description.
+
+Blog featured images also have an Alt Text input. Before restarting the updated
+backend on the VPS, run `npm run db:migrate` to apply migration
+`0010_blog_image_alt`. It preserves existing blog image descriptions using their
+post titles. Then build/deploy the frontend and restart `pm2 restart konnecterp`.
+
+Check coverage with `npx tsx --test shared/image-alt.test.ts`.
+
 ## Sitemaps and Search Console
 
 In **Admin > Settings > Sitemaps & Google Search Console**, enter the live website

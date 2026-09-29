@@ -1,3 +1,4 @@
+import { imageAlt } from "@shared/image-alt";
 import { motion } from 'framer-motion';
 import { RichText } from '@/components/site/RichText';
 import { getIcon, type SectionCtx } from '@/sections/shared';
@@ -36,7 +37,7 @@ export function ProductOutcomes({ content, ctx }: { content: ProductOutcomesCont
             variants={fadeInUp}
             className="lg:w-[42%] w-full relative rounded-2xl overflow-hidden min-h-[320px] lg:min-h-0"
           >
-            <img src={content.image} alt="" className="absolute inset-0 w-full h-full object-cover" />
+            <img src={content.image} alt={imageAlt(content, "image", "")} className="absolute inset-0 w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
           </motion.div>
 

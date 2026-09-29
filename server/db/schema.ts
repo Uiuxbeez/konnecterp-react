@@ -39,6 +39,7 @@ export const blogPosts = pgTable("blog_posts", {
   // Paragraphs separated by blank lines — rendered as <p> tags, same simplicity
   // level as the rest of the page-builder's textarea fields (no rich-text editor).
   content: text("content").notNull(),
+  featuredImageAlt: text("featured_image_alt").notNull().default(""),
   featuredImage: text("featured_image").notNull().default(""),
   tags: jsonb("tags").notNull().default(sql`'[]'::jsonb`),
   author: text("author").notNull().default("KonnectERP Team"),

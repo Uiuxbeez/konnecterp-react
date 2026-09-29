@@ -1,3 +1,4 @@
+import { imageAlt } from "@shared/image-alt";
 import { motion } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
 import { RichText } from "@/components/site/RichText";
@@ -29,7 +30,7 @@ export function Hero({ content, ctx }: { content: HeroContent; ctx: SectionCtx }
   return (
     <section className="relative flex flex-col overflow-hidden">
       <div className="absolute inset-0">
-        <img src={content.backgroundImage} alt="" className="w-full h-full object-cover" />
+        <img src={content.backgroundImage} alt={imageAlt(content, "backgroundImage", "")} className="w-full h-full object-cover" />
         <div
           className="absolute inset-0"
           style={{

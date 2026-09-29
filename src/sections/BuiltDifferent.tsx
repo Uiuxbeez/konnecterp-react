@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { imageAlt } from "@shared/image-alt";
 import { motion, useInView } from "framer-motion";
 import { RichText } from "@/components/site/RichText";
 import { InViewTextEffect, getIcon } from "@/sections/shared";
@@ -8,6 +9,7 @@ type Feature = { icon: string; title: string; description: string };
 type Stat = { value: number; suffix: string; label: string };
 
 export interface BuiltDifferentContent {
+  backgroundImage?: string;
   eyebrow: string;
   title: string;
   highlight: string;
@@ -67,8 +69,8 @@ export function BuiltDifferent({ content, isDarkMode }: { content: BuiltDifferen
         <div className="absolute inset-0 pointer-events-none select-none overflow-hidden" style={{ zIndex: 0 }}>
           <div className="absolute inset-0 flex items-center justify-center">
             <img
-              src="/images/global.svg"
-              alt=""
+              src={content.backgroundImage || "/images/global.svg"}
+              alt={imageAlt(content, "backgroundImage")}
               className={`w-full h-full object-cover object-top ${isDarkMode ? "opacity-70" : "opacity-20"}`}
             />
           </div>

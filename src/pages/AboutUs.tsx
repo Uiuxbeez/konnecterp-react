@@ -1,3 +1,4 @@
+import { imageAlt } from "@shared/image-alt";
 import { motion } from "framer-motion";
 import { MapPin } from "lucide-react";
 import { SiteHeader } from "@/components/site/SiteHeader";
@@ -90,6 +91,7 @@ export default function AboutUs() {
           description={(heroContent.description as string) || ""}
           primaryButtonText={(heroContent.primaryButtonText as string) || ""}
           showPrimaryButton={isCmsButtonVisible(heroContent.primaryButtonVisible)}
+          heroImageAlt={imageAlt(heroContent, "heroImage")}
           heroImage={heroContent.heroImage as string | undefined}
           heroImageCropX={heroContent.heroImageCropX as number | undefined}
           heroImageCropY={heroContent.heroImageCropY as number | undefined}
@@ -107,7 +109,7 @@ export default function AboutUs() {
         <section className="bg-white py-20 dark:bg-[#080E1D]">
           <div className="container mx-auto grid max-w-7xl gap-12 px-4 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
             <motion.div initial={{ opacity: 0, x: -18 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.55 }} className="relative min-h-[420px]">
-              <img src={(companyContent.image as string) || "/images/hero-meeting.jpg"} alt={(companyContent.imageAlt as string) || ""} className="absolute left-0 top-0 h-[330px] w-[78%] rounded-lg object-cover grayscale" />
+              <img src={(companyContent.image as string) || "/images/hero-meeting.jpg"} alt={imageAlt(companyContent, "image", (companyContent.imageAlt as string) || "")} className="absolute left-0 top-0 h-[330px] w-[78%] rounded-lg object-cover grayscale" />
               <div className="absolute bottom-0 right-0 w-[72%] rounded-lg border-4 border-white bg-[#F97316] p-8 shadow-2xl">
                 <img src="/images/konnect-logo.png" alt="KonnectERP" className="mx-auto h-14 w-auto brightness-0 invert" />
                 <div className="mt-6 grid grid-cols-3 gap-3 text-center text-white">
@@ -183,7 +185,7 @@ export default function AboutUs() {
                     {leader.photo?.trim() ? (
                       <img
                         src={leader.photo}
-                        alt={leader.photoAlt || leader.name}
+                        alt={imageAlt(leader, "photo", leader.photoAlt || leader.name)}
                         className="h-full w-full object-cover"
                         style={{ objectPosition: `${leader.photoCropX ?? 50}% ${leader.photoCropY ?? 50}%` }}
                         loading="lazy"
@@ -219,7 +221,7 @@ export default function AboutUs() {
               </div>
               <div className="relative min-h-[360px] bg-black p-8 md:p-10">
                 <div className="absolute inset-0 opacity-30">
-                  <img src={(productsContent.backgroundImage as string) || "/images/globe-wireframe.svg"} alt="" className="h-full w-full object-cover" />
+                  <img src={(productsContent.backgroundImage as string) || "/images/globe-wireframe.svg"} alt={imageAlt(productsContent, "backgroundImage", "")} className="h-full w-full object-cover" />
                 </div>
                 <div className="relative flex h-full flex-col justify-between">
                   <div>

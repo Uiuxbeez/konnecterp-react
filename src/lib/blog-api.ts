@@ -6,6 +6,7 @@ export interface BlogListItem {
   title: string;
   excerpt: string;
   featuredImage: string;
+  featuredImageAlt: string;
   tags: string[];
   author: string;
   publishedAt: string;

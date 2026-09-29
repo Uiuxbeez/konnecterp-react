@@ -1,3 +1,4 @@
+import { imageAlt } from "@shared/image-alt";
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
 import { ArrowRight, Calendar } from 'lucide-react';
@@ -28,7 +29,7 @@ export function BlogCard({ post, isDarkMode, delay = 0, className = '' }: { post
         <div className="relative aspect-[16/10] overflow-hidden shrink-0">
           <img
             src={post.featuredImage}
-            alt={post.title}
+            alt={imageAlt(post, "featuredImage", post.title)}
             loading="lazy"
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           />

@@ -1,3 +1,4 @@
+import { imageAlt } from "@shared/image-alt";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronDown, Clock, MapPin, Send, Sparkles } from "lucide-react";
@@ -83,6 +84,7 @@ export default function Career() {
           description={(heroContent.description as string) || ""}
           primaryButtonText={(heroContent.primaryButtonText as string) || ""}
           showPrimaryButton={isCmsButtonVisible(heroContent.primaryButtonVisible)}
+          heroImageAlt={imageAlt(heroContent, "heroImage")}
           heroImage={heroContent.heroImage as string | undefined}
           heroImageCropX={heroContent.heroImageCropX as number | undefined}
           heroImageCropY={heroContent.heroImageCropY as number | undefined}
@@ -112,7 +114,7 @@ export default function Career() {
               <motion.div initial={{ opacity: 0, x: -18 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
                 <div className="sticky top-28 overflow-hidden rounded-2xl border border-slate-200 bg-[#0B1730] shadow-2xl shadow-slate-300/60">
                   <div className="relative min-h-[620px] p-6 md:p-8">
-                    <img src={(rolesContent.backgroundImage as string) || "/images/hero-meeting.jpg"} alt="KonnectERP career team" className="absolute inset-0 h-full w-full object-cover opacity-35 grayscale" />
+                    <img src={(rolesContent.backgroundImage as string) || "/images/hero-meeting.jpg"} alt={imageAlt(rolesContent, "backgroundImage", "KonnectERP career team")} className="absolute inset-0 h-full w-full object-cover opacity-35 grayscale" />
                     <div className="absolute inset-0 bg-gradient-to-br from-[#071021]/95 via-[#112B5B]/82 to-[#071021]/96" />
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_18%,rgba(249,115,22,0.3),transparent_34%)]" />
 

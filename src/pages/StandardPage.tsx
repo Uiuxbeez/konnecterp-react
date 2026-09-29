@@ -1,3 +1,4 @@
+import { imageAlt } from "@shared/image-alt";
 import { useParams } from "wouter";
 import { usePageSections, type PageSection } from "@/lib/usePageSections";
 import type { SectionType } from "@shared/sections";
@@ -133,6 +134,7 @@ export default function StandardPage() {
             description={heroContent.description}
             primaryButtonText={heroContent.primaryButtonText}
             showPrimaryButton={isCmsButtonVisible(heroContent.primaryButtonVisible)}
+            heroImageAlt={imageAlt(heroContent, "heroImage")}
             heroImage={heroContent.heroImage}
             heroImageCropX={heroContent.heroImageCropX}
             heroImageCropY={heroContent.heroImageCropY}

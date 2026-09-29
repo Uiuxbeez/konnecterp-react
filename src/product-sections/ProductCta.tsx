@@ -1,3 +1,4 @@
+import { imageAlt } from "@shared/image-alt";
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { RichText } from '@/components/site/RichText';
@@ -32,7 +33,7 @@ export function ProductCta({ content, ctx }: { content: ProductCtaContent; ctx: 
           variants={fadeInUp}
           className="relative rounded-3xl overflow-hidden px-8 py-16 md:px-16 md:py-20 text-center"
         >
-          <img src={content.backgroundImage} alt="" className="absolute inset-0 w-full h-full object-cover" />
+          <img src={content.backgroundImage} alt={imageAlt(content, "backgroundImage", "")} className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-br from-[#0B1F4A]/95 via-[#0B1F4A]/90 to-[#080E1D]/85" />
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full bg-orange-600/10 blur-[140px] pointer-events-none" />
 

@@ -1,3 +1,4 @@
+import { imageAlt } from "@shared/image-alt";
 import { motion } from 'framer-motion';
 import { RichText } from '@/components/site/RichText';
 import { getIcon, type SectionCtx } from '@/sections/shared';
@@ -45,7 +46,7 @@ export function IndustryChallengesBenefits({ content, ctx }: { content: Industry
         >
           {/* Challenges panel */}
           <div className="relative p-8 sm:p-10 md:p-12">
-            <img src={content.backgroundImage} alt="" className="absolute inset-0 w-full h-full object-cover" />
+            <img src={content.backgroundImage} alt={imageAlt(content, "backgroundImage", "")} className="absolute inset-0 w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-br from-[#0B1F4A]/95 via-[#0B1F4A]/92 to-[#080E1D]/95" />
 
             <div className="relative z-10">

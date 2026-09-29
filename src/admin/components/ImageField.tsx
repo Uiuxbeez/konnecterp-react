@@ -2,9 +2,12 @@ import React, { useRef, useState } from "react";
 import { FileText, ImageIcon, Upload, X } from "lucide-react";
 import { adminApi } from "../lib/admin-api";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export function ImageField({
   value,
+  alt = "",
+  onAltChange,
   onChange,
   accept = "image/png,image/jpeg,image/webp,image/svg+xml,image/avif,image/gif",
   buttonText = "Upload Image",
@@ -12,6 +15,8 @@ export function ImageField({
   preview = "image",
 }: {
   value: string;
+  alt?: string;
+  onAltChange?: (value: string) => void;
   onChange: (v: string) => void;
   accept?: string;
   buttonText?: string;
@@ -40,7 +45,7 @@ export function ImageField({
       <div className="flex items-center gap-3 rounded-lg border border-dashed border-slate-300 p-3">
         <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-md bg-slate-100">
           {value && preview === "image" ? (
-            <img src={value} alt="" className="h-full w-full object-cover" />
+            <img src={value} alt={alt} className="h-full w-full object-cover" />
           ) : value ? (
             <FileText className="h-5 w-5 text-slate-500" />
           ) : (
@@ -70,6 +75,10 @@ export function ImageField({
         </div>
       </div>
       {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
+      {preview === "image" && onAltChange && <label className="mt-3 block space-y-1 text-sm text-slate-600">
+        <span>Alt Text</span>
+        <Input value={alt} onChange={(event) => onAltChange(event.target.value)} placeholder="Describe the image; leave empty if decorative" />
+      </label>}
       <input
         ref={inputRef}
         type="file"

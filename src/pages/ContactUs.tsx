@@ -1,3 +1,4 @@
+import { imageAlt } from "@shared/image-alt";
 import { motion } from "framer-motion";
 import { ArrowRight, ExternalLink, Mail, Phone } from "lucide-react";
 import { SiteHeader } from "@/components/site/SiteHeader";
@@ -74,6 +75,7 @@ export default function ContactUs() {
           description={(heroContent.description as string) || ""}
           primaryButtonText={(heroContent.primaryButtonText as string) || ""}
           showPrimaryButton={isCmsButtonVisible(heroContent.primaryButtonVisible)}
+          heroImageAlt={imageAlt(heroContent, "heroImage")}
           heroImage={heroContent.heroImage as string | undefined}
           heroImageCropX={heroContent.heroImageCropX as number | undefined}
           heroImageCropY={heroContent.heroImageCropY as number | undefined}
@@ -175,7 +177,7 @@ export default function ContactUs() {
         <section className="bg-white pb-20 dark:bg-[#080E1D]">
           <div className="container mx-auto max-w-7xl px-4">
             <div className="relative overflow-hidden rounded-2xl bg-[#0B1730] px-6 py-16 text-center text-white md:px-12 md:py-20">
-              <img src={(supportContent.backgroundImage as string) || "/images/hero-meeting.jpg"} alt="" className="absolute inset-0 h-full w-full object-cover opacity-20 grayscale" />
+              <img src={(supportContent.backgroundImage as string) || "/images/hero-meeting.jpg"} alt={imageAlt(supportContent, "backgroundImage", "")} className="absolute inset-0 h-full w-full object-cover opacity-20 grayscale" />
               <div className="absolute inset-0 bg-gradient-to-br from-[#0A1734]/95 via-[#14284D]/90 to-[#071021]/95" />
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(249,115,22,0.16),transparent_42%)]" />
 

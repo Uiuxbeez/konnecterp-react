@@ -29,6 +29,7 @@ const EMPTY: BlogPostInput = {
   excerpt: "",
   content: "",
   featuredImage: "",
+  featuredImageAlt: "",
   tags: [],
   author: "KonnectERP Team",
   status: "draft",
@@ -59,6 +60,7 @@ export default function BlogPostEditor() {
           excerpt: post.excerpt,
           content: post.content,
           featuredImage: post.featuredImage,
+          featuredImageAlt: post.featuredImageAlt ?? "",
           tags: post.tags,
           author: post.author,
           status: post.status,
@@ -186,7 +188,7 @@ export default function BlogPostEditor() {
 
             <div className="space-y-1.5">
               <Label>Featured Image</Label>
-              <ImageField value={form.featuredImage} onChange={(v) => set("featuredImage", v)} />
+              <ImageField alt={form.featuredImageAlt} onAltChange={(v) => set("featuredImageAlt", v)} value={form.featuredImage} onChange={(v) => set("featuredImage", v)} />
             </div>
           </div>
 

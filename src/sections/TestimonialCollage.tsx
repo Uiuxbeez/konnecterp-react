@@ -1,3 +1,4 @@
+import { imageAlt } from "@shared/image-alt";
 import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
 import { RichText } from "@/components/site/RichText";
@@ -51,7 +52,7 @@ export function TestimonialCollage({ content, ctx }: { content: TestimonialColla
                 className={`overflow-hidden rounded-2xl border shadow-xl ${index % 2 === 1 ? "translate-y-10" : ""} ${isDarkMode ? "border-white/10 bg-white/10" : "border-slate-200 bg-white"}`}
               >
                 <div className="aspect-[4/3] overflow-hidden">
-                  <img src={photo.image} alt={photo.alt || photo.name} className="h-full w-full object-cover grayscale transition-transform duration-500 hover:scale-105 hover:grayscale-0" />
+                  <img src={photo.image} alt={imageAlt(photo, "image", photo.alt || photo.name)} className="h-full w-full object-cover grayscale transition-transform duration-500 hover:scale-105 hover:grayscale-0" />
                 </div>
                 <div className="p-4">
                   <p className={`text-sm font-bold ${isDarkMode ? "text-white" : "text-[#0B1F4A]"}`}>{photo.name}</p>

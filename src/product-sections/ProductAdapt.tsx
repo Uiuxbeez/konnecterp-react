@@ -1,3 +1,4 @@
+import { imageAlt } from "@shared/image-alt";
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { RichText } from '@/components/site/RichText';
@@ -40,7 +41,7 @@ export function ProductAdapt({ content, ctx }: { content: ProductAdaptContent; c
 
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} transition={{ delay: 0.1 }} className="lg:w-[45%] w-full">
             <div className="relative rounded-2xl overflow-hidden min-h-[420px] flex flex-col p-8 shadow-xl">
-              <img src={content.cardImage} alt="" className="absolute inset-0 w-full h-full object-cover" />
+              <img src={content.cardImage} alt={imageAlt(content, "cardImage", "")} className="absolute inset-0 w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-b from-[#0B1F4A]/92 via-[#0B1F4A]/85 to-[#0B1F4A]/92" />
               <div className="relative z-10 flex flex-col h-full">
                 <span className="inline-flex items-center self-start px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-white/10 text-white/80 border border-white/15 mb-4">

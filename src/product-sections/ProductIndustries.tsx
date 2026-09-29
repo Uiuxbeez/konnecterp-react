@@ -1,3 +1,4 @@
+import { imageAlt } from "@shared/image-alt";
 import { motion } from 'framer-motion';
 import { RichText } from '@/components/site/RichText';
 import type { SectionCtx } from '@/sections/shared';
@@ -18,7 +19,7 @@ const fadeInUp = {
 export function ProductIndustries({ content }: { content: ProductIndustriesContent; ctx: SectionCtx }) {
   return (
     <section className="relative overflow-hidden py-28">
-      <img src={content.backgroundImage} alt="" className="absolute inset-0 w-full h-full object-cover" />
+      <img src={content.backgroundImage} alt={imageAlt(content, "backgroundImage", "")} className="absolute inset-0 w-full h-full object-cover" />
       <div className="absolute inset-0 bg-gradient-to-b from-[#080f1e]/96 via-[#0B1F4A]/92 to-[#080f1e]/96" />
       <div className="container mx-auto px-4 max-w-4xl text-center relative z-10">
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>

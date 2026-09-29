@@ -16,6 +16,7 @@ export function PageHero({
   primaryButtonText,
   showPrimaryButton = true,
   heroImage,
+  heroImageAlt = "",
   heroImageCropX = 50,
   heroImageCropY = 50,
   onPrimaryClick,
@@ -29,6 +30,7 @@ export function PageHero({
   primaryButtonText: string;
   showPrimaryButton?: boolean;
   heroImage?: string;
+  heroImageAlt?: string;
   heroImageCropX?: number;
   heroImageCropY?: number;
   onPrimaryClick: () => void;
@@ -112,7 +114,7 @@ export function PageHero({
                 <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-2xl">
                   <img
                     src={heroImage}
-                    alt=""
+                    alt={heroImageAlt}
                     className="h-[360px] w-full object-cover"
                     style={{ objectPosition: `${heroImageCropX}% ${heroImageCropY}%` }}
                     loading="eager"

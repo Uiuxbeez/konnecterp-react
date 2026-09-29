@@ -153,6 +153,7 @@ export const SECTION_DEFS: SectionMeta[] = [
     type: "built_different",
     name: "Built Different",
     fields: [
+      { key: "backgroundImage", label: "Background Image", type: "image" },
       { key: "eyebrow", label: "Eyebrow Text", type: "text" },
       { key: "title", label: "Title", type: "text" },
       { key: "highlight", label: "Highlight Text", type: "text" },
@@ -1751,6 +1752,19 @@ export const SECTION_DEFS: SectionMeta[] = [
     },
   },
 ];
+
+// Every current and future image field gets an editable alt field, including repeaters.
+export function withImageAltFields(fields: FieldDef[]): FieldDef[] {
+  return fields.flatMap((field): FieldDef[] => {
+    if (field.type === "repeater") return [{ ...field, fields: withImageAltFields(field.fields) }];
+    if (field.type !== "image") return [field];
+    const key = `${field.key}Alt`;
+    if (fields.some(item => item.key === key || item.key === "alt")) return [field];
+    return [field, { key, label: `${field.label} Alt Text (leave empty for decorative images)`, type: "text" }];
+  });
+}
+
+for (const section of SECTION_DEFS) section.fields = withImageAltFields(section.fields);
 
 export const SECTION_DEFS_BY_TYPE: Record<SectionType, SectionMeta> = Object.fromEntries(
   SECTION_DEFS.map((s) => [s.type, s])

@@ -16,6 +16,7 @@ function toListItem(p: typeof blogPosts.$inferSelect) {
     title: p.title,
     excerpt: p.excerpt,
     featuredImage: p.featuredImage,
+    featuredImageAlt: p.featuredImageAlt,
     tags: p.tags as string[],
     author: p.author,
     publishedAt: p.publishedAt,
@@ -78,6 +79,7 @@ adminBlogRouter.post("/blog-posts", async (req, res) => {
       excerpt: body.excerpt.trim(),
       content: body.content,
       featuredImage: body.featuredImage ?? "",
+      featuredImageAlt: typeof body.featuredImageAlt === "string" ? body.featuredImageAlt : body.title.trim(),
       tags: body.tags ?? [],
       author: body.author?.trim() || "KonnectERP Team",
       status: body.status ?? "draft",
@@ -108,6 +110,7 @@ adminBlogRouter.patch("/blog-posts/:id", async (req, res) => {
   if (typeof body.slug === "string") patch.slug = body.slug;
   if (typeof body.excerpt === "string") patch.excerpt = body.excerpt.trim();
   if (typeof body.content === "string") patch.content = body.content;
+  if (typeof body.featuredImageAlt === "string") patch.featuredImageAlt = body.featuredImageAlt;
   if (typeof body.featuredImage === "string") patch.featuredImage = body.featuredImage;
   if (Array.isArray(body.tags)) patch.tags = body.tags;
   if (typeof body.author === "string") patch.author = body.author.trim() || "KonnectERP Team";

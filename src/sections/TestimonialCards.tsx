@@ -1,3 +1,4 @@
+import { imageAlt } from "@shared/image-alt";
 import { motion } from "framer-motion";
 import { Quote, UserRound } from "lucide-react";
 import { RichText } from "@/components/site/RichText";
@@ -46,7 +47,7 @@ export function TestimonialCards({ content, ctx }: { content: TestimonialCardsCo
               <div className="mb-5 flex items-start justify-between gap-4">
                 <div className="flex items-center gap-3">
                   {card.photo ? (
-                    <img src={card.photo} alt={card.name} className="h-14 w-14 rounded-full object-cover" loading="lazy" />
+                    <img src={card.photo} alt={imageAlt(card, "photo", card.name)} className="h-14 w-14 rounded-full object-cover" loading="lazy" />
                   ) : (
                     <span className="flex h-14 w-14 items-center justify-center rounded-full bg-orange-50 text-orange-500">
                       <UserRound className="h-6 w-6" />

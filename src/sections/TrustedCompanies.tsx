@@ -1,3 +1,4 @@
+import { imageAlt } from "@shared/image-alt";
 import type { SectionCtx } from "./shared";
 
 export interface LogoItem {
@@ -35,7 +36,7 @@ export function TrustedCompanies({ content, ctx }: { content: TrustedCompaniesCo
               <div key={`${copy}-${brand.src}`} className="inline-flex h-24 w-[195px] md:w-[300px] lg:w-[203px] items-center justify-center mx-5 md:mx-10 shrink-0">
                 <img
                   src={brand.src}
-                  alt={brand.alt}
+                  alt={imageAlt(brand, "src", brand.alt)}
                   className={`max-h-20 max-w-full object-contain transition-opacity ${isDarkMode ? "opacity-90 brightness-110" : "opacity-90"}`}
                   loading="lazy"
                 />

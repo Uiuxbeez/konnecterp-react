@@ -39,6 +39,7 @@ export interface AdminBlogPost {
   excerpt: string;
   content: string;
   featuredImage: string;
+  featuredImageAlt: string;
   tags: string[];
   author: string;
   status: "draft" | "published";
@@ -52,6 +53,7 @@ export type BlogPostInput = {
   excerpt: string;
   content: string;
   featuredImage: string;
+  featuredImageAlt: string;
   tags: string[];
   author: string;
   status: "draft" | "published";

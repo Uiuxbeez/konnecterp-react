@@ -1,3 +1,4 @@
+import { imageAlt } from "@shared/image-alt";
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useParams } from 'wouter';
@@ -133,7 +134,7 @@ export default function BlogDetail() {
 
         <div className="container mx-auto px-4 max-w-4xl relative z-10">
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="mb-6">
-            <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Blog', href: '/blog' }, { label: post?.title ?? '…' }]} isDarkMode />
+            <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Blog', href: '/blog' }, { label: post?.title ?? 'â€¦' }]} isDarkMode />
           </motion.div>
 
           {!post ? (
@@ -169,7 +170,7 @@ export default function BlogDetail() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
               <div className="lg:col-span-2">
                 <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="rounded-2xl overflow-hidden mb-8 aspect-[16/9]">
-                  <img src={post.featuredImage} alt={post.title} className="w-full h-full object-cover" />
+                  <img src={post.featuredImage} alt={imageAlt(post, "featuredImage", post.title)} className="w-full h-full object-cover" />
                 </motion.div>
 
                 <div className={`flex items-center justify-between flex-wrap gap-4 pb-6 mb-8 border-b ${isDarkMode ? 'border-white/10' : 'border-slate-200'}`}>

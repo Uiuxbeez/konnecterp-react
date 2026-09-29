@@ -1,3 +1,4 @@
+import { imageAlt } from "@shared/image-alt";
 import { ExternalLink } from "lucide-react";
 import { RichText } from "@/components/site/RichText";
 import type { SectionCtx } from "./shared";
@@ -51,7 +52,7 @@ export function ClientLogoGrid({ content, ctx }: { content: ClientLogoGridConten
               >
                 <div className={`flex h-24 items-center justify-center rounded-md border p-4 ${isDarkMode ? "border-white/10 bg-white" : "border-slate-100 bg-slate-50"}`}>
                   {client.logo?.trim() ? (
-                    <img src={client.logo} alt={client.name || `Client ${index + 1}`} className="max-h-16 max-w-full object-contain" loading="lazy" />
+                    <img src={client.logo} alt={imageAlt(client, "logo", client.name || `Client ${index + 1}`)} className="max-h-16 max-w-full object-contain" loading="lazy" />
                   ) : (
                     <span className="text-sm font-bold text-slate-400">Logo</span>
                   )}

@@ -1,3 +1,4 @@
+import { imageAlt } from "@shared/image-alt";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, TrendingUp, Building2 } from "lucide-react";
@@ -92,7 +93,7 @@ export function IndustrySolutions({ content, ctx }: { content: IndustrySolutions
                 className="relative min-h-[220px] lg:min-h-0 rounded-2xl overflow-hidden flex flex-col justify-between p-6 md:p-8 cursor-pointer"
                 style={{ background: card.gradient }}
               >
-                {card.image && <img src={card.image} alt={card.tag} className="absolute inset-0 w-full h-full object-cover" />}
+                {card.image && <img src={card.image} alt={imageAlt(card, "image", card.tag)} className="absolute inset-0 w-full h-full object-cover" />}
                 <div className="absolute inset-0 bg-[#0a1628]/60" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#060d1a] via-[#0a1628]/60 to-[#0d1f3c]/30" />
                 <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#060d1a]/90 via-[#0a1628]/50 to-transparent" />

@@ -1,3 +1,4 @@
+import { imageAlt } from "@shared/image-alt";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Activity, CheckCircle2, TrendingUp } from "lucide-react";
 import { RichText } from "@/components/site/RichText";
@@ -55,7 +56,7 @@ export function WhyChooseUs({ content, ctx }: { content: WhyChooseUsContent; ctx
                 className={`flex flex-col lg:flex-row gap-6 items-stretch ${reversed ? "lg:flex-row-reverse" : ""}`}
               >
                 <div className="lg:w-[44%] relative rounded-2xl overflow-hidden max-h-[320px]">
-                  <img src={row.image} alt={row.title} className="w-full h-full object-cover" style={{ maxHeight: 320 }} />
+                  <img src={row.image} alt={imageAlt(row, "image", row.title)} className="w-full h-full object-cover" style={{ maxHeight: 320 }} />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                   <div className={`absolute top-4 right-4 flex items-center gap-1.5 backdrop-blur-md border border-white/10 rounded-full px-3 py-1.5 ${isDarkMode ? "bg-[#06163C]/75" : "bg-white/80"}`}>
                     <Activity className="w-3.5 h-3.5 text-green-400" />

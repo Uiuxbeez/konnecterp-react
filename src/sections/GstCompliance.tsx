@@ -1,3 +1,4 @@
+import { imageAlt } from "@shared/image-alt";
 import { motion } from "framer-motion";
 import { ArrowRight, BarChart3 } from "lucide-react";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
@@ -50,7 +51,7 @@ export function GstCompliance({ content, ctx }: { content: GstComplianceContent;
             <GlowingEffect spread={40} glow disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
             <div className={`relative rounded-[calc(1rem-2px)] overflow-hidden flex flex-col h-full ${isDarkMode ? "bg-[#101a30]" : "bg-slate-50"}`}>
               <div className="relative flex-1 min-h-[180px]">
-                <img src={content.featuredImage} alt={content.featuredTitle} className="absolute inset-0 w-full h-full object-cover" />
+                <img src={content.featuredImage} alt={imageAlt(content, "featuredImage", content.featuredTitle)} className="absolute inset-0 w-full h-full object-cover" />
                 <div className={`absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t to-transparent ${isDarkMode ? "from-[#101a30]" : "from-slate-50"}`} />
                 {isCmsButtonVisible(content.featuredButtonVisible) && (
                   <button
