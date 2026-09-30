@@ -1,32 +1,33 @@
+import { lazy, Suspense } from "react";
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { StickyWhatsapp } from "@/components/site/StickyWhatsapp";
-import NotFound from "@/pages/not-found";
+const NotFound = lazy(() => import("@/pages/not-found"));
 import Home from "@/pages/Home";
-import ProductPage from "@/pages/products/ProductPage";
-import IndustryPage from "@/pages/industries/IndustryPage";
-import ResourcePage from "@/pages/resources/ResourcePage";
-import StandardPage from "@/pages/StandardPage";
-import AboutUs from "@/pages/AboutUs";
-import ContactUs from "@/pages/ContactUs";
-import Career from "@/pages/Career";
-import PublicFormPage from "@/pages/PublicFormPage";
-import BlogList from "@/pages/blog/BlogList";
-import BlogDetail from "@/pages/blog/BlogDetail";
+const ProductPage = lazy(() => import("@/pages/products/ProductPage"));
+const IndustryPage = lazy(() => import("@/pages/industries/IndustryPage"));
+const ResourcePage = lazy(() => import("@/pages/resources/ResourcePage"));
+const StandardPage = lazy(() => import("@/pages/StandardPage"));
+const AboutUs = lazy(() => import("@/pages/AboutUs"));
+const ContactUs = lazy(() => import("@/pages/ContactUs"));
+const Career = lazy(() => import("@/pages/Career"));
+const PublicFormPage = lazy(() => import("@/pages/PublicFormPage"));
+const BlogList = lazy(() => import("@/pages/blog/BlogList"));
+const BlogDetail = lazy(() => import("@/pages/blog/BlogDetail"));
 import { AuthProvider } from "@/admin/lib/AuthContext";
 import { RequireAuth } from "@/admin/lib/RequireAuth";
-import AdminLogin from "@/admin/pages/Login";
-import PageBuilder from "@/admin/pages/PageBuilder";
-import PagesList from "@/admin/pages/PagesList";
-import NewPage from "@/admin/pages/NewPage";
-import BlogPostsList from "@/admin/pages/BlogPostsList";
-import BlogPostEditor from "@/admin/pages/BlogPostEditor";
-import MenuBuilder from "@/admin/pages/MenuBuilder";
-import FormsBuilder from "@/admin/pages/FormsBuilder";
-import LeadsList from "@/admin/pages/LeadsList";
-import SettingsPage from "@/admin/pages/SettingsPage";
+const AdminLogin = lazy(() => import("@/admin/pages/Login"));
+const PageBuilder = lazy(() => import("@/admin/pages/PageBuilder"));
+const PagesList = lazy(() => import("@/admin/pages/PagesList"));
+const NewPage = lazy(() => import("@/admin/pages/NewPage"));
+const BlogPostsList = lazy(() => import("@/admin/pages/BlogPostsList"));
+const BlogPostEditor = lazy(() => import("@/admin/pages/BlogPostEditor"));
+const MenuBuilder = lazy(() => import("@/admin/pages/MenuBuilder"));
+const FormsBuilder = lazy(() => import("@/admin/pages/FormsBuilder"));
+const LeadsList = lazy(() => import("@/admin/pages/LeadsList"));
+const SettingsPage = lazy(() => import("@/admin/pages/SettingsPage"));
 import { GoogleAnalytics } from "@/components/site/GoogleAnalytics";
 
 const queryClient = new QueryClient();
@@ -112,7 +113,9 @@ function App() {
       <TooltipProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
           <AuthProvider>
-            <Router />
+            <Suspense fallback={<div role="status" className="min-h-screen flex items-center justify-center">Loading page...</div>}>
+              <Router />
+            </Suspense>
             <GoogleAnalytics />
             <StickyWhatsapp />
           </AuthProvider>

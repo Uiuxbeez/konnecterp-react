@@ -1,0 +1,53 @@
+# Apache 2.4 only. Nginx ignores this file.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+# Explicit workbook redirects, before the React fallback.
+RewriteRule ^brochures/?$ https://www.konnecterp.com/resources/product-brochure [R=301,L,NE]
+RewriteRule ^wholesale/?$ https://www.konnecterp.com/industries/erp-for-trading-wholesale-distribution [R=301,L,NE]
+RewriteRule ^enterpriseerp/?$ https://www.konnecterp.com/products/erp-for-enterprise [R=301,L,NE]
+RewriteRule ^careers/?$ https://www.konnecterp.com/career [R=301,L,NE]
+RewriteRule ^enterprise\-solutions/?$ https://www.konnecterp.com/products/erp-for-enterprise [R=301,L,NE]
+RewriteRule ^ev\-vehicles/?$ https://www.konnecterp.com/industries/erp-for-ev-manufacturing-industry [R=301,L,NE]
+RewriteRule ^blog\-grid/?$ https://www.konnecterp.com/blog [R=301,L,NE]
+RewriteRule ^trading\-sector/?$ https://konnecterp.com/products/erp-for-trading-and-distribution [R=301,L,NE]
+RewriteRule ^valve\-manufacturers/?$ https://konnecterp.com/industries/erp-for-pump-valve-manufacturing [R=301,L,NE]
+RewriteRule ^job\-work/?$ https://konnecterp.com/industries/erp-for-job-work-industry [R=301,L,NE]
+RewriteRule ^discrete\-manufacturing/?$ https://konnecterp.com/industries/manufacturing-erp [R=301,L,NE]
+RewriteRule ^smb\-solutions/?$ https://konnecterp.com/products/erp-for-smes [R=301,L,NE]
+RewriteRule ^implementation\-methdology/?$ https://www.konnecterp.com/resources/implementation-methodology [R=301,L,NE]
+RewriteRule ^trading\-and\-distribution/?$ https://www.konnecterp.com/industries/erp-for-trading-wholesale-distribution [R=301,L,NE]
+RewriteRule ^sheet\-metal\-fabrication/?$ https://www.konnecterp.com/industries/erp-for-fabrication-industry [R=301,L,NE]
+RewriteRule ^sheet\-metal\-fabrication\-2/?$ https://www.konnecterp.com/industries/erp-for-fabrication-industry [R=301,L,NE]
+RewriteRule ^erp\-for\-manufacturing/?$ https://www.konnecterp.com/industries/manufacturing-erp [R=301,L,NE]
+RewriteRule ^enterpriseerp\.php/?$ https://konnecterp.com/products/erp-for-enterprise [R=301,L,NE]
+RewriteRule ^blog/erp\-for\-small\-business/?$ https://konnecterp.com/products/erp-for-smes [R=301,L,NE]
+RewriteRule ^blog/erp\-software\-in\-the\-manufacturing\-industry/?$ https://konnecterp.com/industries/manufacturing-erp [R=301,L,NE]
+
+# Do not rewrite backend routes into the frontend shell.
+RewriteRule ^(?:api|uploads)(?:/|$) - [L]
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+# Missing assets must stay 404, not return index.html.
+RewriteRule \.(?:js|css|map|png|jpe?g|gif|webp|avif|svg|ico|woff2?|xml|txt|html)$ - [L,NC]
+RewriteRule ^ index.html [L]
+</IfModule>
+
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript application/javascript application/xml text/xml image/svg+xml
+</IfModule>
+
+<IfModule mod_headers.c>
+<FilesMatch "\.html$">
+Header set Cache-Control "no-cache"
+</FilesMatch>
+<FilesMatch "-[A-Za-z0-9_-]{8,}\.(?:js|css|woff2?)$">
+Header set Cache-Control "public, max-age=31536000, immutable"
+</FilesMatch>
+<FilesMatch "\.(?:png|jpe?g|gif|webp|avif|svg|ico)$">
+Header set Cache-Control "public, max-age=604800"
+</FilesMatch>
+<FilesMatch "\.(?:xml|txt)$">
+Header set Cache-Control "public, max-age=300"
+</FilesMatch>
+</IfModule>
