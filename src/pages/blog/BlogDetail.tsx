@@ -1,4 +1,5 @@
 import { imageAlt } from "@shared/image-alt";
+import { BlogContent } from "@/components/site/BlogContent";
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useParams } from 'wouter';
@@ -190,12 +191,7 @@ export default function BlogDetail() {
                 </div>
 
                 <div className={`prose max-w-none space-y-5 text-base leading-relaxed ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                  {post.content
-                    .split(/\n\s*\n/)
-                    .filter((p) => p.trim())
-                    .map((para, i) => (
-                      <p key={i}>{para.trim()}</p>
-                    ))}
+                  <BlogContent content={post.content} />
                 </div>
 
                 <div className={`mt-8 pt-6 border-t flex items-center justify-between flex-wrap gap-4 ${isDarkMode ? 'border-white/10' : 'border-slate-200'}`}>

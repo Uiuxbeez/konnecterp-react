@@ -3,6 +3,8 @@ import { eq, and, ne, desc, sql } from "drizzle-orm";
 import { db } from "../db/client";
 import { blogPosts } from "../db/schema";
 import { requireAuth } from "../auth";
+import multer from "multer";
+import { parseWordPress, planWordPressImport } from "../lib/wordpress-import";
 
 export const adminBlogRouter = Router();
 export const publicBlogRouter = Router();
@@ -25,6 +27,37 @@ function toListItem(p: typeof blogPosts.$inferSelect) {
 
 // ── Admin: full CRUD, including drafts ──────────────────────────────────────
 adminBlogRouter.use(requireAuth);
+
+const xmlUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 * 1024 * 1024, files: 1, fields: 2 } });
+adminBlogRouter.post("/blog-posts/import", (req, res, next) => {
+  xmlUpload.single("file")(req, res, (error: any) => {
+    if (error) { res.status(400).json({ error: error.code === "LIMIT_FILE_SIZE" ? "XML must be 20 MB or smaller." : error.message }); return; }
+    next();
+  });
+}, async (req, res) => {
+  if (!req.file || !req.file.originalname.toLowerCase().endsWith(".xml")) {
+    res.status(400).json({ error: "Choose a WordPress .xml export file." }); return;
+  }
+  if (!["preview", "import"].includes(req.body.action) || !["preserve", "draft"].includes(req.body.mode)) {
+    res.status(400).json({ error: "Invalid import options." }); return;
+  }
+  let parsed;
+  try { parsed = parseWordPress(req.file.buffer.toString("utf8"), req.body.mode === "draft"); }
+  catch (error) { res.status(400).json({ error: error instanceof Error ? error.message : "Unable to read XML." }); return; }
+  const existing = await db.select({ slug: blogPosts.slug }).from(blogPosts);
+  const { pending, skipped } = planWordPressImport(parsed, existing.map(p => p.slug));
+  let imported = 0;
+  if (req.body.action === "import") {
+    await db.transaction(async tx => {
+      for (const post of pending) {
+        const inserted = await tx.insert(blogPosts).values(post).onConflictDoNothing({ target: blogPosts.slug }).returning({ id: blogPosts.id });
+        if (inserted.length) imported++;
+        else skipped.push({ title: post.title, reason: `Duplicate slug: ${post.slug}` });
+      }
+    });
+  }
+  res.json({ imported, ready: pending.length, posts: pending.map(({ title, slug, status, author, publishedAt, featuredImage }) => ({ title, slug, status, author, publishedAt, featuredImage })), skipped, warnings: parsed.warnings });
+});
 
 adminBlogRouter.get("/blog-posts", async (_req, res) => {
   const rows = await db.select().from(blogPosts).orderBy(desc(blogPosts.publishedAt));

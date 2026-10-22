@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/components/ui/spinner";
 import { AdminShell } from "../components/AdminShell";
 import { adminApi, type AdminBlogPost } from "../lib/admin-api";
+import { BlogImport } from "../components/BlogImport";
 
 export default function BlogPostsList() {
   const [posts, setPosts] = useState<AdminBlogPost[] | null>(null);
@@ -50,6 +51,7 @@ export default function BlogPostsList() {
 
       <main className="flex-1 overflow-y-auto bg-slate-50 p-6">
         <div className="mx-auto max-w-5xl">
+          <BlogImport onImported={load} />
           {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
 
           {!posts && !error && (

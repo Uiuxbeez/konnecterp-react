@@ -175,7 +175,7 @@ export default function BlogPostEditor() {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="post-content">Content</Label>
+                <Label htmlFor="post-content">Content (plain text or imported HTML)</Label>
               <Textarea
                 id="post-content"
                 value={form.content}
