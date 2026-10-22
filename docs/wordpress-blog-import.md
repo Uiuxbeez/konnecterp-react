@@ -23,5 +23,9 @@ warnings and review imported content, especially shortcodes and changed slugs.
 The public renderer sanitizes HTML and excludes scripts, event handlers, styles,
 iframes and forms. Existing plain-text posts retain paragraph rendering.
 
-No schema migration or environment variable is required. Deploy the updated
-client and API together and install the updated dependencies.
+Deploy the updated client and API together and install the updated dependencies.
+Before using the blog, run `npm run db:migrate` against the API's database.
+The blog requires migration `0010_blog_image_alt`, which adds the
+`featured_image_alt` column. An older database without this column can preview
+an export but fails when listing or importing posts. No new environment variable
+is required.
