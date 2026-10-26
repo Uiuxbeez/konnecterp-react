@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ImageField } from "./ImageField";
 import { IconPicker, AdminIcon } from "./IconPicker";
 import { RichTextEditor } from "./RichTextEditor";
+import { CardLinkField } from "./CardLinkField";
 import { adminApi, type AdminForm } from "../lib/admin-api";
 
 type JsonValue = any;
@@ -65,6 +66,8 @@ function FieldRenderer({
   formOptions: AdminForm[];
 }) {
   switch (field.type) {
+    case "card_link":
+      return <CardLinkField value={value} onChange={onChange} />;
     case "text":
       if (isFormTargetField(field, parentContent)) {
         return (

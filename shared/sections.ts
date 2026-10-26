@@ -4,6 +4,7 @@
 // and the React app (admin + public site).
 
 export type FieldDef =
+  | { key: string; label: string; type: "card_link" }
   | { key: string; label: string; type: "text" }
   | { key: string; label: string; type: "textarea" }
   | { key: string; label: string; type: "richtext"; helpText?: string }
@@ -320,6 +321,7 @@ export const SECTION_DEFS: SectionMeta[] = [
           { key: "image", label: "Image", type: "image" },
           { key: "icon", label: "Icon", type: "icon" },
           { key: "highlights", label: "Highlights", type: "list", itemLabel: "Highlight" },
+          { key: "link", label: "Card Link", type: "card_link" },
         ],
       },
       { key: "primaryButtonText", label: "Primary Button Text", type: "text" },

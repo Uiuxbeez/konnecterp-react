@@ -1,4 +1,5 @@
 import { imageAlt } from "@shared/image-alt";
+import { cardLinkHref, type CardLink } from "@shared/card-link";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, TrendingUp, Building2 } from "lucide-react";
@@ -7,6 +8,7 @@ import { isCmsButtonVisible, runCmsButtonAction, type CmsButtonAction } from "@/
 import { InViewTextEffect, getIcon, type SectionCtx } from "./shared";
 
 export interface IndustryCard {
+  link?: CardLink;
   tag: string;
   title: string;
   description: string;
@@ -83,6 +85,8 @@ export function IndustrySolutions({ content, ctx }: { content: IndustrySolutions
           {content.cards.map((card, idx) => {
             const Icon = getIcon(card.icon);
             const isOpen = expanded === idx;
+            const href = cardLinkHref(card.link);
+            const usesSectionAction = !card.link?.type || card.link.type === "default";
             return (
               <motion.div
                 key={idx}
@@ -131,12 +135,24 @@ export function IndustrySolutions({ content, ctx }: { content: IndustrySolutions
                             {card.metric}
                           </div>
                           {showCardButton && (
-                            <button
+                            href ? <a
+                              href={href}
+                              target={card.link?.target === "_blank" ? "_blank" : "_self"}
+                              rel={card.link?.target === "_blank" ? "noopener noreferrer" : undefined}
+                              aria-label={`Learn more about ${card.tag}`}
+                              onClick={(e) => e.stopPropagation()}
+                              className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform shrink-0"
+                            >
+                              <ArrowRight className="w-4 h-4 text-gray-800" />
+                            </a> : <button
+                              type="button"
+                              aria-label={`Learn more about ${card.tag}`}
+                              disabled={!usesSectionAction}
                               onClick={(e) => {
                                 e.stopPropagation();
                                 runCmsButtonAction(content.cardButtonAction, content.cardButtonHref, ctx, "demo_modal");
                               }}
-                              className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform shrink-0"
+                              className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                               <ArrowRight className="w-4 h-4 text-gray-800" />
                             </button>
