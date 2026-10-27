@@ -199,7 +199,7 @@ export default function FormsBuilder() {
                 <div className="space-y-3">
                   {draft.fields.map((field, index) => (
                     <div key={field.id} className="grid gap-3 rounded-lg border border-slate-200 p-4 lg:grid-cols-[1fr_1fr_140px_90px_40px]">
-                      <Input value={field.label} onChange={(e) => updateField(index, { label: e.target.value, id: slugify(e.target.value) || field.id })} placeholder="Field label" />
+                      <Input value={field.label} onChange={(e) => updateField(index, { label: e.target.value })} placeholder="Field label" />
                       <Input value={field.placeholder ?? ""} onChange={(e) => updateField(index, { placeholder: e.target.value })} placeholder="Placeholder" />
                       <select value={field.type} onChange={(e) => updateField(index, { type: e.target.value as AdminFormField["type"] })} className="h-9 rounded-md border border-input bg-transparent px-3 text-sm">
                         {FIELD_TYPES.map((type) => <option key={type} value={type}>{type}</option>)}
