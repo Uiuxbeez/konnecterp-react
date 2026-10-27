@@ -5,6 +5,7 @@ import { forms, leads } from "../db/schema";
 import { requireAuth } from "../auth";
 import { DEFAULT_DEMO_FORM, type FormFieldDef } from "../../shared/forms";
 import { sendFormSubmissionEmail } from "../mail/formMailer";
+import { emailDeliveryError } from "../mail/smtp";
 
 export const adminFormsRouter = Router();
 export const publicFormsRouter = Router();
@@ -261,7 +262,6 @@ publicFormsRouter.post("/forms/:slug/submit", async (req, res) => {
       leadId: lead.id,
       formName: form.name,
       formSlug: form.slug,
-      recipient: form.emailRecipient || inferDefaultRecipient(form.slug, form.name, form.title),
       fields,
       values,
       source: String(body.source || "website"),
@@ -269,7 +269,7 @@ publicFormsRouter.post("/forms/:slug/submit", async (req, res) => {
       submittedAt: lead.createdAt,
     });
   } catch (error) {
-    console.error("Failed to send form submission email", error);
+    console.error(`Email notification failed for lead ${lead.id}: ${emailDeliveryError(error)}`);
   }
 
   res.status(201).json({ ok: true, leadId: lead.id });

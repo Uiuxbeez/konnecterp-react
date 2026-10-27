@@ -12,6 +12,7 @@ import { adminNavigationRouter, publicNavigationRouter } from "./routes/navigati
 import { adminFormsRouter, publicFormsRouter } from "./routes/forms";
 import { adminSettingsRouter, publicSettingsRouter } from "./routes/settings";
 import { adminSeoRouter, publicSeoRouter } from "./routes/seo";
+import { adminEmailSettingsRouter } from "./routes/email-settings";
 
 const app = express();
 // Railway (and most PaaS hosts) inject PORT and expect the app to bind to it.
@@ -35,6 +36,7 @@ app.use("/api/admin", adminBlogRouter);
 app.use("/api/admin", adminNavigationRouter);
 app.use("/api/admin", adminFormsRouter);
 app.use("/api/admin", adminSettingsRouter);
+app.use("/api/admin", adminEmailSettingsRouter);
 app.use("/api/public", publicSectionsRouter);
 app.use("/api/public", publicUploadRouter);
 app.use("/api/public", publicBlogRouter);

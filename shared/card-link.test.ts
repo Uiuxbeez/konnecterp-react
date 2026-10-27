@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { cardLinkHref } from "./card-link.ts";
+import { cardLinkHref } from "./card-link";
 
 test("accepts internal paths with queries and fragments", () => {
   assert.equal(cardLinkHref({ type: "internal", href: "/industries?type=erp#details" }), "/industries?type=erp#details");

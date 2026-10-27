@@ -1,19 +1,19 @@
-import nodemailer from "nodemailer";
+import { loadEmailSettings } from "./email-settings-store";
+import { createEmailTransport, notificationEnvelope } from "./smtp";
+import { emailConfigurationError } from "../../shared/email-settings";
+import type { StoredEmailSettings } from "./email-config";
 import type { FormFieldDef } from "../../shared/forms";
 
 type FormEmailInput = {
   leadId: number;
   formName: string;
   formSlug: string;
-  recipient: string;
   fields: FormFieldDef[];
   values: Record<string, unknown>;
   source: string;
   pageUrl: string;
   submittedAt: Date;
 };
-
-const DEFAULT_FROM = "Konnect ERP Website <no-reply@konnectbi.com>";
 
 function escapeHtml(value: unknown) {
   return String(value ?? "")
@@ -22,23 +22,6 @@ function escapeHtml(value: unknown) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
-}
-
-function isMailConfigured() {
-  return Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
-}
-
-function getTransporter() {
-  const port = Number(process.env.SMTP_PORT || 587);
-  return nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port,
-    secure: String(process.env.SMTP_SECURE).toLowerCase() === "true" || port === 465,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  });
 }
 
 function getPrimaryValue(fields: FormFieldDef[], values: Record<string, unknown>, keys: string[]) {
@@ -126,21 +109,25 @@ function renderText(input: FormEmailInput) {
 }
 
 export async function sendFormSubmissionEmail(input: FormEmailInput) {
-  if (!isMailConfigured()) {
-    console.warn("Form email skipped: SMTP_HOST, SMTP_USER, or SMTP_PASS is not configured.");
+  return sendConfiguredFormEmail(input, await loadEmailSettings());
+}
+
+export async function sendConfiguredFormEmail(input: FormEmailInput, settings: StoredEmailSettings | null, createTransport = createEmailTransport) {
+  if (!settings?.enabled) {
     return { sent: false, skipped: true };
   }
-
-  const transporter = getTransporter();
-  const replyTo = getPrimaryValue(input.fields, input.values, ["email"]) || undefined;
-  await transporter.sendMail({
-    from: process.env.SMTP_FROM || DEFAULT_FROM,
-    to: input.recipient,
-    replyTo,
+  const validationError = emailConfigurationError(settings, Boolean(settings.encryptedPassword));
+  if (validationError) throw new Error(validationError);
+  const transporter = createTransport(settings);
+  const replyTo = getPrimaryValue(input.fields, input.values, ["email"]);
+  const result = await transporter.sendMail({
+    ...notificationEnvelope(settings),
+    replyTo: /^[^\s@<>;,]+@[^\s@<>;,]+\.[^\s@<>;,]+$/.test(replyTo) ? { address: replyTo, name: "" } : undefined,
     subject: `New ${input.formName} submission`,
     html: renderHtml(input),
     text: renderText(input),
   });
+  if (result.rejected.length) throw new Error("One or more notification recipients were rejected by the SMTP server.");
 
   return { sent: true, skipped: false };
 }

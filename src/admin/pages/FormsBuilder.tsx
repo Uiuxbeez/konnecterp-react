@@ -180,14 +180,7 @@ export default function FormsBuilder() {
                   </div>
                   <Field label="Popup Title"><Input value={draft.settings.title} onChange={(e) => setSetting("title", e.target.value)} /></Field>
                   <Field label="Submit Button"><Input value={draft.settings.submitButtonText} onChange={(e) => setSetting("submitButtonText", e.target.value)} /></Field>
-                  <Field label="Send Submissions To">
-                    <Input
-                      type="email"
-                      value={draft.settings.emailRecipient}
-                      onChange={(e) => setSetting("emailRecipient", e.target.value)}
-                      placeholder="sales@konnectbi.com"
-                    />
-                  </Field>
+                  <p className="rounded-lg bg-slate-50 p-3 text-sm text-slate-600">Notification recipients and CC for all forms are managed in <a href="/admin/settings" className="text-orange-600 underline">Settings → Email Settings</a>.</p>
                   <Field label="Popup Top Header Text"><Textarea value={draft.settings.shortDescription} onChange={(e) => setSetting("shortDescription", e.target.value)} /></Field>
                   <Field label="Success Message"><Textarea value={draft.settings.successMessage} onChange={(e) => setSetting("successMessage", e.target.value)} /></Field>
                   <Field label="Success Title"><Input value={draft.settings.successTitle} onChange={(e) => setSetting("successTitle", e.target.value)} /></Field>

@@ -13,6 +13,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { DEFAULT_SITE_SETTINGS, type FooterBottomLink, type FooterSocialLink, type HeaderCtaAction, type SiteSettings } from "@shared/site-settings";
 import type { MenuGroup } from "@/lib/nav";
 import { SeoSettings } from "../components/SeoSettings";
+import { EmailSettings } from "../components/EmailSettings";
 
 function emptySocialLink(): FooterSocialLink {
   return { label: "New Link", href: "#", visible: true };
@@ -119,7 +120,7 @@ export default function SettingsPage() {
       <header className="flex h-16 shrink-0 items-center justify-between border-b border-slate-200 bg-white px-6">
         <div>
           <h1 className="text-sm font-bold text-slate-900">Settings</h1>
-          <p className="text-xs text-slate-400">Header CTA, footer content, social media links, and footer menu visibility</p>
+          <p className="text-xs text-slate-400">Email notifications, SEO, header, footer and site settings</p>
         </div>
         <Button size="sm" onClick={save} disabled={!settings || saving}>
           <Save className="h-3.5 w-3.5" /> {saving ? "Saving..." : "Save Settings"}
@@ -133,6 +134,7 @@ export default function SettingsPage() {
 
         {settings && (
           <div className="mx-auto max-w-5xl space-y-5">
+            <EmailSettings />
             <SeoSettings />
             <section className="rounded-xl border border-slate-200 bg-white p-5 space-y-4">
               <h2 className="text-lg font-bold text-slate-900">Google Analytics (GA4)</h2>

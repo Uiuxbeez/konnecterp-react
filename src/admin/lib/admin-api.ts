@@ -1,4 +1,5 @@
 import { apiUrl } from "@/lib/api-base";
+import type { EmailSettings, EmailSettingsView } from "@shared/email-settings";
 import type { MenuGroup } from "@/lib/nav";
 import type { SiteSettings } from "@shared/site-settings";
 import type { SeoFiles } from "@shared/seo";
@@ -120,6 +121,10 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export const adminApi = {
+  getEmailSettings: () => request<{ settings: EmailSettingsView }>("/api/admin/email-settings"),
+  saveEmailSettings: (settings: EmailSettings & { password?: string }) =>
+    request<{ settings: EmailSettingsView }>("/api/admin/email-settings", { method: "PUT", body: JSON.stringify(settings) }),
+  testEmailSettings: () => request<{ message: string }>("/api/admin/email-settings/test", { method: "POST" }),
   getSeo: () => request<SeoFiles>("/api/admin/seo"),
   generateSeo: (siteUrl: string, verification?: { filename: string; content: string }) =>
     request<SeoFiles>("/api/admin/seo/generate", { method: "POST", body: JSON.stringify({ siteUrl, verification }) }),
