@@ -17,7 +17,11 @@ function makeCaptcha() {
   return { a: Math.floor(Math.random() * 7) + 2, b: Math.floor(Math.random() * 6) + 3 };
 }
 
-export function PublicForm({
+export function PublicForm(props: Parameters<typeof PublicFormInstance>[0]) {
+  return <PublicFormInstance key={props.slug} {...props} />;
+}
+
+function PublicFormInstance({
   slug,
   source = "website",
   layout = "modal",
@@ -47,12 +51,17 @@ export function PublicForm({
   const [website, setWebsite] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [definitionLoading, setDefinitionLoading] = useState(true);
+  const [definitionError, setDefinitionError] = useState(false);
 
   useEffect(() => {
-    fetch(apiUrl(`/api/public/forms/${slug}`))
+    const controller = new AbortController();
+    fetch(apiUrl(`/api/public/forms/${slug}`), { signal: controller.signal })
       .then((res) => (res.ok ? res.json() : Promise.reject()))
-      .then((data) => setDefinition(data.form))
-      .catch(() => {});
+      .then((data) => { if (!controller.signal.aborted) setDefinition(data.form); })
+      .catch(() => { if (!controller.signal.aborted) setDefinitionError(true); })
+      .finally(() => { if (!controller.signal.aborted) setDefinitionLoading(false); });
+    return () => controller.abort();
   }, [slug]);
 
   const initialValues = useMemo(() => {
@@ -144,6 +153,9 @@ export function PublicForm({
       setLoading(false);
     }
   };
+
+  if (definitionLoading) return <div role="status" className="p-8 text-sm text-slate-600">Loading form...</div>;
+  if (definitionError) return <div role="alert" className="p-8 text-sm text-red-600">This form could not be loaded. Please close it and try again.</div>;
 
   if (submitted) {
     return (

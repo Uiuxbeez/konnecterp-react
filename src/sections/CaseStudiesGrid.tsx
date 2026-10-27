@@ -4,6 +4,7 @@ import { Download, X } from "lucide-react";
 import { PublicForm } from "@/components/site/PublicForm";
 import { RichText } from "@/components/site/RichText";
 import type { SectionCtx } from "./shared";
+import { caseStudyDownloadForm } from "@shared/case-study-download";
 
 export interface CaseStudyCard {
   logo: string;
@@ -42,8 +43,9 @@ export function CaseStudiesGrid({ content, ctx }: { content: CaseStudiesGridCont
 
   const handleDownload = (card: CaseStudyCard) => {
     if (!card.pdfUrl?.trim()) return;
-    if (card.restrictDownload && card.downloadFormSlug?.trim()) {
-      setActiveDownload(card);
+    const formSlug = caseStudyDownloadForm(card);
+    if (formSlug) {
+      setActiveDownload({ ...card, downloadFormSlug: formSlug });
       return;
     }
     downloadPdf(card.pdfUrl);
@@ -136,6 +138,7 @@ export function CaseStudiesGrid({ content, ctx }: { content: CaseStudiesGridCont
               </div>
 
               <PublicForm
+                key={`${activeDownload.pdfUrl}:${activeDownload.downloadFormSlug}`}
                 slug={activeDownload.downloadFormSlug}
                 source={`case-study-download-${activeDownload.title}`}
                 showIntro={false}

@@ -1584,7 +1584,7 @@ export const SECTION_DEFS: SectionMeta[] = [
           { key: "title", label: "Card Title", type: "text" },
           { key: "description", label: "Short Description", type: "textarea" },
           { key: "pdfUrl", label: "PDF File", type: "file", accept: "application/pdf", buttonText: "Upload PDF" },
-          { key: "restrictDownload", label: "Restrict Download With Form", type: "boolean", helpText: "Require a form submission before downloading this PDF" },
+          { key: "restrictDownload", label: "Restrict Download With Form", type: "boolean", helpText: "Require a fresh submission for every download. If no form is selected, use the default enquiry form." },
           { key: "downloadFormSlug", label: "Select Download Form", type: "form_select" },
         ],
       },

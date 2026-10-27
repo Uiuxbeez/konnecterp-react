@@ -42,6 +42,19 @@ const upload = multer({
   },
 });
 
+// Authenticated CMS PDFs stream directly to disk without an application size cap.
+const pdfUpload = multer({
+  storage,
+  limits: { files: 1, fields: 0 },
+  fileFilter: (_req, file, cb) => {
+    if (path.extname(file.originalname).toLowerCase() !== ".pdf" || !["application/pdf", "application/octet-stream"].includes(file.mimetype)) {
+      cb(new Error("Upload a PDF file only"));
+      return;
+    }
+    cb(null, true);
+  },
+});
+
 const formStorage = multer.diskStorage({
   destination: (_req, _file, cb) => cb(null, FORM_UPLOAD_DIR),
   filename: (_req, file, cb) => {
@@ -71,6 +84,15 @@ function publicUploadUrl(req: import("express").Request, filename: string) {
 
 export const uploadRouter = Router();
 uploadRouter.use(requireAuth);
+
+uploadRouter.post("/upload/pdf", pdfUpload.single("file"), (req, res) => {
+  if (!req.file) {
+    res.status(400).json({ error: "No PDF uploaded" });
+    return;
+  }
+  const base = process.env.PUBLIC_API_URL ?? `${req.protocol}://${req.get("host")}`;
+  res.json({ url: `${base.replace(/\/$/, "")}/uploads/${req.file.filename}` });
+});
 
 uploadRouter.post("/upload", upload.single("file"), (req, res) => {
   if (!req.file) {

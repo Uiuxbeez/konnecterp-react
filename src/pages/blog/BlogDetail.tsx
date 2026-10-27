@@ -190,7 +190,7 @@ export default function BlogDetail() {
                   <ShareButtons url={shareUrl} title={post.title} isDarkMode={isDarkMode} />
                 </div>
 
-                <div className={`prose max-w-none space-y-5 text-base leading-relaxed ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+                <div className={`prose max-w-none space-y-5 text-base leading-relaxed ${isDarkMode ? 'prose-invert text-slate-300 prose-headings:text-white prose-strong:text-white prose-a:text-orange-400' : 'text-slate-700'}`}>
                   <BlogContent content={post.content} />
                 </div>
 

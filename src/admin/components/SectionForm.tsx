@@ -33,6 +33,8 @@ function hasHrefField(fields: FieldDef[]): boolean {
 }
 
 function emptyValueForField(field: FieldDef) {
+  if (field.key === "restrictDownload") return true;
+  if (field.key === "downloadFormSlug") return "demo-request";
   if (field.type === "list") return [];
   if (field.type === "boolean") return false;
   return "";
@@ -175,11 +177,14 @@ function FieldRenderer({
       );
     case "form_select":
       return (
-        <Select value={String(value ?? "")} onValueChange={onChange}>
+        <Select value={String(value || (field.key === "downloadFormSlug" ? "demo-request" : ""))} onValueChange={onChange}>
           <SelectTrigger>
             <SelectValue placeholder={formOptions.length ? "Select form" : "No forms available"} />
           </SelectTrigger>
           <SelectContent>
+            {field.key === "downloadFormSlug" && !formOptions.some((form) => form.slug === "demo-request") && (
+              <SelectItem value="demo-request">Default enquiry form</SelectItem>
+            )}
             {formOptions.map((form) => (
               <SelectItem key={form.id} value={form.slug}>
                 {form.name} (/{form.slug})

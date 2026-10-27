@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { blogMediaUrl, normalizeBlogMedia } from "../../shared/blog-media";
 import { eq, and, ne, desc, sql } from "drizzle-orm";
 import { db } from "../db/client";
 import { blogPosts } from "../db/schema";
@@ -17,7 +18,7 @@ function toListItem(p: typeof blogPosts.$inferSelect) {
     slug: p.slug,
     title: p.title,
     excerpt: p.excerpt,
-    featuredImage: p.featuredImage,
+    featuredImage: blogMediaUrl(p.featuredImage),
     featuredImageAlt: p.featuredImageAlt,
     tags: p.tags as string[],
     author: p.author,
@@ -61,7 +62,7 @@ adminBlogRouter.post("/blog-posts/import", (req, res, next) => {
 
 adminBlogRouter.get("/blog-posts", async (_req, res) => {
   const rows = await db.select().from(blogPosts).orderBy(desc(blogPosts.publishedAt));
-  res.json({ posts: rows });
+  res.json({ posts: rows.map(normalizeBlogMedia) });
 });
 
 adminBlogRouter.get("/blog-posts/:id", async (req, res) => {
@@ -70,7 +71,7 @@ adminBlogRouter.get("/blog-posts/:id", async (req, res) => {
     res.status(404).json({ error: "Post not found" });
     return;
   }
-  res.json(post);
+  res.json(normalizeBlogMedia(post));
 });
 
 function validateBody(body: any, { partial }: { partial: boolean }) {
@@ -155,7 +156,7 @@ adminBlogRouter.patch("/blog-posts/:id", async (req, res) => {
     res.status(404).json({ error: "Post not found" });
     return;
   }
-  res.json(updated);
+  res.json(normalizeBlogMedia(updated));
 });
 
 adminBlogRouter.delete("/blog-posts/:id", async (req, res) => {
@@ -251,5 +252,5 @@ publicBlogRouter.get("/blog-posts/:slug", async (req, res) => {
     .slice(0, 6)
     .map(toListItem);
 
-  res.json({ post, related });
+  res.json({ post: normalizeBlogMedia(post), related });
 });

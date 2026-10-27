@@ -3,12 +3,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { PublicForm } from "./PublicForm";
 import { apiUrl } from "@/lib/api-base";
-import { DEFAULT_DEMO_FORM } from "@shared/forms";
 
 export function DemoModal({ open, onClose, slug = "demo-request" }: { open: boolean; onClose: () => void; slug?: string }) {
   const [headerContent, setHeaderContent] = useState({
-    title: DEFAULT_DEMO_FORM.settings.title,
-    subtitle: DEFAULT_DEMO_FORM.settings.shortDescription,
+    slug: "",
+    title: "Loading form...",
+    subtitle: "",
   });
 
   useEffect(() => {
@@ -19,22 +19,23 @@ export function DemoModal({ open, onClose, slug = "demo-request" }: { open: bool
 
   useEffect(() => {
     if (!open) return;
-    fetch(apiUrl(`/api/public/forms/${slug}`))
+    const controller = new AbortController();
+    fetch(apiUrl(`/api/public/forms/${slug}`), { signal: controller.signal })
       .then((res) => (res.ok ? res.json() : Promise.reject()))
       .then((data) => {
+        if (controller.signal.aborted) return;
         const title = data?.form?.settings?.title;
         const subtitle = data?.form?.settings?.shortDescription;
         setHeaderContent({
-          title: typeof title === "string" && title.trim() ? title : DEFAULT_DEMO_FORM.settings.title,
-          subtitle: typeof subtitle === "string" && subtitle.trim() ? subtitle : DEFAULT_DEMO_FORM.settings.shortDescription,
+          slug,
+          title: typeof title === "string" && title.trim() ? title : "Enquiry Form",
+          subtitle: typeof subtitle === "string" ? subtitle : "",
         });
       })
-      .catch(() =>
-        setHeaderContent({
-          title: DEFAULT_DEMO_FORM.settings.title,
-          subtitle: DEFAULT_DEMO_FORM.settings.shortDescription,
-        })
-      );
+      .catch(() => {
+        if (!controller.signal.aborted) setHeaderContent({ slug, title: "Form unavailable", subtitle: "" });
+      });
+    return () => controller.abort();
   }, [open, slug]);
 
   return (
@@ -65,8 +66,8 @@ export function DemoModal({ open, onClose, slug = "demo-request" }: { open: bool
               >
                 <X className="h-4 w-4" />
               </button>
-              <h2 className="pr-10 text-xl font-bold leading-tight text-white">{headerContent.title}</h2>
-              {headerContent.subtitle && <p className="mt-2 pr-10 text-sm leading-6 text-blue-100">{headerContent.subtitle}</p>}
+              <h2 className="pr-10 text-xl font-bold leading-tight text-white">{headerContent.slug === slug ? headerContent.title : "Loading form..."}</h2>
+              {headerContent.slug === slug && headerContent.subtitle && <p className="mt-2 pr-10 text-sm leading-6 text-blue-100">{headerContent.subtitle}</p>}
             </div>
 
             <PublicForm slug={slug} source={`${slug}-modal`} showIntro={false} />

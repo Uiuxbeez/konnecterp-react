@@ -1,4 +1,5 @@
 import { XMLParser, XMLValidator } from "fast-xml-parser";
+import { normalizeBlogMedia } from "../../shared/blog-media";
 
 type Node = Record<string, any>;
 const list = (value: any): Node[] => value == null ? [] : Array.isArray(value) ? value : [value];
@@ -47,13 +48,13 @@ export function parseWordPress(xml: string, drafts = false) {
     const protectedPost = !!text(item["wp:post_password"]);
     const status = !drafts && sourceStatus === "publish" && !protectedPost ? "published" : "draft";
     if (protectedPost || !["publish", "draft"].includes(sourceStatus)) warnings.push(`${title}: imported as draft (WordPress status: ${sourceStatus}${protectedPost ? ", password protected" : ""}).`);
-    posts.push({
+    posts.push(normalizeBlogMedia({
       title, slug, content, excerpt: plain(text(item["excerpt:encoded"])) || plain(content).slice(0, 300) || title,
       featuredImage, featuredImageAlt: attachment ? meta(attachment, "_wp_attachment_image_alt") : "",
       tags: [...new Set(list(item.category).filter(c => ["category", "post_tag"].includes(c["@_domain"])).map(text).filter(Boolean))],
       author: authors.get(text(item["dc:creator"])) || text(item["dc:creator"]) || "KonnectERP Team",
       status, publishedAt: date,
-    });
+    }));
   }
   if (!posts.length && !skipped.length) throw new Error("No blog posts found. Export Posts or All content from WordPress.");
   return { posts, skipped, warnings };

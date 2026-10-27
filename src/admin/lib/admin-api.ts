@@ -194,7 +194,8 @@ export const adminApi = {
   upload: async (file: File): Promise<{ url: string }> => {
     const form = new FormData();
     form.append("file", file);
-    const res = await fetch(apiUrl("/api/admin/upload"), { method: "POST", credentials: "include", body: form });
+    const endpoint = /\.pdf$/i.test(file.name) ? "/api/admin/upload/pdf" : "/api/admin/upload";
+    const res = await fetch(apiUrl(endpoint), { method: "POST", credentials: "include", body: form });
     if (!res.ok) {
       const body = await res.json().catch(() => ({}));
       throw new ApiError(res.status, body.error ?? "Upload failed");

@@ -1,4 +1,5 @@
 import { apiUrl } from "./api-base";
+import { normalizeBlogMedia } from "@shared/blog-media";
 
 export interface BlogListItem {
   id: number;
@@ -39,7 +40,9 @@ async function get<T>(path: string): Promise<T> {
 
 export const blogApi = {
   list: (page: number, tag?: string) =>
-    get<BlogListResponse>(`/api/public/blog-posts?page=${page}${tag ? `&tag=${encodeURIComponent(tag)}` : ""}`),
-  getBySlug: (slug: string) => get<{ post: BlogPost; related: BlogListItem[] }>(`/api/public/blog-posts/${slug}`),
+    get<BlogListResponse>(`/api/public/blog-posts?page=${page}${tag ? `&tag=${encodeURIComponent(tag)}` : ""}`)
+      .then((result) => ({ ...result, posts: result.posts.map(normalizeBlogMedia) })),
+  getBySlug: (slug: string) => get<{ post: BlogPost; related: BlogListItem[] }>(`/api/public/blog-posts/${slug}`)
+    .then((result) => ({ ...result, post: normalizeBlogMedia(result.post), related: result.related.map(normalizeBlogMedia) })),
   meta: () => get<BlogMeta>("/api/public/blog-posts/meta"),
 };
