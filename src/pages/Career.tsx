@@ -31,7 +31,7 @@ type CareerJob = {
 };
 
 export default function Career() {
-  const chrome = useSiteChrome();
+  const chrome = useSiteChrome({ autoOpenDemo: false });
   const { isDarkMode } = chrome;
   const { sections, page, byType, loading } = usePageSections("career");
   const hasSection = (type: string) => sections.some((section) => section.type === type);
