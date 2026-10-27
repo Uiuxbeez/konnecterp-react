@@ -79,7 +79,7 @@ export default function Home() {
 
       {loading ? <PageLoadingState /> : bodySections.map((section) => renderManagedSection(section, sectionCtx, byType))}
 
-      <FooterSection content={footerContent} />
+      {sections.some((section) => section.type === 'footer') && <FooterSection content={footerContent} />}
 
       <ScrollToTopButton show={chrome.showScrollTop} />
       <DemoModal open={chrome.isDemoModalOpen} onClose={() => chrome.setIsDemoModalOpen(false)} slug={chrome.activeFormSlug} />

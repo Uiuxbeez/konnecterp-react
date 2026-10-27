@@ -80,7 +80,7 @@ export default function StandardPage() {
   const { isDarkMode } = chrome;
 
   const { sections, page, notFound, byType, loading } = usePageSections(slug ?? "");
-  const { byType: byHomeType } = usePageSections("home");
+  const { sections: homeSections, byType: byHomeType } = usePageSections("home");
   const footerContent = byHomeType("footer") as unknown as FooterContent;
 
   const heroContent = byType("product_hero") as unknown as StandardHeroContent;
@@ -122,7 +122,7 @@ export default function StandardPage() {
         <PageLoadingState />
       ) : (
         <>
-          <PageHero
+          {sections.some((section) => section.type === 'product_hero') && <PageHero
             breadcrumb={[
               { label: "Home", href: "/" },
               { label: heroContent.breadcrumbLabel || pageTitle },
@@ -139,13 +139,13 @@ export default function StandardPage() {
             heroImageCropX={heroContent.heroImageCropX}
             heroImageCropY={heroContent.heroImageCropY}
             onPrimaryClick={handlePrimaryButtonClick}
-          />
+          />}
 
           {bodySections.map((section) => renderStandardSection(section, sectionCtx, byType))}
         </>
       )}
 
-      <FooterSection content={footerContent} />
+      {homeSections.some((section) => section.type === 'footer') && <FooterSection content={footerContent} />}
 
       <ScrollToTopButton show={chrome.showScrollTop} />
       <DemoModal open={chrome.isDemoModalOpen} onClose={() => chrome.setIsDemoModalOpen(false)} slug={chrome.activeFormSlug} />

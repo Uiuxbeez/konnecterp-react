@@ -19,6 +19,7 @@ export type FieldDef =
   | { key: string; label: string; type: "repeater"; itemLabel: string; addRemove?: boolean; fields: FieldDef[] };
 
 const BUTTON_ACTION_OPTIONS = [
+  { label: "Attach PDF", value: "attachment" },
   { label: "Open demo popup", value: "demo_modal" },
   { label: "Open selected form popup", value: "custom_form_modal" },
   { label: "Open video popup", value: "video_modal" },
@@ -1174,7 +1175,7 @@ export const SECTION_DEFS: SectionMeta[] = [
       { key: "buttonVisible", label: "Show Button", type: "boolean" },
       { key: "buttonAction", label: "Button Action", type: "select", options: BUTTON_ACTION_OPTIONS },
       { key: "buttonHref", label: "Button Link URL / Page Path", type: "text" },
-      { key: "fileUrl", label: "Brochure File URL (leave blank to open the demo form instead)", type: "text" },
+      { key: "fileUrl", label: "Brochure PDF (optional fallback)", type: "file", accept: "application/pdf", buttonText: "Upload PDF" },
       { key: "backgroundImage", label: "Background Image", type: "image" },
     ],
     defaultContent: {

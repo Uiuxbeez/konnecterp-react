@@ -1,4 +1,5 @@
 import { imageAlt } from "@shared/image-alt";
+import { isCmsButtonVisible, runCmsButtonAction, type CmsButtonAction } from "@/lib/cms-button-actions";
 import { useParams } from 'wouter';
 import { usePageSections, type PageSection } from '@/lib/usePageSections';
 import type { SectionType } from '@shared/sections';
@@ -26,6 +27,9 @@ interface ResourceHeroContent {
   subhead: string;
   description: string;
   primaryButtonText: string;
+  primaryButtonVisible?: boolean;
+  primaryButtonAction?: CmsButtonAction;
+  primaryButtonHref?: string;
   heroImage?: string;
   heroImageCropX?: number;
   heroImageCropY?: number;
@@ -54,7 +58,7 @@ export default function ResourcePage() {
   const { isDarkMode, openDemo } = chrome;
 
   const { sections, page, notFound, byType, loading } = usePageSections(slug ?? '');
-  const { byType: byHomeType } = usePageSections('home');
+  const { sections: homeSections, byType: byHomeType } = usePageSections('home');
   const footerContent = byHomeType('footer') as unknown as FooterContent;
 
   const heroContent = byType('product_hero') as unknown as ResourceHeroContent;
@@ -93,7 +97,7 @@ export default function ResourcePage() {
         <PageLoadingState />
       ) : (
         <>
-          <PageHero
+          {sections.some((section) => section.type === 'product_hero') && <PageHero
             breadcrumb={[
               { label: 'Home', href: '/' },
               { label: 'Resources', href: '/#resources' },
@@ -105,18 +109,19 @@ export default function ResourcePage() {
             subhead={heroContent.subhead}
             description={heroContent.description}
             primaryButtonText={heroContent.primaryButtonText}
+            showPrimaryButton={isCmsButtonVisible(heroContent.primaryButtonVisible)}
             heroImageAlt={imageAlt(heroContent, "heroImage")}
             heroImage={heroContent.heroImage}
             heroImageCropX={heroContent.heroImageCropX}
             heroImageCropY={heroContent.heroImageCropY}
-            onPrimaryClick={openDemo}
-          />
+            onPrimaryClick={() => runCmsButtonAction(heroContent.primaryButtonAction, heroContent.primaryButtonHref, sectionCtx, "demo_modal")}
+          />}
 
           {bodySections.map((section) => renderResourceSection(section, sectionCtx, byType))}
         </>
       )}
 
-      <FooterSection content={footerContent} />
+      {homeSections.some((section) => section.type === 'footer') && <FooterSection content={footerContent} />}
 
       <ScrollToTopButton show={chrome.showScrollTop} />
       <DemoModal open={chrome.isDemoModalOpen} onClose={() => chrome.setIsDemoModalOpen(false)} slug={chrome.activeFormSlug} />

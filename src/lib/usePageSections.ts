@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { SECTION_DEFS, type SectionType } from "@shared/sections";
 import { apiUrl } from "./api-base";
+import { visibleSections } from "@shared/visible-sections";
 
 export interface PageSection {
   id: number;
@@ -37,17 +38,15 @@ const pageRequests = new Map<string, Promise<PageSectionsResult>>();
 
 function mapPageSections(data: any) {
   const rows = data.sections;
-  const mapped: PageSection[] = rows
-    .filter((s: any) => isPreview() || s.enabled !== false)
-    .sort((a: any, b: any) => (a.position ?? 0) - (b.position ?? 0))
+  const mapped: PageSection[] = visibleSections<any>(rows)
     .map((s: any) => ({
       id: s.id,
       type: s.type as SectionType,
       name: s.name,
-      content: (isPreview() ? s.content : s.content) ?? {},
+      content: s.content ?? {},
     }));
 
-  return { page: data.page ?? null, sections: mapped.length > 0 ? mapped : FALLBACK_SECTIONS };
+  return { page: data.page ?? null, sections: mapped };
 }
 
 // Fetches the CMS-managed sections for a page. In preview mode (admin's draft

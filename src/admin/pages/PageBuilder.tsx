@@ -25,6 +25,7 @@ export default function PageBuilder() {
   const [publishedAt, setPublishedAt] = useState<string | null>(null);
 
   const saveTimers = useRef<Record<number, ReturnType<typeof setTimeout>>>({});
+  const pendingPatches = useRef<Record<number, Partial<Pick<AdminSection, "content" | "name" | "enabled">>>>({});
   const pageSeoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [previewNonce, setPreviewNonce] = useState(0);
   const refreshPreview = () => setPreviewNonce((n) => n + 1);
@@ -47,9 +48,10 @@ export default function PageBuilder() {
   const scheduleSave = (id: number, patch: Partial<Pick<AdminSection, "content" | "name" | "enabled">>) => {
     setSaveStatus("saving");
     clearTimeout(saveTimers.current[id]);
+    pendingPatches.current[id] = { ...pendingPatches.current[id], ...patch };
     saveTimers.current[id] = setTimeout(async () => {
       try {
-        await adminApi.updateSection(id, patch);
+        await adminApi.updateSection(id, pendingPatches.current[id]);
         setSaveStatus("saved");
         refreshPreview();
       } catch {
@@ -106,8 +108,13 @@ export default function PageBuilder() {
   const handlePublish = async () => {
     setPublishing(true);
     try {
+      Object.values(saveTimers.current).forEach(clearTimeout);
+      await Promise.all(sections.map((section) => adminApi.updateSection(section.id, { content: section.content, enabled: section.enabled })));
       const res = await adminApi.publish(pageSlug);
       setPublishedAt(res.publishedAt);
+      setSaveStatus("saved");
+    } catch {
+      setSaveStatus("error");
     } finally {
       setPublishing(false);
     }
@@ -124,7 +131,7 @@ export default function PageBuilder() {
     setSaveStatus("saving");
     try {
       if (page) await adminApi.updatePageSeo(pageSlug, { metaTitle: page.metaTitle, metaDescription: page.metaDescription });
-      await adminApi.updateSection(selected.id, { content: selected.content, enabled: selected.enabled });
+      await Promise.all(sections.map((section) => adminApi.updateSection(section.id, { content: section.content, enabled: section.enabled })));
       setSaveStatus("saved");
       refreshPreview();
     } catch {

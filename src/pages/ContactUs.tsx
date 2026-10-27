@@ -218,7 +218,7 @@ export default function ContactUs() {
       </main>
       )}
 
-      <FooterSection content={footerContent} />
+      {hasSection("footer") && <FooterSection content={footerContent} />}
       <ScrollToTopButton show={chrome.showScrollTop} />
       <DemoModal open={chrome.isDemoModalOpen} onClose={() => chrome.setIsDemoModalOpen(false)} slug={chrome.activeFormSlug} />
       <VideoModal open={chrome.isVideoModalOpen} onClose={() => chrome.setIsVideoModalOpen(false)} />

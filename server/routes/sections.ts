@@ -80,6 +80,7 @@ adminSectionsRouter.patch("/sections/:id", async (req, res) => {
     res.status(404).json({ error: "Section not found" });
     return;
   }
+  clearPublicPageCache();
   res.json(updated);
 });
 

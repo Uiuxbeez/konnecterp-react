@@ -46,7 +46,7 @@ export default function IndustryPage() {
   const { isDarkMode } = chrome;
 
   const { sections, page, notFound, byType, loading } = usePageSections(slug ?? '');
-  const { byType: byHomeType } = usePageSections('home');
+  const { sections: homeSections, byType: byHomeType } = usePageSections('home');
   const footerContent = byHomeType('footer') as unknown as FooterContent;
 
   const heroContent = byType('industry_hero') as unknown as IndustryHeroContent;
@@ -100,18 +100,18 @@ export default function IndustryPage() {
         <PageLoadingState />
       ) : (
         <>
-          <IndustryHero
+          {sections.some((section) => section.type === 'industry_hero') && <IndustryHero
             content={heroContent}
             breadcrumb={[{ label: 'Home', href: '/' }, { label: 'Industries', href: '/#industries' }, { label: pageTitle }]}
             onPrimaryClick={handlePrimaryButtonClick}
             onSecondaryClick={handleSecondaryButtonClick}
-          />
+          />}
 
           {bodySections.map((section) => renderIndustrySection(section, sectionCtx, byType))}
         </>
       )}
 
-      <FooterSection content={footerContent} />
+      {homeSections.some((section) => section.type === 'footer') && <FooterSection content={footerContent} />}
 
       <ScrollToTopButton show={chrome.showScrollTop} />
       <DemoModal open={chrome.isDemoModalOpen} onClose={() => chrome.setIsDemoModalOpen(false)} slug={chrome.activeFormSlug} />

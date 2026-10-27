@@ -1,6 +1,6 @@
 import type { SectionCtx } from "@/sections/shared";
 
-export type CmsButtonAction = "demo_modal" | "custom_form_modal" | "video_modal" | "link";
+export type CmsButtonAction = "demo_modal" | "custom_form_modal" | "video_modal" | "link" | "attachment";
 
 export function isCmsButtonVisible(value: unknown) {
   return value !== false;
@@ -26,6 +26,18 @@ export function runCmsButtonAction(
   fallbackAction: CmsButtonAction,
 ) {
   const resolvedAction = typeof action === "string" && action ? (action as CmsButtonAction) : fallbackAction;
+
+  if (resolvedAction === "attachment") {
+    const target = typeof href === "string" ? href.trim() : "";
+    if (!target) return;
+    try {
+      const url = new URL(target, window.location.origin);
+      if (url.protocol === "https:" || url.protocol === "http:") {
+        window.open(url.href, "_blank", "noopener,noreferrer");
+      }
+    } catch { /* An invalid attachment URL must not trigger a demo popup. */ }
+    return;
+  }
 
   if (resolvedAction === "video_modal") {
     ctx.openVideo();

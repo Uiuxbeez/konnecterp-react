@@ -64,7 +64,7 @@ export default function ProductPage() {
   const { isDarkMode } = chrome;
 
   const { sections, page, notFound, byType, loading } = usePageSections(slug ?? '');
-  const { byType: byHomeType } = usePageSections('home');
+  const { sections: homeSections, byType: byHomeType } = usePageSections('home');
   const footerContent = byHomeType('footer') as unknown as FooterContent;
 
   const heroContent = byType('product_hero') as unknown as ProductHeroContent;
@@ -106,7 +106,7 @@ export default function ProductPage() {
         <PageLoadingState />
       ) : (
         <>
-          <PageHero
+          {sections.some((section) => section.type === 'product_hero') && <PageHero
             breadcrumb={[
               { label: 'Home', href: '/' },
               { label: 'Products', href: '/#products' },
@@ -124,13 +124,13 @@ export default function ProductPage() {
             heroImageCropX={heroContent.heroImageCropX}
             heroImageCropY={heroContent.heroImageCropY}
             onPrimaryClick={handlePrimaryButtonClick}
-          />
+          />}
 
           {bodySections.map((section) => renderProductSection(section, sectionCtx, byType))}
         </>
       )}
 
-      <FooterSection content={footerContent} />
+      {homeSections.some((section) => section.type === 'footer') && <FooterSection content={footerContent} />}
 
       <ScrollToTopButton show={chrome.showScrollTop} />
       <DemoModal open={chrome.isDemoModalOpen} onClose={() => chrome.setIsDemoModalOpen(false)} slug={chrome.activeFormSlug} />

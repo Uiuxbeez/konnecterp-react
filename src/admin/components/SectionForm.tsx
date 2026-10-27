@@ -69,6 +69,9 @@ function FieldRenderer({
     case "card_link":
       return <CardLinkField value={value} onChange={onChange} />;
     case "text":
+      if (field.key.endsWith("Href") && parentContent?.[field.key.replace(/Href$/, "Action")] === "attachment") {
+        return <ImageField value={value ?? ""} onChange={onChange} accept="application/pdf" buttonText="Upload PDF" emptyText="No PDF attached" preview="file" />;
+      }
       if (isFormTargetField(field, parentContent)) {
         return (
           <Select value={String(value ?? "")} onValueChange={onChange}>
