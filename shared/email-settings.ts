@@ -11,12 +11,13 @@ export const emailSettingsSchema = z.object({
   fromEmail: z.union([address, z.literal("")]),
   to: z.array(address).max(20),
   cc: z.array(address).max(20),
+  careerTo: z.array(address).max(20).default([]),
 });
 export type EmailSettings = z.infer<typeof emailSettingsSchema>;
 export type EmailSettingsView = EmailSettings & { passwordConfigured: boolean };
 export const DEFAULT_EMAIL_SETTINGS: EmailSettings = {
   enabled: false, host: "", port: 587, security: "starttls", username: "",
-  fromName: "", fromEmail: "", to: [], cc: [],
+  fromName: "", fromEmail: "", to: [], cc: [], careerTo: [],
 };
 export const emailSettingsInputSchema = emailSettingsSchema.extend({ password: z.string().max(2048).optional() });
 

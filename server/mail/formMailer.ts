@@ -121,7 +121,7 @@ export async function sendConfiguredFormEmail(input: FormEmailInput, settings: S
   const transporter = createTransport(settings);
   const replyTo = getPrimaryValue(input.fields, input.values, ["email"]);
   const result = await transporter.sendMail({
-    ...notificationEnvelope(settings),
+    ...notificationEnvelope(settings, input),
     replyTo: /^[^\s@<>;,]+@[^\s@<>;,]+\.[^\s@<>;,]+$/.test(replyTo) ? { address: replyTo, name: "" } : undefined,
     subject: `New ${input.formName} submission`,
     html: renderHtml(input),

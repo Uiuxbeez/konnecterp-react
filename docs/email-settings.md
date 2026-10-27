@@ -6,8 +6,13 @@ Add the notification recipients and optional CC addresses, separated by commas.
 Use **Save Email Settings**, then **Send Test Email**. Testing works while
 notifications are disabled. Enable notifications and save when ready.
 
-All forms use this central recipient list, including careers, demo, contact and
-custom forms. Old per-form recipient values are retained in the database for
+Demo, contact and custom forms use the main recipient list. The optional **Send
+career notifications to** field replaces the main To list for career applications;
+leaving it blank preserves the main recipients. The shared CC list still applies,
+and the same SMTP sender and password are used. Career forms are identified by
+the saved form slug/name containing "career", "careers" or "job application".
+Send Test Email checks the main To and CC addresses.
+Old per-form recipient values are retained in the database for
 compatibility but are no longer used for delivery. SMTP environment variables are
 no longer used; configure this panel after deploying the change.
 

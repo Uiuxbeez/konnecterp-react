@@ -37,7 +37,7 @@ test("blank password keeps the saved secret, and a replacement changes it", () =
 
 test("validates recipients, connection settings and required enabled configuration", () => {
   assert.equal(emailSettingsInputSchema.safeParse(config).success, true);
-  for (const patch of [{ to: ["invalid"] }, { cc: ["test@example.com\r\nBcc: attacker@example.com"] }, { port: 0 }, { security: "none" }, { host: "https://smtp.example.com" }]) {
+  for (const patch of [{ careerTo: ["invalid"] }, { to: ["invalid"] }, { cc: ["test@example.com\r\nBcc: attacker@example.com"] }, { port: 0 }, { security: "none" }, { host: "https://smtp.example.com" }]) {
     assert.equal(emailSettingsInputSchema.safeParse({ ...config, ...patch }).success, false);
   }
   assert.ok(emailConfigurationError(config, false));
@@ -75,7 +75,21 @@ test("all form types use central recipients and CC, include fields and resume li
     assert.ok(mail?.html.includes("https://example.com/uploads/resume.pdf"));
     assert.ok(!mail?.html.includes("<script>"));
     assert.ok(mail?.text.includes("Lead ID: 12"));
+    await sendConfiguredFormEmail(input, { ...stored, careerTo: ["hr@otherdomain.com"] }, () => transport);
+    assert.equal(mail?.to[0].address, formSlug === "career-application" ? "hr@otherdomain.com" : "client@example.com");
+    assert.equal(mail?.cc[0].address, "team@example.com");
     assert.deepEqual(await sendConfiguredFormEmail(input, { ...stored, enabled: false }, () => { throw new Error("must not connect"); }), { sent: false, skipped: true });
     await assert.rejects(sendConfiguredFormEmail(input, stored, () => { throw new Error("SMTP unavailable"); }), /SMTP unavailable/);
   }
+});
+
+test("career routing preserves old settings and uses saved form metadata", () => {
+  const { careerTo: _careerTo, ...legacy } = config;
+  assert.deepEqual(emailSettingsInputSchema.parse(legacy).careerTo, []);
+  const settings = { ...config, careerTo: ["hr@example.com", "recruiter@example.com"] };
+  for (const form of [{ formSlug: "career-application", formName: "Application" }, { formSlug: "application", formName: "Career Application" }, { formSlug: "careers", formName: "Apply" }]) {
+    assert.deepEqual(notificationEnvelope(settings, form).to.map((item) => item.address), settings.careerTo);
+  }
+  assert.deepEqual(notificationEnvelope(settings).to.map((item) => item.address), config.to);
+  assert.deepEqual(notificationEnvelope(settings, { formSlug: "demo-request", formName: "Demo" }).to.map((item) => item.address), config.to);
 });

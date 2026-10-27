@@ -13,10 +13,13 @@ export function createEmailTransport(settings: StoredEmailSettings) {
   });
 }
 
-export function notificationEnvelope(settings: EmailSettings) {
+export function notificationEnvelope(settings: EmailSettings, form?: { formSlug: string; formName: string }) {
+  // Classify from server-owned form metadata, never the submitted source or fields.
+  const isCareer = form && /\bcareers?\b|\bjob[\s-]+applications?\b/i.test(`${form.formSlug} ${form.formName}`);
+  const to = isCareer && settings.careerTo?.length ? settings.careerTo : settings.to;
   return {
     from: { name: settings.fromName, address: settings.fromEmail },
-    to: settings.to.map((address) => ({ address, name: "" })),
+    to: to.map((address) => ({ address, name: "" })),
     cc: settings.cc.map((address) => ({ address, name: "" })),
   };
 }

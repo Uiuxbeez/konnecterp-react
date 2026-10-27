@@ -13,6 +13,7 @@ export function EmailSettings() {
   const [password, setPassword] = useState("");
   const [to, setTo] = useState("");
   const [cc, setCc] = useState("");
+  const [careerTo, setCareerTo] = useState("");
   const [dirty, setDirty] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -20,6 +21,7 @@ export function EmailSettings() {
   useEffect(() => {
     adminApi.getEmailSettings().then(({ settings }) => {
       setSettings(settings); setTo(settings.to.join(", ")); setCc(settings.cc.join(", "));
+      setCareerTo((settings.careerTo ?? []).join(", "));
     }).catch((error) => setError(error.message));
   }, []);
   const changed = () => { setDirty(true); setMessage(""); setError(""); };
@@ -29,7 +31,7 @@ export function EmailSettings() {
     setBusy(true); setError(""); setMessage("");
     try {
       const { passwordConfigured: _configured, ...data } = settings;
-      const result = await adminApi.saveEmailSettings({ ...data, to: splitAddresses(to), cc: splitAddresses(cc), password });
+      const result = await adminApi.saveEmailSettings({ ...data, to: splitAddresses(to), cc: splitAddresses(cc), careerTo: splitAddresses(careerTo), password });
       setSettings(result.settings); setPassword(""); setDirty(false);
       setMessage("Email settings saved. Use Send Test Email to check delivery.");
     } catch (error) { setError(error instanceof Error ? error.message : "Could not save email settings"); }
@@ -65,8 +67,9 @@ export function EmailSettings() {
           <div className="space-y-2"><Label htmlFor="email-from-address">Sender email</Label><Input id="email-from-address" type="email" value={settings.fromEmail} onChange={(e) => patch({ fromEmail: e.target.value })} /><p className="text-xs text-slate-500">Use the authenticated mailbox or an address it has permission to send from.</p></div>
           <div className="space-y-2"><Label htmlFor="email-to">Send notifications to</Label><Input id="email-to" value={to} placeholder="Separate email addresses with commas" onChange={(e) => { setTo(e.target.value); changed(); }} /></div>
           <div className="space-y-2"><Label htmlFor="email-cc">CC recipients (optional)</Label><Input id="email-cc" value={cc} placeholder="Separate email addresses with commas" onChange={(e) => { setCc(e.target.value); changed(); }} /></div>
+          <div className="space-y-2 md:col-span-2"><Label htmlFor="email-career-to">Send career notifications to (optional)</Label><Input id="email-career-to" value={careerTo} placeholder="hr@example.com" onChange={(e) => { setCareerTo(e.target.value); changed(); }} /><p className="text-xs text-slate-500">Career applications use these recipients instead of the main recipients. Separate multiple addresses with commas. Leave blank to use the main recipients. The CC list above still applies. Uses the same SMTP account; no additional password is needed.</p></div>
         </div>
-        <p className="text-sm text-slate-500">These recipients apply to all forms. Replies go to the submitter's email when supplied. Save here before testing; the test uses the saved To and CC addresses and can be sent while notifications are disabled.</p>
+        <p className="text-sm text-slate-500">Main recipients apply to all forms unless career recipients are specified above. Replies go to the submitter's email when supplied. Save here before testing; Send Test Email uses the main To and CC addresses and can be sent while notifications are disabled.</p>
         <div className="rounded-lg bg-slate-50 p-3 space-y-2 text-sm text-slate-600">
           <p className="font-semibold">Google Workspace (G Suite) setup</p>
           <p>SMTP server: smtp.gmail.com · Port: 587 · Security: STARTTLS. Enter the full Workspace email address as the username and sender email.</p>
