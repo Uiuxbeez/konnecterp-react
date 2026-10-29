@@ -1,3 +1,4 @@
+import { useBrochureDownload, type BrochureDownloadSettings } from "@/hooks/useBrochureDownload";
 import { imageAlt } from "@shared/image-alt";
 import { motion } from 'framer-motion';
 import { CheckCircle2, Download } from 'lucide-react';
@@ -5,7 +6,7 @@ import { RichText } from '@/components/site/RichText';
 import { isCmsButtonVisible, runCmsButtonAction, type CmsButtonAction } from '@/lib/cms-button-actions';
 import type { SectionCtx } from '@/sections/shared';
 
-export interface BrochureCtaContent {
+export interface BrochureCtaContent extends BrochureDownloadSettings {
   eyebrow: string;
   title: string;
   highlight: string;
@@ -26,11 +27,13 @@ const fadeInUp = {
 
 export function BrochureCta({ content, ctx }: { content: BrochureCtaContent; ctx: SectionCtx }) {
   const { isDarkMode } = ctx;
+  const download = useBrochureDownload(content);
   const hasFile = Boolean(content.fileUrl?.trim());
-  const buttonHref = content.buttonHref?.trim() || content.fileUrl;
-  const shouldRenderLink = isCmsButtonVisible(content.buttonVisible) && Boolean(buttonHref.trim()) && (content.buttonAction === "link" || (!content.buttonAction && hasFile));
+  const buttonHref = content.buttonHref?.trim() || content.fileUrl || "";
+
 
   return (
+    <>
     <section className={`py-20 md:py-28 ${isDarkMode ? 'bg-[#080E1D]' : 'bg-white'}`}>
       <div className="container mx-auto px-4 max-w-5xl">
         <motion.div
@@ -59,20 +62,11 @@ export function BrochureCta({ content, ctx }: { content: BrochureCtaContent; ctx
               ))}
             </div>
 
-            {shouldRenderLink ? (
-              <a
-                href={buttonHref}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 h-12 px-8 text-sm font-bold rounded-md transition-colors shadow-lg bg-[#F97316] hover:bg-[#EA580C] text-white shadow-orange-900/30"
-              >
-                {content.buttonText} <Download className="w-4 h-4" />
-              </a>
-            ) : isCmsButtonVisible(content.buttonVisible) ? (
+            {isCmsButtonVisible(content.buttonVisible) ? (
               <button
                 onClick={() => {
-                  if (!content.buttonAction && hasFile) {
-                    window.location.href = content.fileUrl;
+                  if (content.buttonAction === "attachment" || content.buttonAction === "link" || (!content.buttonAction && hasFile)) {
+                    download.startDownload(buttonHref);
                     return;
                   }
 
@@ -87,5 +81,7 @@ export function BrochureCta({ content, ctx }: { content: BrochureCtaContent; ctx
         </motion.div>
       </div>
     </section>
+    {download.modal}
+    </>
   );
 }

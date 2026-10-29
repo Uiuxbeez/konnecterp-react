@@ -1176,6 +1176,8 @@ export const SECTION_DEFS: SectionMeta[] = [
       { key: "buttonAction", label: "Button Action", type: "select", options: BUTTON_ACTION_OPTIONS },
       { key: "buttonHref", label: "Button Link URL / Page Path", type: "text" },
       { key: "fileUrl", label: "Brochure PDF (optional fallback)", type: "file", accept: "application/pdf", buttonText: "Upload PDF" },
+      { key: "restrictDownload", label: "Restrict Download With Form", type: "boolean", helpText: "Require a fresh submission for every brochure download, including the hero PDF button. Defaults to the enquiry form when no form is selected." },
+      { key: "downloadFormSlug", label: "Select Download Form", type: "form_select" },
       { key: "backgroundImage", label: "Background Image", type: "image" },
     ],
     defaultContent: {
@@ -1189,6 +1191,8 @@ export const SECTION_DEFS: SectionMeta[] = [
       buttonAction: "link",
       buttonHref: "",
       fileUrl: "",
+      restrictDownload: true,
+      downloadFormSlug: "",
       backgroundImage: "/images/hero-meeting.jpg",
     },
   },

@@ -4,7 +4,7 @@ import { X } from "lucide-react";
 import { PublicForm } from "./PublicForm";
 import { apiUrl } from "@/lib/api-base";
 
-export function DemoModal({ open, onClose, slug = "demo-request" }: { open: boolean; onClose: () => void; slug?: string }) {
+export function DemoModal({ open, onClose, slug = "demo-request", onSuccess, source }: { open: boolean; onClose: () => void; slug?: string; onSuccess?: () => void; source?: string }) {
   const [headerContent, setHeaderContent] = useState({
     slug: "",
     title: "Loading form...",
@@ -70,7 +70,7 @@ export function DemoModal({ open, onClose, slug = "demo-request" }: { open: bool
               {headerContent.slug === slug && headerContent.subtitle && <p className="mt-2 pr-10 text-sm leading-6 text-blue-100">{headerContent.subtitle}</p>}
             </div>
 
-            <PublicForm slug={slug} source={`${slug}-modal`} showIntro={false} />
+            <PublicForm slug={slug} source={source ?? `${slug}-modal`} showIntro={false} onSuccess={onSuccess} />
           </motion.div>
         </motion.div>
       )}

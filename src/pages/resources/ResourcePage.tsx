@@ -1,3 +1,4 @@
+import { useBrochureDownload } from "@/hooks/useBrochureDownload";
 import { imageAlt } from "@shared/image-alt";
 import { isCmsButtonVisible, runCmsButtonAction, type CmsButtonAction } from "@/lib/cms-button-actions";
 import { useParams } from 'wouter';
@@ -62,6 +63,7 @@ export default function ResourcePage() {
   const footerContent = byHomeType('footer') as unknown as FooterContent;
 
   const heroContent = byType('product_hero') as unknown as ResourceHeroContent;
+  const brochureDownload = useBrochureDownload(byType("brochure_cta"));
   const pageTitle = page?.title ?? heroContent.highlight ?? slug;
 
   useDocumentMeta(page?.metaTitle || `${pageTitle} | KonnectERP`, page?.metaDescription || heroContent.description);
@@ -114,7 +116,14 @@ export default function ResourcePage() {
             heroImage={heroContent.heroImage}
             heroImageCropX={heroContent.heroImageCropX}
             heroImageCropY={heroContent.heroImageCropY}
-            onPrimaryClick={() => runCmsButtonAction(heroContent.primaryButtonAction, heroContent.primaryButtonHref, sectionCtx, "demo_modal")}
+            onPrimaryClick={() => {
+              const href = heroContent.primaryButtonHref?.trim() || "";
+              if (slug === "product-brochure" && (heroContent.primaryButtonAction === "attachment" || (heroContent.primaryButtonAction === "link" && /\.pdf(?:[?#]|$)/i.test(href)))) {
+                brochureDownload.startDownload(href);
+                return;
+              }
+              runCmsButtonAction(heroContent.primaryButtonAction, href, sectionCtx, "demo_modal");
+            }}
           />}
 
           {bodySections.map((section) => renderResourceSection(section, sectionCtx, byType))}
@@ -123,6 +132,7 @@ export default function ResourcePage() {
 
       {homeSections.some((section) => section.type === 'footer') && <FooterSection content={footerContent} />}
 
+      {brochureDownload.modal}
       <ScrollToTopButton show={chrome.showScrollTop} />
       <DemoModal open={chrome.isDemoModalOpen} onClose={() => chrome.setIsDemoModalOpen(false)} slug={chrome.activeFormSlug} />
       <VideoModal open={chrome.isVideoModalOpen} onClose={() => chrome.setIsVideoModalOpen(false)} />
