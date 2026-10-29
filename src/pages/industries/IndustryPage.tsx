@@ -93,7 +93,7 @@ export default function IndustryPage() {
         setIsMobileMenuOpen={chrome.setIsMobileMenuOpen}
         openDemo={chrome.openDemo}
         openForm={chrome.openForm}
-        overDarkBackground
+        overDarkBackground={sections.some((section) => section.type === "industry_hero")}
       />
 
       {loading ? (

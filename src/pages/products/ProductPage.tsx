@@ -99,7 +99,7 @@ export default function ProductPage() {
         setIsMobileMenuOpen={chrome.setIsMobileMenuOpen}
         openDemo={chrome.openDemo}
         openForm={chrome.openForm}
-        overDarkBackground
+        overDarkBackground={sections.some((section) => section.type === "product_hero")}
       />
 
       {loading ? (

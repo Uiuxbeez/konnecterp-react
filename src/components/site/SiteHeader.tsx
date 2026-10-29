@@ -179,7 +179,7 @@ export function SiteHeader({
             ))}
           </div>
 
-          <button className="lg:hidden p-2 text-foreground" onClick={() => setIsMobileMenuOpen(true)}>
+          <button aria-label="Open menu" className={`lg:hidden p-2 ${chromeDark ? 'text-white' : 'text-[#0B1F4A]'}`} onClick={() => setIsMobileMenuOpen(true)}>
             <Menu className="w-6 h-6" />
           </button>
         </div>
