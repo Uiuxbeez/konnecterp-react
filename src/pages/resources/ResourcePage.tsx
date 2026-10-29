@@ -54,7 +54,7 @@ function renderResourceSection(section: PageSection, ctx: SectionCtx, byType: (t
 
 export default function ResourcePage() {
   const { slug } = useParams<{ slug: string }>();
-  const chrome = useSiteChrome();
+  const chrome = useSiteChrome({ autoOpenDemo: slug !== 'product-brochure' });
   const { isDarkMode, openDemo } = chrome;
 
   const { sections, page, notFound, byType, loading } = usePageSections(slug ?? '');

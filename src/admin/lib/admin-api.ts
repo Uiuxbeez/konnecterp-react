@@ -198,7 +198,14 @@ export const adminApi = {
     const res = await fetch(apiUrl(endpoint), { method: "POST", credentials: "include", body: form });
     if (!res.ok) {
       const body = await res.json().catch(() => ({}));
-      throw new ApiError(res.status, body.error ?? "Upload failed");
+      const fallback = res.status === 413
+        ? "The hosting server rejected this file because of its upload size limit. Increase the server upload limit and try again."
+        : res.status === 404
+          ? "The upload API is unavailable. Deploy the latest API server and check the /api proxy configuration."
+          : res.status === 401
+            ? "Your session has expired. Sign in again before uploading."
+            : `Upload failed (HTTP ${res.status}). Please try again.`;
+      throw new ApiError(res.status, body.error ?? fallback);
     }
     return res.json();
   },

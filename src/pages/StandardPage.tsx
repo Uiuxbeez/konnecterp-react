@@ -76,7 +76,7 @@ function renderStandardSection(section: PageSection, ctx: SectionCtx, byType: (t
 
 export default function StandardPage() {
   const { slug } = useParams<{ slug: string }>();
-  const chrome = useSiteChrome();
+  const chrome = useSiteChrome({ autoOpenDemo: slug !== "case-studies" && slug !== "product-brochure" });
   const { isDarkMode } = chrome;
 
   const { sections, page, notFound, byType, loading } = usePageSections(slug ?? "");

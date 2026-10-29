@@ -1,5 +1,24 @@
 # Redirects and performance deployment
 
+## Brochure PDF upload limit
+
+On 2026-10-29, an unauthenticated 2 MB POST to
+`https://konnecterp.com/api/admin/upload/pdf` returned Nginx HTTP 413, while
+a small request reached Express authentication (HTTP 401). Nginx is rejecting
+the request before the application can accept the PDF.
+
+Merge `nginx-pdf-upload.conf` into the existing API upload proxy location (or
+the existing `/api/` location) in the active HTTPS virtual host. Preserve its
+`proxy_pass` and headers, and replace any existing `client_max_body_size` in
+that location. The value `0` matches the authenticated PDF handler's uncapped
+streaming behavior; image and public form uploads retain their application limits.
+Validate with `sudo nginx -t`, then reload with `sudo systemctl reload nginx`.
+This repository file has no effect until applied to the active server config.
+
+After reloading, sign in to Page Builder, upload the brochure PDF, publish,
+and verify the public download opens the saved PDF. Deploy the frontend build
+to apply the brochure/case-studies timed-popup exclusions and clearer upload errors.
+
 The live domain returned `Server: nginx/1.24.0 (Ubuntu)` and
 `Content-Encoding: gzip` for HTML on 2026-09-30. Nginx does not read `.htaccess`.
 The Apache file alone therefore cannot activate these changes on this VPS.
